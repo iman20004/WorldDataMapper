@@ -30,6 +30,7 @@ const Homescreen = (props) => {
 		for(let map of data.getAllMaps) {
 			maps.push(map)
 		}
+		console.log(props.user.firstName)
 		// if a list is selected, shift it to front of maps
 		if(activeMap._id) {
 			let selectedMapIndex = maps.findIndex(entry => entry._id === activeMap._id);
@@ -103,6 +104,7 @@ const Homescreen = (props) => {
 							fetchUser={props.fetchUser} 	auth={auth} 
 							setShowCreate={setShowCreate} 	setShowLogin={setShowLogin}
 							reloadMaps={refetch} 			setActiveMap={loadMap}
+							username={props.user.firstName}
 						/>
 					</ul>
 				</WNavbar>

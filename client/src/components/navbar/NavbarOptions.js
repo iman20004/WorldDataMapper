@@ -17,11 +17,18 @@ const LoggedIn = (props) => {
     };
 
     return (
-        <WNavItem hoverAnimation="lighten">
-            <WButton className="navbar-options" onClick={handleLogout} wType="texted" hoverAnimation="text-primary">
-                Logout
-            </WButton>
-        </WNavItem >
+        <>
+            <WNavItem hoverAnimation="lighten">
+                <WButton className="navbar-options" wType="texted" hoverAnimation="text-primary"> 
+                    {props.username}
+                </WButton>
+            </WNavItem>
+            <WNavItem hoverAnimation="lighten">
+                <WButton className="navbar-options" onClick={handleLogout} wType="texted" hoverAnimation="text-primary">
+                    Logout
+                </WButton>
+            </WNavItem >
+        </>
     );
 };
 
@@ -48,7 +55,7 @@ const NavbarOptions = (props) => {
         <>
             {
                 props.auth === false ? <LoggedOut setShowLogin={props.setShowLogin} setShowCreate={props.setShowCreate} />
-                : <LoggedIn fetchUser={props.fetchUser} setActiveMap={props.setActiveMap} />
+                : <LoggedIn fetchUser={props.fetchUser} setActiveMap={props.setActiveMap} username={props.username}/>
             }
         </>
 
