@@ -80,6 +80,20 @@ module.exports = {
 			res.clearCookie('refresh-token');
 			res.clearCookie('access-token');
 			return true;
+		},
+		/** 
+			@param 	 {object} args - update info
+			@param 	 {object} res - response object containing the current access/refresh tokens  
+			@returns {object} the user object or an object with an error message
+		**/
+		update: async (_, args, { res }) => {	
+			const { email, password, firstName, lastName } = args;
+
+			const user = await User.findOne({email: email});
+			res.cookie('refresh-token', refreshToken, { httpOnly: true , sameSite: 'None', secure: true}); 
+			res.cookie('access-token', accessToken, { httpOnly: true , sameSite: 'None', secure: true}); 
+			return user;
 		}
+
 	}
 }

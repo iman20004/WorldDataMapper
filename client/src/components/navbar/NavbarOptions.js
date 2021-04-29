@@ -12,7 +12,7 @@ const LoggedIn = (props) => {
         const { data } = await props.fetchUser();
         if (data) {
             let reset = await client.resetStore();
-            if (reset) props.setActiveList({});
+            if (reset) props.setActiveMap({});
         }
     };
 
@@ -35,7 +35,7 @@ const LoggedOut = (props) => {
             </WNavItem>
             <WNavItem hoverAnimation="lighten">
                 <WButton className="navbar-options" onClick={props.setShowCreate} wType="texted" hoverAnimation="text-primary"> 
-                    Sign Up 
+                    Create Account 
                 </WButton>
             </WNavItem>
         </>
@@ -48,7 +48,7 @@ const NavbarOptions = (props) => {
         <>
             {
                 props.auth === false ? <LoggedOut setShowLogin={props.setShowLogin} setShowCreate={props.setShowCreate} />
-                : <LoggedIn fetchUser={props.fetchUser} setActiveList={props.setActiveList} logout={props.logout} />
+                : <LoggedIn fetchUser={props.fetchUser} setActiveMap={props.setActiveMap} />
             }
         </>
 
