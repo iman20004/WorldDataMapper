@@ -1,33 +1,37 @@
 const { model, Schema, ObjectId } = require('mongoose');
 
-const itemSchema = new Schema(
+const regionSchema = new Schema(
 	{
 		_id: {
 			type: ObjectId,
 			required: true
 		},
-		id: {
-			type: Number,
-			required: true
-		},
-		description: {
+		name: {
 			type: String,
 			required: true
 		},
-		due_date: {
+		capital: {
 			type: String,
 			required: true
 		},
-		assigned_to: {
+		leader: {
 			type: String,
 			required: true
 		},
-		completed: {
+		landmarks: {
+			type: [String],
+			required: true
+		},
+		root: {
 			type: Boolean,
+			required: true
+		},
+		parentId: {
+			type: ObjectId,
 			required: true
 		}
 	}
 );
 
-const Item = model('Item', itemSchema);
-module.exports = Item;
+const Region = model('Region', regionSchema);
+module.exports = Region;
