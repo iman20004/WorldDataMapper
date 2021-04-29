@@ -19,10 +19,6 @@ html {
     display: flex;
 }
 
-.wsidebar {
-    scrollbar-width: thin;
-}
-
 .list-text {
     white-space: nowrap;
     overflow: hidden;
@@ -103,25 +99,6 @@ html {
     align-items: center;
 }
 
-.sidebar-header {
-    width: calc(100% - 48px);
-    box-sizing: border-box;
-    margin-left: 24px;
-    margin-right: 24px;
-    padding-top: 24px;
-    padding-bottom: 12px
-}
-
-.sidebar-options {
-    height: 100%;
-    display: flex;
-    align-items: center;
-    column-gap: 0.5rem;
-}
-
-.sidebar-buttons {
-    padding: 0;
-}
 
 .modal-input {
     width: 100%;
@@ -166,10 +143,6 @@ html {
 .col-spacer {
     width: 24px;
     display: inline-block;
-}
-
-.wsidebar {
-    overflow-y: scroll;
 }
 
 .list-item-edit, .table-input, .table-select {

@@ -22,9 +22,21 @@ export const REGISTER = gql`
 		}
 	}
 `;
+
 export const LOGOUT = gql`
 	mutation Logout {
 		logout 
+	}
+`;
+
+export const UPDATE = gql`
+	mutation Update($email: String!, $password: String!, $firstName: String!, $lastName: String!) {
+		update(email: $email, password: $password, firstName: $firstName, lastName: $lastName) {
+			email
+			password
+			firstName
+			lastName
+		}
 	}
 `;
 

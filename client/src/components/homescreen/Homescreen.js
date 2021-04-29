@@ -1,13 +1,16 @@
 import Logo 							from '../navbar/Logo';
 import Login 							from '../modals/Login';
+import UpdateAccount					from '../modals/UpdateAccount';
 import CreateAccount 					from '../modals/CreateAccount';
+import Maps 							from '../main/Maps';
+import Welcome 							from '../Welcome';
 import NavbarOptions 					from '../navbar/NavbarOptions';
 import * as mutations 					from '../../cache/mutations';
 import { GET_DB_MAPS } 					from '../../cache/queries';
 import React, { useState } 				from 'react';
 import { useMutation, useQuery } 		from '@apollo/client';
 import { WNavbar, WSidebar, WNavItem } 	from 'wt-frontend';
-import { WLayout, WLHeader, WLMain, WLSide } from 'wt-frontend';
+import { WLayout, WLHeader, WLMain } from 'wt-frontend';
 
 
 const Homescreen = (props) => {
@@ -18,6 +21,7 @@ const Homescreen = (props) => {
 	const [showLogin, toggleShowLogin] 		= useState(false);
 	const [showCreate, toggleShowCreate] 	= useState(false);
 	const [showDelete, toggleShowDelete] 	= useState(false);
+	const [showUpdate, toggleShowUpdate] 	= useState(false);
 	//const [canUndo, setCanUndo] = useState(props.tps.hasTransactionToUndo());
 	//const [canRedo, setCanRedo] = useState(props.tps.hasTransactionToRedo());
 
@@ -30,7 +34,6 @@ const Homescreen = (props) => {
 		for(let map of data.getAllMaps) {
 			maps.push(map)
 		}
-		console.log(props.user.firstName)
 		// if a list is selected, shift it to front of maps
 		if(activeMap._id) {
 			let selectedMapIndex = maps.findIndex(entry => entry._id === activeMap._id);
@@ -42,7 +45,7 @@ const Homescreen = (props) => {
 
 	
 	// NOTE: might not need to be async
-	const reloadMap = async () => {
+	const reloadMap = () => {
 		if (activeMap._id) {
 			let tempID = activeMap._id;
 			let map = maps.find(map => map._id === tempID);
@@ -75,18 +78,29 @@ const Homescreen = (props) => {
 	const setShowLogin = () => {
 		toggleShowDelete(false);
 		toggleShowCreate(false);
+		toggleShowUpdate(false);
 		toggleShowLogin(!showLogin);
 	};
 
 	const setShowCreate = () => {
 		toggleShowDelete(false);
 		toggleShowLogin(false);
+		toggleShowUpdate(false);
 		toggleShowCreate(!showCreate);
+	};
+
+	const setShowUpdate = () => {
+		toggleShowDelete(false);
+		toggleShowLogin(false);
+		toggleShowCreate(false);
+		toggleShowUpdate(!showUpdate);
+		console.log(!showUpdate)
 	};
 
 	const setShowDelete = () => {
 		toggleShowCreate(false);
 		toggleShowLogin(false);
+		toggleShowUpdate(false);
 		toggleShowDelete(!showDelete)
 	};
 
@@ -104,7 +118,8 @@ const Homescreen = (props) => {
 							fetchUser={props.fetchUser} 	auth={auth} 
 							setShowCreate={setShowCreate} 	setShowLogin={setShowLogin}
 							reloadMaps={refetch} 			setActiveMap={loadMap}
-							username={props.user.firstName}
+							username={props.user === null? '' : props.user.firstName}
+							setShowUpdate={setShowUpdate} 
 						/>
 					</ul>
 				</WNavbar>
@@ -112,13 +127,17 @@ const Homescreen = (props) => {
 
 			<WLMain>
 				{
-					activeMap ? 
+					!auth ? 
 					
 							<div className="container-secondary">
-								
+								<Welcome/>
 							</div>
 						:
-							<div className="container-secondary" />
+							<div className="container-secondary">
+								<Maps>
+
+								</Maps>
+							</div>	
 				}
 
 			</WLMain>
@@ -129,6 +148,10 @@ const Homescreen = (props) => {
 
 			{
 				showLogin && (<Login fetchUser={props.fetchUser} reloadMaps={refetch} setShowLogin={setShowLogin} />)
+			}
+
+{
+				showUpdate && (<UpdateAccount fetchUser={props.fetchUser} setShowUpdate={setShowUpdate} />)
 			}
 
 		</WLayout>
