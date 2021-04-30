@@ -19,7 +19,7 @@ return (
                 />
                 <div className="map-body-new">
                     <img src={globeImg} className="globe-maps"/>
-                    <WButton className='map-create-button' onClick={props.createNewMap} clickAnimation="ripple-light" hoverAnimation="darken">
+                    <WButton className='map-create-button' onClick={props.setShowMapName} clickAnimation="ripple-light" hoverAnimation="darken">
                         Create New Map
                     </WButton>
                 </div>

@@ -3,6 +3,7 @@ import Login 							from '../modals/Login';
 import UpdateAccount					from '../modals/UpdateAccount';
 import CreateAccount 					from '../modals/CreateAccount';
 import DeleteMapModal					from '../modals/DeleteMapModal';
+import MapName							from '../modals/MapName';
 import Maps 							from '../map/Maps';
 import Welcome 							from '../Welcome';
 import NavbarOptions 					from '../navbar/NavbarOptions';
@@ -23,6 +24,7 @@ const Homescreen = (props) => {
 	const [showCreate, toggleShowCreate] 		= useState(false);
 	const [showDeleteMap, toggleShowDeleteMap] 	= useState(false);
 	const [showUpdate, toggleShowUpdate] 		= useState(false);
+	const [showMapName, toggleShowMapName] 		= useState(false);
 	//const [deleteMapId, setDeleteMap] 			= useState('');
 	//const [canUndo, setCanUndo] = useState(props.tps.hasTransactionToUndo());
 	//const [canRedo, setCanRedo] = useState(props.tps.hasTransactionToRedo());
@@ -73,10 +75,10 @@ const Homescreen = (props) => {
 	const [AddMap] 				= useMutation(mutations.ADD_MAP);
 	const [DeleteMap] 			= useMutation(mutations.DELETE_MAP);
 
-	const createNewMap = async () => {
+	const createNewMap = async (mapname) => {
 		let newMap = {
 			_id: '',
-			name: 'Untitled',
+			name: mapname,
 			owner: props.user._id,
 			regions: []
 		}
@@ -122,7 +124,15 @@ const Homescreen = (props) => {
 		toggleShowCreate(false);
 		toggleShowLogin(false);
 		toggleShowUpdate(false);
-		toggleShowDeleteMap(!showDeleteMap)
+		toggleShowDeleteMap(!showDeleteMap);
+	};
+
+	const setShowMapName = () => {
+		toggleShowDeleteMap(false);
+		toggleShowLogin(false);
+		toggleShowCreate(false);
+		toggleShowUpdate(false);
+		toggleShowMapName(!showMapName);
 	};
 
 	return (
@@ -157,7 +167,8 @@ const Homescreen = (props) => {
 							<div className="container-secondary">
 								<Maps
 									maps={maps}
-									createNewMap={createNewMap}
+									//createNewMap={createNewMap}
+									setShowMapName={setShowMapName}
 									setShowDeleteMap={setShowDeleteMap}
 									//setDeleteMap={setDeleteMap}
 								/>
@@ -177,6 +188,10 @@ const Homescreen = (props) => {
 			{
 				showUpdate && (<UpdateAccount fetchUser={props.fetchUser} setShowUpdate={setShowUpdate} user={props.user}/>)
 			}
+
+			{
+				showMapName && (<MapName createNewMap={createNewMap} setShowMapName={setShowMapName}/>)
+			}		
 			
 			{
 				showDeleteMap && (<DeleteMapModal deleteMap={handleDeleteMap} setShowDeleteMap={setShowDeleteMap} />)
