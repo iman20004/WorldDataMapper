@@ -13,6 +13,8 @@ return (
             <div className="map-table-body">
                 <MapContents
                     maps={props.maps}
+                    setShowDeleteMap={props.setShowDeleteMap}
+                    //setDeleteMap={props.setDeleteMap}
                 />
                 <div className="map-body-new">
                     <WButton className='map-create-button' onClick={props.createNewMap} clickAnimation="ripple-light" hoverAnimation="darken">

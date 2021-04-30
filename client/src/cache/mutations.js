@@ -64,3 +64,9 @@ export const ADD_MAP = gql`
 		}
 	}
 `;
+
+export const DELETE_MAP = gql`
+	mutation DeleteMap($_id: String!) {
+		deleteMap(_id: $_id)
+	}
+`;

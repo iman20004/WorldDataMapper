@@ -68,6 +68,7 @@ html {
 
 .map-body-list {
     display: flex;
+    flex-direction: column;
     width: 50%;
     height: 100%;
 }
@@ -78,6 +79,21 @@ html {
     flex-direction: column;
     width: 50%;
     height: 100%;
+}
+
+.map-entry {
+    display: flex;
+    flex-direction: row;
+    width: 100%;
+    height: 60px;
+    overflow-y: scroll;
+}
+
+.map-name-label {
+    display: flex;
+    width: 90%;
+    padding-left: 30px;
+    margin: auto;
 }
 
 .table-entries {

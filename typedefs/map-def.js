@@ -24,6 +24,7 @@ extend type Query {
 extend type Mutation {
 	addRegion(region: RegionInput!, _id: String!, index: Int!): String
 	addMap(map: MapInput!): Map
+	deleteMap(_id: String!): Boolean
 }
 input FieldInput {
 	_id: String

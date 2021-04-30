@@ -10,6 +10,8 @@ const MapContents = (props) => {
                 props.maps.map((entry, index) => (
                     <MapEntry
                         data={entry} key={entry._id}
+                        setShowDeleteMap={props.setShowDeleteMap}
+                        //setDeleteMap={props.setDeleteMap}
                     />
                 ))
             }

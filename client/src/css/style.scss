@@ -109,8 +109,18 @@ html, body {
     background-color: #990000;
     color: var(--warm-white);
     font-weight: 1000;
-    font-size: 25px;
+    font-size: 22px;
     justify-content: center;
+}
+
+.map-name-label {
+    color: black;
+    font-size: 25px;
+    font-weight: bold;
+}
+
+.map-delete-button {
+    background-color:#FFF2E6 ;
 }
 
 .table-entries {
