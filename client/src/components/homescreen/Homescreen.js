@@ -74,7 +74,6 @@ const Homescreen = (props) => {
 	const [DeleteMap] 			= useMutation(mutations.DELETE_MAP);
 
 	const createNewMap = async () => {
-		console.log("here")
 		let newMap = {
 			_id: '',
 			name: 'Untitled',
@@ -176,7 +175,7 @@ const Homescreen = (props) => {
 			}
 
 			{
-				showUpdate && (<UpdateAccount fetchUser={props.fetchUser} setShowUpdate={setShowUpdate} />)
+				showUpdate && (<UpdateAccount fetchUser={props.fetchUser} setShowUpdate={setShowUpdate} user={props.user}/>)
 			}
 			
 			{

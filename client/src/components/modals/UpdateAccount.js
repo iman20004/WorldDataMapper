@@ -17,12 +17,7 @@ const UpdateAccount = (props) => {
 	};
 
 	const handleUpdateAccount = async (e) => {
-		for (let field in input) {
-			if (!input[field]) {
-				alert('All fields must be filled out to register');
-				return;
-			}
-		}
+
 		const { loading, error, data } = await Update({ variables: { ...input } });
 		if (loading) { toggleLoading(true) };
 		if (error) { return `Error: ${error.message}` };
@@ -52,27 +47,27 @@ const UpdateAccount = (props) => {
 							<WRow className="modal-col-gap signup-modal">
 								<WCol size="6">
 									<WInput 
-										className="" onBlur={updateInput} name="firstName" labelAnimation="up" 
-										barAnimation="solid" labelText="First Name" wType="outlined" inputType="text" 
+										className="" onBlur={updateInput} name="firstName" labelText="First Name" labelAnimation="fixed"
+										barAnimation="solid" placeholderText={props.user.firstName} wType="outlined" inputType="text" 
 									/>
 								</WCol>
 								<WCol size="6">
 									<WInput 
-										className="" onBlur={updateInput} name="lastName" labelAnimation="up" 
-										barAnimation="solid" labelText="Last Name" wType="outlined" inputType="text" 
+										className="" onBlur={updateInput} name="lastName" labelText="Last Name" labelAnimation="fixed" 
+										barAnimation="solid" placeholderText={props.user.lastName} wType="outlined" inputType="text" 
 									/>
 								</WCol>
 							</WRow>
 
 							<div className="modal-spacer">&nbsp;</div>
 							<WInput 
-								className="modal-input" onBlur={updateInput} name="email" labelAnimation="up" 
-								barAnimation="solid" labelText="Email Address" wType="outlined" inputType="text" 
+								className="modal-input" onBlur={updateInput} name="email" labelText="Email" labelAnimation="fixed"
+								barAnimation="solid" placeholderText={props.user.email} wType="outlined" inputType="text" 
 							/>
 							<div className="modal-spacer">&nbsp;</div>
 							<WInput 
-								className="modal-input" onBlur={updateInput} name="password" labelAnimation="up" 
-								barAnimation="solid" labelText="Password" wType="outlined" inputType="password" 
+								className="modal-input" onBlur={updateInput} name="password" labelText="Password" labelAnimation="fixed"
+								barAnimation="solid" wType="outlined" inputType="password" 
 							/>
 					</WMMain>
 			}
