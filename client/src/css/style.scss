@@ -73,7 +73,7 @@ html, body {
 }
 
 .logo {
-	color: orangered;
+	color: #CC0000;
     font-size: 1.5rem;
     font-family: "Roboto Mono", monospace;
     font-weight: bold;
@@ -82,6 +82,35 @@ html, body {
 .modal-error {
     color: $primary-color;
     font-size: 14px;
+}
+
+.map-table {
+    background-color: black;
+}
+
+.map-table-header {
+    background-color: #990000;
+    font-weight: 1000;
+    font-size: 35px;
+    font-weight: bold;
+    text-align: center;
+    color: var(--warm-white);
+}
+
+.map-body-list {
+    background-color: #FFF2E6;
+}
+
+.map-body-new {
+    background-color: #80BFFF;
+}
+
+.map-create-button {
+    background-color: #990000;
+    color: var(--warm-white);
+    font-weight: 1000;
+    font-size: 25px;
+    justify-content: center;
 }
 
 .table-entries {

@@ -46,3 +46,21 @@ export const ADD_REGION = gql`
 	}
 `;
 
+export const ADD_MAP = gql`
+	mutation AddMap($map: MapInput!) {
+		addMap(map: $map) {
+			_id
+			name
+			owner
+			regions {
+				_id
+				name
+				capital
+				leader
+				landmarks
+				root
+				parentId
+			}
+		}
+	}
+`;

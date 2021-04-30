@@ -50,6 +50,28 @@ module.exports = {
 
 			if(updated) return (region._id);
 			else return ('Could not add region');
+		},
+
+		/** 
+		 	@param 	 {object} args - an empty map object
+			@returns {object} the new map on success
+		**/
+		addMap: async (_, args) => {
+			console.log("good good")
+			const { map } = args;
+			const objectId = new ObjectId();
+			const { _id, name, owner, regions} = map;
+			const newMap = new Map({
+				_id: objectId,
+				name: name,
+				owner: owner,
+				regions: regions
+			});
+			const updated = await newMap.save();
+			if(updated) {
+				console.log(newMap)
+				return newMap;
+			}
 		}
 
 	}

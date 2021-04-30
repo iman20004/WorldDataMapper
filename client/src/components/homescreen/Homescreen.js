@@ -57,7 +57,7 @@ const Homescreen = (props) => {
 		props.tps.clearAllTransactions();
 		//setCanUndo(props.tps.hasTransactionToUndo());
 		//setCanRedo(props.tps.hasTransactionToRedo());
-		setActiveMap(map);
+		//setActiveMap(map);
 
 	}
 
@@ -68,6 +68,21 @@ const Homescreen = (props) => {
 	}
 
 	const [AddRegion] 			= useMutation(mutations.ADD_REGION, mutationOptions);
+	const [AddMap] 				= useMutation(mutations.ADD_MAP);
+
+	const createNewMap = async () => {
+		console.log("here")
+		let newMap = {
+			_id: '',
+			name: 'Untitled',
+			owner: props.user._id,
+			regions: []
+		}
+		const { data } = await AddMap({ variables: { map: newMap }, refetchQueries: [{ query: GET_DB_MAPS }] });
+		if(data) {
+			loadMap(data.addMap);
+		} 	
+	};
 
 
 	const handleSetActive = (_id) => {
@@ -105,7 +120,7 @@ const Homescreen = (props) => {
 	};
 
 	return (
-		<WLayout wLayout="header-lside">
+		<WLayout wLayout="header">
 			<WLHeader>
 				<WNavbar color="colored">
 					<ul>
@@ -134,9 +149,10 @@ const Homescreen = (props) => {
 							</div>
 						:
 							<div className="container-secondary">
-								<Maps>
-
-								</Maps>
+								<Maps
+									maps={maps}
+									createNewMap={createNewMap}
+								/>
 							</div>	
 				}
 

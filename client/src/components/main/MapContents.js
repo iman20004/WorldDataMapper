@@ -3,20 +3,19 @@ import MapEntry   from './MapEntry';
 
 const MapContents = (props) => {
 
-    const entries = props.activeList ? props.activeList.items : null;
+    //const entries = props.activeList ? props.activeList.items : null;
     return (
-        entries ? <div className=' table-entries container-primary'>
+        props.maps ? <div className=' map-body-list'>
             {
-                entries.map((entry, index) => (
+                props.maps.map((entry, index) => (
                     <MapEntry
-                        data={entry} key={entry.id}
-                        index={index}
+                        data={entry} key={entry._id}
                     />
                 ))
             }
 
             </div>
-            : <div className='container-primary' />
+            : <div className='map-body-list' />
     );
 };
 
