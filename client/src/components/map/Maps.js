@@ -1,6 +1,7 @@
-import React            from 'react';
-import MapContents    from './MapContents';
-import { WButton } from 'wt-frontend';
+import React                from 'react';
+import MapContents          from './MapContents';
+import { WButton }          from 'wt-frontend';
+import globeImg             from '../Images/globe.png';
 
 
 const Maps = (props) => {
@@ -17,6 +18,7 @@ return (
                     //setDeleteMap={props.setDeleteMap}
                 />
                 <div className="map-body-new">
+                    <img src={globeImg} className="globe-maps"/>
                     <WButton className='map-create-button' onClick={props.createNewMap} clickAnimation="ripple-light" hoverAnimation="darken">
                         Create New Map
                     </WButton>
