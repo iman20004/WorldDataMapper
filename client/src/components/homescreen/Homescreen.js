@@ -2,7 +2,7 @@ import Logo 							from '../navbar/Logo';
 import Login 							from '../modals/Login';
 import UpdateAccount					from '../modals/UpdateAccount';
 import CreateAccount 					from '../modals/CreateAccount';
-import Maps 							from '../main/Maps';
+import Maps 							from '../map/Maps';
 import Welcome 							from '../Welcome';
 import NavbarOptions 					from '../navbar/NavbarOptions';
 import * as mutations 					from '../../cache/mutations';
