@@ -6,31 +6,32 @@ const regionSchema = new Schema(
 			type: ObjectId,
 			required: true
 		},
+		owner: {
+			type: String,
+			required: true
+		},
 		name: {
 			type: String,
 			required: true
 		},
 		capital: {
 			type: String,
-			required: true
 		},
 		leader: {
 			type: String,
-			required: true
 		},
 		landmarks: {
 			type: [String],
-			required: true
 		},
 		root: {
 			type: Boolean,
 			required: true
 		},
 		parentId: {
-			type: ObjectId,
-			required: true
+			type: String,
 		}
-	}
+	},
+	{ timestamps: true }
 );
 
 const Region = model('Region', regionSchema);

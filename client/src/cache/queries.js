@@ -11,21 +11,32 @@ export const GET_DB_USER = gql`
 	}
 `;
 
+export const GET_DB_REGIONS = gql`
+	query GetDBRegions {
+		getAllRegions {
+			_id
+			owner
+			name
+			capital
+			leader
+			landmarks
+			root
+			parentId
+		}
+	}
+`;
+
 export const GET_DB_MAPS = gql`
 	query GetDBMaps {
-		getAllMaps {
+		getAllRootRegions {
 			_id
-			name
 			owner
-			regions {
-				_id
-				name
-				capital
-				leader
-				landmarks
-				root
-				parentId
-			}
+			name
+			capital
+			leader
+			landmarks
+			root
+			parentId
 		}
 	}
 `;

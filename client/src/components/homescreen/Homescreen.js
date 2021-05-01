@@ -10,6 +10,7 @@ import Region 										from '../region/Region';
 import Welcome 										from '../Welcome';
 import NavbarOptions 								from '../navbar/NavbarOptions';
 import * as mutations 								from '../../cache/mutations';
+import { GET_DB_REGIONS } 							from '../../cache/queries';
 import { GET_DB_MAPS } 								from '../../cache/queries';
 import React, { useState } 							from 'react';
 import { useMutation, useQuery } 					from '@apollo/client';
@@ -21,7 +22,7 @@ import { BrowserRouter, Switch, Route, Redirect } 	from 'react-router-dom';
 const Homescreen = (props) => {
 
 	const auth = props.user === null ? false : true;
-	let maps = [];
+	let regions = [];
 	const [activeMap, setActiveMap] = useState({});
 	const [showLogin, toggleShowLogin] = useState(false);
 	const [showCreate, toggleShowCreate] = useState(false);
@@ -34,32 +35,34 @@ const Homescreen = (props) => {
 	//const [canUndo, setCanUndo] = useState(props.tps.hasTransactionToUndo());
 	//const [canRedo, setCanRedo] = useState(props.tps.hasTransactionToRedo());
 
-	const { loading, error, data, refetch } = useQuery(GET_DB_MAPS);
+	const { loading, error, data, refetch } = useQuery(GET_DB_REGIONS);
 
 	if (loading) { console.log(loading, 'loading'); }
 	if (error) { console.log(error, 'error'); }
 	if (data) {
 		// Assign maps 
-		for (let map of data.getAllMaps) {
-			maps.push(map)
+		for (let region of data.getAllRegions) {
+			regions.push(region)
 		}
+		/*
 		// if a list is selected, shift it to front of maps
 		if (activeMap._id) {
 			let selectedMapIndex = maps.findIndex(entry => entry._id === activeMap._id);
 			let removed = maps.splice(selectedMapIndex, 1);
 			maps.unshift(removed[0]);
-		}
+		}*/
 	}
 
 
 
 	// NOTE: might not need to be async
 	const reloadMap = () => {
-		if (activeMap._id) {
+		
+		/*if (activeMap._id) {
 			let tempID = activeMap._id;
 			let map = maps.find(map => map._id === tempID);
 			//setActiveMap(map);
-		}
+		}*/
 	}
 
 	const loadMap = (map) => {
@@ -71,42 +74,47 @@ const Homescreen = (props) => {
 	}
 
 	const mutationOptions = {
-		refetchQueries: [{ query: GET_DB_MAPS }],
+		refetchQueries: [{ query: GET_DB_REGIONS }],
 		awaitRefetchQueries: true,
 		onCompleted: () => reloadMap()
 	}
 
-	const [AddRegion] = useMutation(mutations.ADD_REGION, mutationOptions);
-	const [AddMap] = useMutation(mutations.ADD_MAP);
-	const [DeleteMap] = useMutation(mutations.DELETE_MAP);
-	const [UpdateMap] = useMutation(mutations.UPDATE_MAP_FIELD, mutationOptions);
+	const [AddRegion] = useMutation(mutations.ADD_REGION);
+	const [DeleteRegion] = useMutation(mutations.DELETE_REGION);
+	const [UpdateRegion] = useMutation(mutations.UPDATE_REGION, mutationOptions);
 
 	const createNewMap = async (mapname) => {
 		let newMap = {
 			_id: '',
-			name: mapname,
 			owner: props.user._id,
-			regions: []
+			name: mapname,
+			capital: '',
+			leader: '',
+			landmarks: [],
+			root: true,
+			parentId: ''
 		}
-		const { data } = await AddMap({ variables: { map: newMap }, refetchQueries: [{ query: GET_DB_MAPS }] });
+		console.log(newMap)
+		const { data } = await AddRegion({ variables: { region: newMap }, refetchQueries: [{ query: GET_DB_REGIONS }] });
 		if (data) {
-			loadMap(data.addMap);
+			console.log(data);
+			loadMap(data.addRegion);
 		}
 	};
 
 	const handleDeleteMap = async (_id) => {
-		DeleteMap({ variables: { _id: _id }, refetchQueries: [{ query: GET_DB_MAPS }] });
+		DeleteRegion({ variables: { _id: _id }, refetchQueries: [{ query: GET_DB_REGIONS }] });
 		//loadMap({});
 	};
 
 	const editMap = async (_id, newName) => {
-		const { data } = await UpdateMap({ variables: { _id: _id, value: newName } });
+		const { data } = await UpdateRegion({ variables: { _id: _id, value: newName } });
 	}
 
-	const handleSetActive = (_id) => {
+	/*const handleSetActive = (_id) => {
 		const selectedMap = maps.find(m => m._id === _id);
 		loadMap(selectedMap);
-	};
+	};*/
 
 	const setShowLogin = () => {
 		toggleShowDeleteMap(false);
@@ -200,7 +208,7 @@ const Homescreen = (props) => {
 							render={() =>
 								<div className="container-secondary">
 									<Maps
-										maps={maps}
+										maps={regions}
 										setShowMapName={setShowMapName}
 										setShowDeleteMap={setShowDeleteMap}
 										setShowMapEdit={setShowMapEdit}
