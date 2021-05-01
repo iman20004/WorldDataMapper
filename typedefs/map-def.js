@@ -22,7 +22,7 @@ extend type Query {
 	getMapById(_id: String!): Map 
 }
 extend type Mutation {
-	addRegion(region: RegionInput!, _id: String!, index: Int!): String
+	addRegion(_id: String!, region: RegionInput!): String
 	addMap(map: MapInput!): Map
 	deleteMap(_id: String!): Boolean
 	updateMapField(_id: String!, value: String!): String

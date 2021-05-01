@@ -32,24 +32,45 @@ module.exports = {
 	},
 	Mutation: {
 		/** 
-		 	@param 	 {object} args - a map id, region id and an empty region object
+		 	@param 	 {object} args - a map id and an empty region object
 			@returns {string} the objectID of the item or an error message
 		**/
 		addRegion: async(_, args) => {
-			const { _id, region, index } = args;
+			const { _id, region } = args;
 			const mapId = new ObjectId(_id);
-			const objectId = new ObjectId();
 			const found = await Map.findOne({_id: mapId});
 			if(!found) return ('Map not found');
-			if(region._id === '') region._id = objectId;
-			let listRegions = found.regions;
-		        if(index < 0) listRegions.push(region);
-			else listRegions.splice(index, 0, region);
-			
-			const updated = await Map.updateOne({_id: listId}, { regions: listRegions });
 
-			if(updated) return (region._id);
-			else return ('Could not add region');
+			// giving new region a id
+			const objectId = new ObjectId();
+			if(region._id === '') region._id = objectId;
+
+			//root region
+			if (_id === region.parentId) {
+				region.root = true;
+				const found = await Map.findOne({_id: mapId});
+				let mapRegions = found.regions
+				mapRegions.push(region)
+				const updated = await Map.updateOne({_id: mapId}, { regions: mapRegions })
+				if(updated) return (region._id);
+				else return ('Could not add region');
+			} else {
+				const found = await Map.findOne({_id: mapId});		// find map
+				let numRoot = found.regions.length					// find num regions in map
+				for (numRoot; numRoot == 0; i++){
+					let root = found.regions[numRoot]
+					//let numRegions = root.
+					
+				}
+				
+				
+				let mapRegions = found.regions
+				mapRegions.push(region)
+				const updated = await Map.updateOne({_id: mapId}, { regions: mapRegions })
+			}
+
+			//if(updated) return (region._id);
+			//else return ('Could not add region');
 		},
 
 		/** 
