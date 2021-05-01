@@ -1,47 +1,48 @@
-import Logo 							from '../navbar/Logo';
-import Login 							from '../modals/Login';
-import UpdateAccount					from '../modals/UpdateAccount';
-import CreateAccount 					from '../modals/CreateAccount';
-import DeleteMapModal					from '../modals/DeleteMapModal';
-import MapName							from '../modals/MapName';
-import MapEdit							from '../modals/MapEdit';
-import Maps 							from '../map/Maps';
-import Welcome 							from '../Welcome';
-import NavbarOptions 					from '../navbar/NavbarOptions';
-import * as mutations 					from '../../cache/mutations';
-import { GET_DB_MAPS } 					from '../../cache/queries';
-import React, { useState } 				from 'react';
-import { useMutation, useQuery } 		from '@apollo/client';
-import { WNavbar, WSidebar, WNavItem } 	from 'wt-frontend';
+import Logo from '../navbar/Logo';
+import Login from '../modals/Login';
+import UpdateAccount from '../modals/UpdateAccount';
+import CreateAccount from '../modals/CreateAccount';
+import DeleteMapModal from '../modals/DeleteMapModal';
+import MapName from '../modals/MapName';
+import MapEdit from '../modals/MapEdit';
+import Maps from '../map/Maps';
+import Welcome from '../Welcome';
+import NavbarOptions from '../navbar/NavbarOptions';
+import * as mutations from '../../cache/mutations';
+import { GET_DB_MAPS } from '../../cache/queries';
+import React, { useState } from 'react';
+import { useMutation, useQuery } from '@apollo/client';
+import { WNavbar, WSidebar, WNavItem } from 'wt-frontend';
 import { WLayout, WLHeader, WLMain } from 'wt-frontend';
+import { BrowserRouter, Switch, Route, Redirect } from 'react-router-dom';
 
 
 const Homescreen = (props) => {
 
 	const auth = props.user === null ? false : true;
-	let maps 	= [];
-	const [activeMap, setActiveMap] 			= useState({});
-	const [showLogin, toggleShowLogin] 			= useState(false);
-	const [showCreate, toggleShowCreate] 		= useState(false);
-	const [showDeleteMap, toggleShowDeleteMap] 	= useState(false);
-	const [showUpdate, toggleShowUpdate] 		= useState(false);
-	const [showMapName, toggleShowMapName] 		= useState(false);
-	const [showMapEdit, toggleShowMapEdit] 		= useState(false);
-	//const [deleteMapId, setDeleteMap] 			= useState('');
+	let maps = [];
+	const [activeMap, setActiveMap] = useState({});
+	const [showLogin, toggleShowLogin] = useState(false);
+	const [showCreate, toggleShowCreate] = useState(false);
+	const [showDeleteMap, toggleShowDeleteMap] = useState(false);
+	const [showUpdate, toggleShowUpdate] = useState(false);
+	const [showMapName, toggleShowMapName] = useState(false);
+	const [showMapEdit, toggleShowMapEdit] = useState(false);
+	const [deleteMapId, setDeleteMap] = useState('');
 	//const [canUndo, setCanUndo] = useState(props.tps.hasTransactionToUndo());
 	//const [canRedo, setCanRedo] = useState(props.tps.hasTransactionToRedo());
 
 	const { loading, error, data, refetch } = useQuery(GET_DB_MAPS);
 
-	if(loading) { console.log(loading, 'loading'); }
-	if(error) { console.log(error, 'error'); }
-	if(data) { 
+	if (loading) { console.log(loading, 'loading'); }
+	if (error) { console.log(error, 'error'); }
+	if (data) {
 		// Assign maps 
-		for(let map of data.getAllMaps) {
+		for (let map of data.getAllMaps) {
 			maps.push(map)
 		}
 		// if a list is selected, shift it to front of maps
-		if(activeMap._id) {
+		if (activeMap._id) {
 			let selectedMapIndex = maps.findIndex(entry => entry._id === activeMap._id);
 			let removed = maps.splice(selectedMapIndex, 1);
 			maps.unshift(removed[0]);
@@ -49,7 +50,7 @@ const Homescreen = (props) => {
 	}
 
 
-	
+
 	// NOTE: might not need to be async
 	const reloadMap = () => {
 		if (activeMap._id) {
@@ -68,14 +69,14 @@ const Homescreen = (props) => {
 	}
 
 	const mutationOptions = {
-		refetchQueries: [{ query: GET_DB_MAPS }], 
+		refetchQueries: [{ query: GET_DB_MAPS }],
 		awaitRefetchQueries: true,
 		onCompleted: () => reloadMap()
 	}
 
-	const [AddRegion] 			= useMutation(mutations.ADD_REGION, mutationOptions);
-	const [AddMap] 				= useMutation(mutations.ADD_MAP);
-	const [DeleteMap] 			= useMutation(mutations.DELETE_MAP);
+	const [AddRegion] = useMutation(mutations.ADD_REGION, mutationOptions);
+	const [AddMap] = useMutation(mutations.ADD_MAP);
+	const [DeleteMap] = useMutation(mutations.DELETE_MAP);
 
 	const createNewMap = async (mapname) => {
 		let newMap = {
@@ -85,9 +86,9 @@ const Homescreen = (props) => {
 			regions: []
 		}
 		const { data } = await AddMap({ variables: { map: newMap }, refetchQueries: [{ query: GET_DB_MAPS }] });
-		if(data) {
+		if (data) {
 			loadMap(data.addMap);
-		} 	
+		}
 	};
 
 	const handleDeleteMap = async (_id) => {
@@ -95,9 +96,12 @@ const Homescreen = (props) => {
 		//loadMap({});
 	};
 
+	const editMap = async () => {
+
+	}
 
 	const handleSetActive = (_id) => {
-		const selectedMap= maps.find(m => m._id === _id);
+		const selectedMap = maps.find(m => m._id === _id);
 		loadMap(selectedMap);
 	};
 
@@ -122,10 +126,11 @@ const Homescreen = (props) => {
 		toggleShowUpdate(!showUpdate);
 	};
 
-	const setShowDeleteMap = () => {
+	const setShowDeleteMap = (_id) => {
 		toggleShowCreate(false);
 		toggleShowLogin(false);
 		toggleShowUpdate(false);
+		setDeleteMap(_id);
 		toggleShowDeleteMap(!showDeleteMap);
 	};
 
@@ -137,7 +142,7 @@ const Homescreen = (props) => {
 		toggleShowMapName(!showMapName);
 	};
 
-	const setShowMapEdit = () => {
+	const setShowMapEdit = (_id) => {
 		toggleShowDeleteMap(false);
 		toggleShowLogin(false);
 		toggleShowCreate(false);
@@ -147,75 +152,115 @@ const Homescreen = (props) => {
 	};
 
 	return (
-		<WLayout wLayout="header">
-			<WLHeader>
-				<WNavbar color="colored">
-					<ul>
-						<WNavItem>
-							<Logo className='logo' />
-						</WNavItem>
-					</ul>
-					<ul>
-						<NavbarOptions
-							fetchUser={props.fetchUser} 	auth={auth} 
-							setShowCreate={setShowCreate} 	setShowLogin={setShowLogin}
-							reloadMaps={refetch} 			setActiveMap={loadMap}
-							username={props.user === null? '' : props.user.firstName}
-							setShowUpdate={setShowUpdate} 
-						/>
-					</ul>
-				</WNavbar>
-			</WLHeader>
+		<BrowserRouter>
+			<WLayout wLayout="header">
+				<WLHeader>
+					<WNavbar color="colored">
+						<ul>
+							<WNavItem>
+								<Logo className='logo' />
+							</WNavItem>
+						</ul>
+						<ul>
+							<NavbarOptions
+								fetchUser={props.fetchUser} auth={auth}
+								setShowCreate={setShowCreate} setShowLogin={setShowLogin}
+								reloadMaps={refetch} setActiveMap={loadMap}
+								username={props.user === null ? '' : props.user.firstName}
+								setShowUpdate={setShowUpdate}
+							/>
+						</ul>
+					</WNavbar>
+				</WLHeader>
 
-			<WLMain>
+				<WLMain>
+					{
+						!auth ?
+							<Redirect exact from="/home" to={{ pathname: "/home/welcome" }} />
+							:
+							<Redirect exact from="/home" to={{ pathname: "/home/maps" }} />
+					}
+					<Switch>
+						<Route
+							exact path="/home/welcome"
+							name="welcome"
+							render={() =>
+								<div className="container-secondary">
+									<Welcome />
+								</div>
+							}
+						/>
+						<Route
+							exact path="/home/maps"
+							name="maps"
+							render={() =>
+								<div className="container-secondary">
+									<Maps
+										maps={maps}
+										setShowMapName={setShowMapName}
+										setShowDeleteMap={setShowDeleteMap}
+										setShowMapEdit={setShowMapEdit}
+									/>
+								</div>
+							}
+						/>
+					</Switch>
+				</WLMain>
+
 				{
-					!auth ? 
-					
-							<div className="container-secondary">
-								<Welcome/>
-							</div>
-						:
-							<div className="container-secondary">
-								<Maps
-									maps={maps}
-									setShowMapName={setShowMapName}
-									setShowDeleteMap={setShowDeleteMap}
-									setShowMapEdit={setShowMapEdit}
-								/>
-							</div>	
+					showCreate && (<CreateAccount fetchUser={props.fetchUser} setShowCreate={setShowCreate} />)
 				}
 
-			</WLMain>
+				{
+					showLogin && (<Login fetchUser={props.fetchUser} reloadMaps={refetch} setShowLogin={setShowLogin} />)
+				}
 
-			{
-				showCreate && (<CreateAccount fetchUser={props.fetchUser} setShowCreate={setShowCreate} />)
-			}
+				{
+					showUpdate && (<UpdateAccount fetchUser={props.fetchUser} setShowUpdate={setShowUpdate} user={props.user} />)
+				}
 
-			{
-				showLogin && (<Login fetchUser={props.fetchUser} reloadMaps={refetch} setShowLogin={setShowLogin} />)
-			}
+				{
+					showMapName && (<MapName createNewMap={createNewMap} setShowMapName={setShowMapName} />)
+				}
 
-			{
-				showUpdate && (<UpdateAccount fetchUser={props.fetchUser} setShowUpdate={setShowUpdate} user={props.user}/>)
-			}
+				{
+					showMapEdit && (<MapEdit editMap={editMap} setShowMapEdit={setShowMapEdit} />)
+				}
 
-			{
-				showMapName && (<MapName createNewMap={createNewMap} setShowMapName={setShowMapName}/>)
-			}
+				{
+					showDeleteMap && (<DeleteMapModal deleteMap={handleDeleteMap} setShowDeleteMap={setShowDeleteMap} deleteMapId={deleteMapId} />)
+				}
 
-			{
-				showMapEdit && (<MapEdit setShowMapEdit={setShowMapEdit}/>)
-			}		
-			
-			{
-				showDeleteMap && (<DeleteMapModal deleteMap={handleDeleteMap} setShowDeleteMap={setShowDeleteMap} />)
-			}
-			
 
-		</WLayout>
+			</WLayout>
+		</BrowserRouter>
 	);
 };
 
 export default Homescreen;
 
-//showMapEdit && (<MapEdit editMap={editMap} setShowMapEdit={setShowMapEdit}/>)
+/*
+{
+	!auth ?
+
+		<div className="container-secondary">
+			<Welcome />
+		</div>
+		:
+		<div className="container-secondary">
+			<Maps
+				maps={maps}
+				setShowMapName={setShowMapName}
+				setShowDeleteMap={setShowDeleteMap}
+				setShowMapEdit={setShowMapEdit}
+			/>
+		</div>
+}*/
+
+/*
+{
+	!auth ?
+		<Redirect exact from="/home" to={{ pathname: "/home/welcome" }} />
+		:
+		<Redirect exact from="/home" to={{ pathname: "/home/maps" }} />
+}*/

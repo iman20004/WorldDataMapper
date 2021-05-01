@@ -2,17 +2,22 @@ import React                                from 'react';
 import { LOGOUT }                           from '../../cache/mutations';
 import { useMutation, useApolloClient }     from '@apollo/client';
 import { WButton, WNavItem }                from 'wt-frontend';
+import { useHistory } from "react-router-dom";
 
 const LoggedIn = (props) => {
     const client = useApolloClient();
-	const [Logout] = useMutation(LOGOUT);
+    const [Logout] = useMutation(LOGOUT);
+    let history = useHistory();
 
     const handleLogout = async (e) => {
         Logout();
         const { data } = await props.fetchUser();
         if (data) {
             let reset = await client.resetStore();
-            if (reset) props.setActiveMap({});
+            if (reset) {
+                props.setActiveMap({});
+                history.push("/home/welcome");
+            }
         }
     };
 

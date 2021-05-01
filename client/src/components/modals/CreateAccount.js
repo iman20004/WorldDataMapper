@@ -1,6 +1,7 @@
 import React, { useState } 	from 'react';
 import { REGISTER }			from '../../cache/mutations';
 import { useMutation }    	from '@apollo/client';
+import { useHistory } from "react-router-dom";
 
 import { WModal, WMHeader, WMMain, WMFooter, WButton, WInput, WRow, WCol } from 'wt-frontend';
 
@@ -8,6 +9,7 @@ const CreateAccount = (props) => {
 	const [input, setInput] = useState({ email: '', password: '', firstName: '', lastName: '' });
 	const [loading, toggleLoading] = useState(false);
 	const [Register] = useMutation(REGISTER);
+	let history = useHistory();
 
 	
 	const updateInput = (e) => {
@@ -34,6 +36,7 @@ const CreateAccount = (props) => {
 			}
 			else {
 				props.fetchUser();
+				history.push("/home/maps");
 			}
 			props.setShowCreate(false);
 
