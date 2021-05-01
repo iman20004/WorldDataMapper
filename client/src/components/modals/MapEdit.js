@@ -16,7 +16,7 @@ const MapEdit = (props) => {
 			return;
 		}
         props.setShowMapEdit(false);
-        //props.createNewMap(name)
+        props.editMap(props.editMapId, name)
 	};
 
     return (
@@ -27,8 +27,8 @@ const MapEdit = (props) => {
 
             <WMMain>
                 <WInput 
-					className="" onBlur={updateInput} name="lastName" labelAnimation="up" 
-					barAnimation="solid" labelText="Map Name" wType="outlined" inputType="text" 
+					className="" onBlur={updateInput} name="mapName" labelText="New Name" labelAnimation="fixed"
+                    barAnimation="solid" wType="outlined" inputType="text" 
 				/>
                 <WButton className="modal-button cancel-button" onClick={() => props.setShowMapEdit(false)} wType="texted">
                     Cancel

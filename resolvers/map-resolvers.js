@@ -85,6 +85,17 @@ module.exports = {
 			if(deleted) return true;
 			else return false;
 		},
+		/** 
+		 	@param 	 {object} args - a map objectID, and the new name
+			@returns {boolean} new name on successful update, empty string on failure
+		**/
+		updateMapField: async (_, args) => {
+			const { value, _id } = args;
+			const objectId = new ObjectId(_id);
+			const updated = await Map.updateOne({_id: objectId}, {name: value});
+			if(updated) return value;
+			else return "";
+		}
 
 	}
 }

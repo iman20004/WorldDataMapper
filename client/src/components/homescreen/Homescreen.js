@@ -29,6 +29,7 @@ const Homescreen = (props) => {
 	const [showMapName, toggleShowMapName] = useState(false);
 	const [showMapEdit, toggleShowMapEdit] = useState(false);
 	const [deleteMapId, setDeleteMap] = useState('');
+	const [editMapId, setEditMap] = useState('');
 	//const [canUndo, setCanUndo] = useState(props.tps.hasTransactionToUndo());
 	//const [canRedo, setCanRedo] = useState(props.tps.hasTransactionToRedo());
 
@@ -77,6 +78,7 @@ const Homescreen = (props) => {
 	const [AddRegion] = useMutation(mutations.ADD_REGION, mutationOptions);
 	const [AddMap] = useMutation(mutations.ADD_MAP);
 	const [DeleteMap] = useMutation(mutations.DELETE_MAP);
+	const [UpdateMap] = useMutation(mutations.UPDATE_MAP_FIELD, mutationOptions);
 
 	const createNewMap = async (mapname) => {
 		let newMap = {
@@ -96,8 +98,8 @@ const Homescreen = (props) => {
 		//loadMap({});
 	};
 
-	const editMap = async () => {
-
+	const editMap = async (_id, newName) => {
+		const { data } = await UpdateMap({ variables: { _id: _id, value: newName }});
 	}
 
 	const handleSetActive = (_id) => {
@@ -148,6 +150,7 @@ const Homescreen = (props) => {
 		toggleShowCreate(false);
 		toggleShowUpdate(false);
 		toggleShowMapName(false);
+		setEditMap(_id);
 		toggleShowMapEdit(!showMapEdit);
 	};
 
@@ -224,7 +227,7 @@ const Homescreen = (props) => {
 				}
 
 				{
-					showMapEdit && (<MapEdit editMap={editMap} setShowMapEdit={setShowMapEdit} />)
+					showMapEdit && (<MapEdit editMap={editMap} setShowMapEdit={setShowMapEdit} editMapId={editMapId}/>)
 				}
 
 				{
@@ -238,29 +241,3 @@ const Homescreen = (props) => {
 };
 
 export default Homescreen;
-
-/*
-{
-	!auth ?
-
-		<div className="container-secondary">
-			<Welcome />
-		</div>
-		:
-		<div className="container-secondary">
-			<Maps
-				maps={maps}
-				setShowMapName={setShowMapName}
-				setShowDeleteMap={setShowDeleteMap}
-				setShowMapEdit={setShowMapEdit}
-			/>
-		</div>
-}*/
-
-/*
-{
-	!auth ?
-		<Redirect exact from="/home" to={{ pathname: "/home/welcome" }} />
-		:
-		<Redirect exact from="/home" to={{ pathname: "/home/maps" }} />
-}*/

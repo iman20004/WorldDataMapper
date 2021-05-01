@@ -25,6 +25,7 @@ extend type Mutation {
 	addRegion(region: RegionInput!, _id: String!, index: Int!): String
 	addMap(map: MapInput!): Map
 	deleteMap(_id: String!): Boolean
+	updateMapField(_id: String!, value: String!): String
 }
 input FieldInput {
 	_id: String

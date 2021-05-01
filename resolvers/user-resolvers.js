@@ -82,17 +82,30 @@ module.exports = {
 			return true;
 		},
 		/** 
-			@param 	 {object} args - update info
+			@param 	 {object} args - update info and id of user
 			@param 	 {object} res - response object containing the current access/refresh tokens  
 			@returns {object} the user object or an object with an error message
 		**/
 		update: async (_, args, { res }) => {	
-			const { email, password, firstName, lastName } = args;
-
-			const user = await User.findOne({email: email});
+			const { email, password, firstName, lastName, _id } = args;
+			const user = await User.findById(_id);
+			const alreadyRegistered = await User.findOne({ $and: [{email: email}, {_id: {$ne: _id}}] });
+			if(alreadyRegistered) {
+				console.log('User with that email already registered.');
+				return(new User({
+					_id: '',
+					firstName: '',
+					lastName: '',
+					email: 'already exists', 
+					password: ''}));
+			}
+			const hashed = await bcrypt.hash(password, 10);
+			const updated = await user.update({firstName: firstName,lastName: lastName, email: email, password: hashed});
+			const accessToken = tokens.generateAccessToken(user);
+			const refreshToken = tokens.generateRefreshToken(user);
 			res.cookie('refresh-token', refreshToken, { httpOnly: true , sameSite: 'None', secure: true}); 
 			res.cookie('access-token', accessToken, { httpOnly: true , sameSite: 'None', secure: true}); 
-			return user;
+			return updated;
 		}
 
 	}

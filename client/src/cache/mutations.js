@@ -30,8 +30,9 @@ export const LOGOUT = gql`
 `;
 
 export const UPDATE = gql`
-	mutation Update($email: String!, $password: String!, $firstName: String!, $lastName: String!) {
-		update(email: $email, password: $password, firstName: $firstName, lastName: $lastName) {
+	mutation Update($email: String!, $password: String!, $firstName: String!, $lastName: String!, $_id: String!) {
+		update(email: $email, password: $password, firstName: $firstName, lastName: $lastName, _id: $_id) {
+			_id
 			email
 			password
 			firstName
@@ -68,5 +69,11 @@ export const ADD_MAP = gql`
 export const DELETE_MAP = gql`
 	mutation DeleteMap($_id: String!) {
 		deleteMap(_id: $_id)
+	}
+`;
+
+export const UPDATE_MAP_FIELD = gql`
+	mutation UpdateMapField($_id: String!, $value: String!) {
+		updateMapField(_id: $_id, value: $value)
 	}
 `;

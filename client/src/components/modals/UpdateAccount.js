@@ -5,7 +5,7 @@ import { useMutation }    	from '@apollo/client';
 import { WModal, WMHeader, WMMain, WMFooter, WButton, WInput, WRow, WCol } from 'wt-frontend';
 
 const UpdateAccount = (props) => {
-	const [input, setInput] = useState({ email: '', password: '', firstName: '', lastName: '' });
+	const [input, setInput] = useState({  _id: props.user._id, email: props.user.email, password: '', firstName: props.user.firstName, lastName: props.user.lastName });
 	const [loading, toggleLoading] = useState(false);
 	const [Update] = useMutation(UPDATE);
 
@@ -17,14 +17,18 @@ const UpdateAccount = (props) => {
 	};
 
 	const handleUpdateAccount = async (e) => {
-
-		const { loading, error, data } = await Update({ variables: { ...input } });
+		if (!input.password) {
+			alert('Must enter old password to update account or Enter new password instead');
+			return;
+		}
+		const { loading, error, data } = await Update({ variables: { ...input} });
 		if (loading) { toggleLoading(true) };
 		if (error) { return `Error: ${error.message}` };
 		if (data) {
+			console.log("achi baat hay")
 			console.log(data)
 			toggleLoading(false);
-			if(data.register.email === 'already exists') {
+			if(data.update.email === 'already exists') {
 				alert('User with that email already registered');
 			}
 			else {
