@@ -1,20 +1,21 @@
-import Logo from '../navbar/Logo';
-import Login from '../modals/Login';
-import UpdateAccount from '../modals/UpdateAccount';
-import CreateAccount from '../modals/CreateAccount';
-import DeleteMapModal from '../modals/DeleteMapModal';
-import MapName from '../modals/MapName';
-import MapEdit from '../modals/MapEdit';
-import Maps from '../map/Maps';
-import Welcome from '../Welcome';
-import NavbarOptions from '../navbar/NavbarOptions';
-import * as mutations from '../../cache/mutations';
-import { GET_DB_MAPS } from '../../cache/queries';
-import React, { useState } from 'react';
-import { useMutation, useQuery } from '@apollo/client';
-import { WNavbar, WSidebar, WNavItem } from 'wt-frontend';
-import { WLayout, WLHeader, WLMain } from 'wt-frontend';
-import { BrowserRouter, Switch, Route, Redirect } from 'react-router-dom';
+import Logo 										from '../navbar/Logo';
+import Login 										from '../modals/Login';
+import UpdateAccount 								from '../modals/UpdateAccount';
+import CreateAccount 								from '../modals/CreateAccount';
+import DeleteMapModal 								from '../modals/DeleteMapModal';
+import MapName 										from '../modals/MapName';
+import MapEdit 										from '../modals/MapEdit';
+import Maps 										from '../map/Maps';
+import Region 										from '../region/Region';
+import Welcome 										from '../Welcome';
+import NavbarOptions 								from '../navbar/NavbarOptions';
+import * as mutations 								from '../../cache/mutations';
+import { GET_DB_MAPS } 								from '../../cache/queries';
+import React, { useState } 							from 'react';
+import { useMutation, useQuery } 					from '@apollo/client';
+import { WNavbar, WSidebar, WNavItem } 				from 'wt-frontend';
+import { WLayout, WLHeader, WLMain } 				from 'wt-frontend';
+import { BrowserRouter, Switch, Route, Redirect } 	from 'react-router-dom';
 
 
 const Homescreen = (props) => {
@@ -57,7 +58,7 @@ const Homescreen = (props) => {
 		if (activeMap._id) {
 			let tempID = activeMap._id;
 			let map = maps.find(map => map._id === tempID);
-			setActiveMap(map);
+			//setActiveMap(map);
 		}
 	}
 
@@ -99,7 +100,7 @@ const Homescreen = (props) => {
 	};
 
 	const editMap = async (_id, newName) => {
-		const { data } = await UpdateMap({ variables: { _id: _id, value: newName }});
+		const { data } = await UpdateMap({ variables: { _id: _id, value: newName } });
 	}
 
 	const handleSetActive = (_id) => {
@@ -207,6 +208,17 @@ const Homescreen = (props) => {
 								</div>
 							}
 						/>
+						<Route
+							path="/home/maps/"
+							name="region"
+							render={() =>
+								<div className="container-secondary">
+									<Region
+
+									/>
+								</div>
+							}
+						/>
 					</Switch>
 				</WLMain>
 
@@ -227,7 +239,7 @@ const Homescreen = (props) => {
 				}
 
 				{
-					showMapEdit && (<MapEdit editMap={editMap} setShowMapEdit={setShowMapEdit} editMapId={editMapId}/>)
+					showMapEdit && (<MapEdit editMap={editMap} setShowMapEdit={setShowMapEdit} editMapId={editMapId} />)
 				}
 
 				{

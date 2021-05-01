@@ -32,14 +32,14 @@ module.exports = {
 	},
 	Mutation: {
 		/** 
-		 	@param 	 {object} args - a todolist id and an empty item object
+		 	@param 	 {object} args - a map id, region id and an empty region object
 			@returns {string} the objectID of the item or an error message
 		**/
 		addRegion: async(_, args) => {
 			const { _id, region, index } = args;
-			const listId = new ObjectId(_id);
+			const mapId = new ObjectId(_id);
 			const objectId = new ObjectId();
-			const found = await Map.findOne({_id: listId});
+			const found = await Map.findOne({_id: mapId});
 			if(!found) return ('Map not found');
 			if(region._id === '') region._id = objectId;
 			let listRegions = found.regions;

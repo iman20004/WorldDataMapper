@@ -137,7 +137,13 @@ html, body {
     background-color: #990000;
 }
 
+.map-name-label:hover {
+    color: #990000;
+}
 
+.table {
+    background-color: #888888;
+}
 
 .table-entries {
     scrollbar-width: thin;
@@ -176,7 +182,12 @@ html, body {
 }
 
 .table-header {
-    border-bottom: 2px $text-color dotted;
+    background-color: #990000 ;
+}
+
+.table-header-intro {
+    background-color: #181818 ;
+    color: white;
 }
 
 .table-header-section {
