@@ -9,7 +9,7 @@ const DeleteMapModal = (props) => {
     }
 
     return (
-        <WModal className="delete-modal" cover="true" visible={props.setShowDeleteMap}>
+        <WModal className="map-modal" cover="true" visible={props.setShowDeleteMap}>
             <WMHeader  className="modal-header" onClose={() => props.setShowDeleteMap(false)}>
                 Delete Map And Its Regions?
 			</WMHeader >

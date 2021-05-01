@@ -20,16 +20,17 @@ const MapEdit = (props) => {
 	};
 
     return (
-        <WModal className="delete-modal" cover="true" visible={props.setShowMapEdit}>
+        <WModal className="map-modal" cover="true" visible={props.setShowMapEdit}>
             <WMHeader  className="modal-header" onClose={() => props.setShowMapEdit(false)}>
                 Rename Map?
 			</WMHeader >
 
             <WMMain>
                 <WInput 
-					className="" onBlur={updateInput} name="mapName" labelText="New Name" labelAnimation="fixed"
+					className="modal-input" onBlur={updateInput} name="mapName" labelText="New Name" labelAnimation="fixed"
                     barAnimation="solid" wType="outlined" inputType="text" 
 				/>
+                <div className="modal-spacer">&nbsp;</div>
                 <WButton className="modal-button cancel-button" onClick={() => props.setShowMapEdit(false)} wType="texted">
                     Cancel
 				</WButton>

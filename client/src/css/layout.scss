@@ -108,7 +108,7 @@ html {
 .globe-maps {
     display: block;
     margin: auto;
-    width: 380px;
+    width: 350px;
 }
 
 
@@ -167,11 +167,11 @@ html {
 }
 
 .login-modal {
-    width: 350px;
+    width: 500px;
 }
 
 .signup-modal {
-    width: 375px;
+    width: 500px;
 }
 
 .modal-col-gap{
@@ -193,19 +193,20 @@ html {
 }
 
 .modal-error {
-    height: 24px;
+    height: 50px;
     align-items: center;
     display: flex;
 }
 
-.delete-modal {
-    width: fit-content;
-}
-
 .col-spacer {
-    width: 24px;
+    width: 250px;
     display: inline-block;
 }
+
+
+
+
+
 
 .list-item-edit, .table-input, .table-select {
     width: 100%;

@@ -1,6 +1,6 @@
 @use 'node_modules/wt-frontend/build/global/theme' with (
     $primary-color: #ffc800,
-    $background-color: #242526,//#d9d6cc,
+    $background-color: #181818,//#d9d6cc,
     $navbar-background-color: black,
     $text-color: #e9edf0,
     $modal-background: rgb(64, 69, 78),
@@ -128,6 +128,16 @@ html, body {
     background-color:#FFDDCC ;
     color: #444444;
 }
+
+.map-modal {
+    background-color: black;
+}
+
+.modal-header {
+    background-color: #990000;
+}
+
+
 
 .table-entries {
     scrollbar-width: thin;
