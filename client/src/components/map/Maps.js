@@ -15,6 +15,7 @@ return (
                 <MapContents
                     maps={props.maps}
                     setShowDeleteMap={props.setShowDeleteMap}
+                    setShowMapEdit={props.setShowMapEdit}
                     //setDeleteMap={props.setDeleteMap}
                 />
                 <div className="map-body-new">

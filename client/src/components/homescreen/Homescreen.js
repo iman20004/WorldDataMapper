@@ -4,6 +4,7 @@ import UpdateAccount					from '../modals/UpdateAccount';
 import CreateAccount 					from '../modals/CreateAccount';
 import DeleteMapModal					from '../modals/DeleteMapModal';
 import MapName							from '../modals/MapName';
+import MapEdit							from '../modals/MapEdit';
 import Maps 							from '../map/Maps';
 import Welcome 							from '../Welcome';
 import NavbarOptions 					from '../navbar/NavbarOptions';
@@ -25,6 +26,7 @@ const Homescreen = (props) => {
 	const [showDeleteMap, toggleShowDeleteMap] 	= useState(false);
 	const [showUpdate, toggleShowUpdate] 		= useState(false);
 	const [showMapName, toggleShowMapName] 		= useState(false);
+	const [showMapEdit, toggleShowMapEdit] 		= useState(false);
 	//const [deleteMapId, setDeleteMap] 			= useState('');
 	//const [canUndo, setCanUndo] = useState(props.tps.hasTransactionToUndo());
 	//const [canRedo, setCanRedo] = useState(props.tps.hasTransactionToRedo());
@@ -135,6 +137,15 @@ const Homescreen = (props) => {
 		toggleShowMapName(!showMapName);
 	};
 
+	const setShowMapEdit = () => {
+		toggleShowDeleteMap(false);
+		toggleShowLogin(false);
+		toggleShowCreate(false);
+		toggleShowUpdate(false);
+		toggleShowMapName(false);
+		toggleShowMapEdit(!showMapEdit);
+	};
+
 	return (
 		<WLayout wLayout="header">
 			<WLHeader>
@@ -167,10 +178,9 @@ const Homescreen = (props) => {
 							<div className="container-secondary">
 								<Maps
 									maps={maps}
-									//createNewMap={createNewMap}
 									setShowMapName={setShowMapName}
 									setShowDeleteMap={setShowDeleteMap}
-									//setDeleteMap={setDeleteMap}
+									setShowMapEdit={setShowMapEdit}
 								/>
 							</div>	
 				}
@@ -191,6 +201,10 @@ const Homescreen = (props) => {
 
 			{
 				showMapName && (<MapName createNewMap={createNewMap} setShowMapName={setShowMapName}/>)
+			}
+
+			{
+				showMapEdit && (<MapEdit setShowMapEdit={setShowMapEdit}/>)
 			}		
 			
 			{
@@ -204,3 +218,4 @@ const Homescreen = (props) => {
 
 export default Homescreen;
 
+//showMapEdit && (<MapEdit editMap={editMap} setShowMapEdit={setShowMapEdit}/>)

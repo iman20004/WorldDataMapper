@@ -11,6 +11,7 @@ const MapContents = (props) => {
                     <MapEntry
                         data={entry} key={entry._id}
                         setShowDeleteMap={props.setShowDeleteMap}
+                        setShowMapEdit={props.setShowMapEdit}
                         //setDeleteMap={props.setDeleteMap}
                     />
                 ))

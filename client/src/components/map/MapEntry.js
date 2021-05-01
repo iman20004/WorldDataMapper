@@ -11,6 +11,9 @@ const MapEntry = (props) => {
             <WButton className='map-delete-button' onClick={props.setShowDeleteMap} clickAnimation="ripple-light" hoverAnimation="darken">
                 <i className="material-icons">delete</i>
             </WButton>
+            <WButton className='map-edit-button' onClick={props.setShowMapEdit} clickAnimation="ripple-light" hoverAnimation="darken">
+                <i className="material-icons">edit</i>
+            </WButton>
           
         </div>
     );
