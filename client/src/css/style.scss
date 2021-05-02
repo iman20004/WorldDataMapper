@@ -79,6 +79,10 @@ html, body {
     font-weight: bold;
 } 
 
+.logo-hover:hover {
+    color: #FF8000;
+}
+
 .modal-error {
     color: $primary-color;
     font-size: 14px;
@@ -190,6 +194,23 @@ html, body {
     color: white;
 }
 
+.viewer-header {
+    display: flex;
+    flex-direction: row;
+}
+
+#add-button {
+    color: #00CC44;
+}
+
+.spreadsheet-header {
+    color: white;
+    font-size: 20px;
+    text-align: center;
+    font-weight: bold;
+    margin-bottom: 40px;
+}
+
 .table-header-section {
     font-size: 1.375rem;
     font-weight: bold;
@@ -201,6 +222,7 @@ html, body {
     cursor: pointer;
     background-color: var(--deep-blue-lighter);
 }
+
 
 
 .table-select {

@@ -7,6 +7,7 @@ import MapName 										from '../modals/MapName';
 import MapEdit 										from '../modals/MapEdit';
 import Maps 										from '../map/Maps';
 import Region 										from '../region/Region';
+import RegionViewer 								from '../region/RegionViewer';
 import Welcome 										from '../Welcome';
 import NavbarOptions 								from '../navbar/NavbarOptions';
 import * as mutations 								from '../../cache/mutations';
@@ -49,6 +50,10 @@ const Homescreen = (props) => {
 		console.log(activeRegion)
 	}
 
+	console.log("hello 1111")
+	console.log(regions.length)
+	console.log("hello 2222")
+	console.log(regions.length)
 
 
 	// NOTE: might not need to be async
@@ -61,7 +66,7 @@ const Homescreen = (props) => {
 	}
 
 	const loadMap = (map) => {
-		props.tps.clearAllTransactions();
+		//props.tps.clearAllTransactions();
 		//setCanUndo(props.tps.hasTransactionToUndo());
 		//setCanRedo(props.tps.hasTransactionToRedo());
 		setActiveRegion(map);
@@ -181,14 +186,14 @@ const Homescreen = (props) => {
 					<WNavbar color="colored">
 						<ul>
 							<WNavItem>
-								<Logo className='logo' />
+								<Logo className='logo' handleSetActiveRegion={handleSetActiveRegion} auth={auth}/>
 							</WNavItem>
 						</ul>
 						<ul>
 							<NavbarOptions
 								fetchUser={props.fetchUser} auth={auth}
 								setShowCreate={setShowCreate} setShowLogin={setShowLogin}
-								reload={refetch} setActiveRegion={loadMap}
+								setActiveRegion={loadMap}
 								username={props.user === null ? '' : props.user.firstName}
 								setShowUpdate={setShowUpdate}
 							/>
@@ -239,6 +244,17 @@ const Homescreen = (props) => {
 										createNewRegion={createNewRegion}
 										activeRegion={activeRegion}
 										subRegions={subRegions}
+										handleSetActiveRegion={handleSetActiveRegion}
+									/>
+								</div>
+							}
+						/>
+						<Route
+							exact path={"/home/regionviewer/"+activeRegion._id}
+							name="regionViewer"
+							render={() =>
+								<div className="container-secondary">
+									<RegionViewer
 										handleSetActiveRegion={handleSetActiveRegion}
 									/>
 								</div>

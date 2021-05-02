@@ -1,40 +1,31 @@
 import React from 'react';
 import { WButton, WRow, WCol } from 'wt-frontend';
-import {useParams, useHistory} from "react-router-dom";
 
 const RegionHeader = (props) => {
-    const { id } = useParams();
-    let history = useHistory();
     
     const handleAddRegion = async (e) => {
         props.createNewRegion(props.activeRegion._id)
     };
     
-    const handleHome = async (e) => {
-        props.handleSetActiveRegion('');
-        history.push("/home/maps")
-	};
-
-
     return (
         <>
             <WRow className='table-header-intro'>
                 <WCol size="4">
-                    <WButton wType="texted" onClick={handleAddRegion} >
-                        <i className="material-icons">add</i>
+                    <WButton className='table-header-button ' id='add-button' wType="texted" onClick={handleAddRegion} >
+                        <i className="material-icons">add_circle</i>
                     </WButton>
-                    <WButton wType="texted" >
-                        <i className="material-icons">undo</i>
+                    <WButton className='table-header-button ' wType="texted" >
+                        <i className="material-icons ">undo</i>
                     </WButton>
-                    <WButton wType="texted" >
-                        <i className="material-icons">redo</i>
+                    <WButton className='table-header-button ' wType="texted" >
+                        <i className="material-icons ">redo</i>
                     </WButton>
                 </WCol>
                 <WCol size="4">
-                    <div>Region Name: {props.activeRegion.name}</div>
+                    <div className='spreadsheet-header'>Region Name: {props.activeRegion.name}</div>
                 </WCol>
                 <WCol size="4">
-                    <div onClick={handleHome}>Home</div>
+                    <div></div>
                 </WCol>
             </WRow>
             <WRow className="table-header">
