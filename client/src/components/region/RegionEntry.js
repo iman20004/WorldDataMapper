@@ -22,8 +22,9 @@ const RegionEntry = (props) => {
     };
 
     const handleEditLand = async (e) => {
-        history.push("/home/regionviewer/"+props.data._id);
         props.handleSetActiveRegion(props.data);
+        history.push("/home/regionviewer/"+props.data._id);
+        console.log(props.data.name)
     };
 
     return (
@@ -59,9 +60,9 @@ const RegionEntry = (props) => {
                     </div>
                 }
             </WCol>
-            <WCol size="3">
+            <WCol size="3" onClick={handleEditLand}>
                 {
-                    <div className="table-text" onClick={handleEditLand}>
+                    <div className="table-text" >
                         {data.landmarks}
                     </div>
                 }
