@@ -10,7 +10,7 @@ html {
 .container-primary {
     width: 100%;
     height: 100%;
-    padding: 0 24px;
+    //padding: 0 10px;
 }
 
 .container-secondary {
@@ -42,10 +42,17 @@ html {
     overflow: hidden;
     text-overflow: ellipsis;
     font-size: 1.125rem;
-    padding-bottom: 12px;
     padding-top: 12px;
-    padding-left: 12px;
+    padding-bottom: 12px;
+    //padding-top: 12px;
+    //padding-left: 12px;
+    //margin-top: 12px;
+    //margin-bottom: 12px;
     cursor: pointer;
+    text-align: center;
+    width: 100%;
+    font-size: 20px;
+    font-weight: 500;
 }
 
 .table {
@@ -131,6 +138,14 @@ html {
     color: orange
 }
 
+.region-first {
+    display: flex;
+    flex-direction: row;
+    align-items: center;
+    padding-left: 10px;
+
+}
+
 .landmark-box {
     //align-self: center;
     //justify-self: center;
@@ -194,6 +209,12 @@ html {
     width: 400px;
 }
 
+.flag-spreadsheet {
+    display: block;
+    width: 30px;
+    margin-left: 80px;
+}
+
 .globe-maps {
     display: block;
     margin: auto;
@@ -221,6 +242,7 @@ html {
 .table-header {
     width: 100%;
     box-sizing: border-box;
+    padding-left:10px
 }
 
 .table-header-intro {
@@ -234,7 +256,13 @@ html {
 .table-header-section {
     width: 100%;
     height: 100%;
-    padding-left: 70px;
+    padding-left: 50px;
+}
+
+.table-header-land {
+    width: 100%;
+    height: 100%;
+    padding-left: 130px;
 }
 
 .table-header-button {
@@ -244,9 +272,12 @@ html {
 }
 
 .table-header-spacer {
-    width: 20px;
+    width: 10px;
 }
 
+.table-header-name {
+    margin-left:10px;
+}
 .table-header-button-disabled{
     padding: 0;
     margin-left: 12px;

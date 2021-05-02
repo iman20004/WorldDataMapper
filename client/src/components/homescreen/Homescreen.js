@@ -28,6 +28,8 @@ const Homescreen = (props) => {
 
 
 	const [activeRegion, setActiveRegion] = useState({});
+	const [route, setRoute] = useState([]);
+
 	//const [activeMap, setActiveMap] = useState({});
 	
 	const [showLogin, toggleShowLogin] = useState(false);
@@ -80,6 +82,11 @@ const Homescreen = (props) => {
 		refetchQueries: [{ query: GET_DB_REGIONS }],
 		awaitRefetchQueries: true,
 		onCompleted: () => reload()
+	}
+
+	const handleSetRoute = (region) => {
+		setRoute.push(region.id);
+		setRoute.push(region.name);
 	}
 
 	const [AddRegion] = useMutation(mutations.ADD_REGION);

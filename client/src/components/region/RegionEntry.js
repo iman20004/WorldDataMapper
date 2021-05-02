@@ -1,6 +1,7 @@
 import React, { useState } from 'react';
 import { WButton, WInput, WRow, WCol } from 'wt-frontend';
-import { useHistory, useParams} from "react-router-dom";
+import { useHistory, useParams } from "react-router-dom";
+import flagImg from '../Images/flag.png';
 
 const RegionEntry = (props) => {
     const { data } = props;
@@ -18,21 +19,24 @@ const RegionEntry = (props) => {
 
     const handleOpen = async (e) => {
         props.handleSetActiveRegion(props.data);
-        history.push("/home/"+mapId);
+        history.push("/home/" + mapId);
     };
 
     const handleEditLand = async (e) => {
         props.handleSetActiveRegion(props.data);
-        history.push("/home/regionviewer/"+props.data._id);
+        history.push("/home/regionviewer/" + props.data._id);
         console.log(props.data.name)
     };
 
     return (
         <WRow className='table-entry'>
-            <WCol size="3">
+            <WCol size="2">
                 {
-                    <div className="table-text" onClick={handleOpen}>
-                        {data.name}
+                    <div className='region-first'>
+                        <i className="material-icons close-landmark">close</i>
+                        <div className="table-text" onClick={handleOpen}>
+                            {data.name}
+                        </div>
                     </div>
                 }
             </WCol>
@@ -56,17 +60,17 @@ const RegionEntry = (props) => {
             <WCol size="2">
                 {
                     <div className="table-text">
-                        flag
+                        <img src={flagImg} className="flag-spreadsheet" />
                     </div>
                 }
             </WCol>
-            <WCol size="3" onClick={handleEditLand}>
+            <WCol size="4" onClick={handleEditLand}>
                 {
                     <div className="table-text" >
                         {data.landmarks}
                     </div>
                 }
-                
+
             </WCol>
         </WRow>
     );

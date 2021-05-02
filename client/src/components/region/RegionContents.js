@@ -25,15 +25,3 @@ const RegionContents = (props) => {
 };
 
 export default RegionContents;
-/*
-return (
-    <div className=' table-entries container-primary'>
-        {
-            regions.map((entry) => (
-                <RegionEntry
-                    data={entry}
-                />
-            ))
-        }
-    </div>
-);*/

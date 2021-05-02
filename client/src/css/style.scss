@@ -216,10 +216,16 @@ html, body {
     color: $text-color;
     transition: 0.1s ease-in-out;
     height: 46px;
+    justify-content: center;
 }
 
 .table-entry:hover {
     background-color: var(--warm-white-transparent);
+}
+
+.table-text:hover {
+    color: black;
+    background-color: white;
 }
 
 .table-header-button {
@@ -264,7 +270,19 @@ html, body {
     color: $text-color;
 }
 
+.table-header-land {
+    font-size: 1.375rem;
+    font-weight: bold;
+    color: $text-color;
+}
+
 .table-header-section:hover {
+    transition: 0.1s ease-in-out;
+    cursor: pointer;
+    background-color: var(--deep-blue-lighter);
+}
+
+.table-header-land:hover {
     transition: 0.1s ease-in-out;
     cursor: pointer;
     background-color: var(--deep-blue-lighter);

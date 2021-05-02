@@ -31,7 +31,7 @@ const RegionHeader = (props) => {
             <WRow className="table-header">
                 <WCol size="2">
                     <WButton className='table-header-section' wType="texted" >
-                        <div>Name</div>
+                        <div className='table-header-name' >Name</div>
                         <div className='table-header-spacer'></div>
                         <i className="material-icons">arrow_downward</i>
                     </WButton>
@@ -62,7 +62,7 @@ const RegionHeader = (props) => {
                 </WCol>
 
                 <WCol size="4">
-                    <WButton className='table-header-section' wType="texted" >
+                    <WButton className='table-header-land' wType="texted" >
                         <div>Landmarks</div>
                         <div className='table-header-spacer'></div>
                         <i className="material-icons">arrow_downward</i>
