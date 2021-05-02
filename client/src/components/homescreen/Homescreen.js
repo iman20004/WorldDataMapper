@@ -50,12 +50,6 @@ const Homescreen = (props) => {
 		console.log(activeRegion)
 	}
 
-	console.log("hello 1111")
-	console.log(regions.length)
-	console.log("hello 2222")
-	console.log(regions.length)
-
-
 	// NOTE: might not need to be async
 	const reload = async () => {
 		if (activeRegion._id) {
@@ -130,6 +124,8 @@ const Homescreen = (props) => {
 		let subreg = regions.filter(region => region.parentId === reg._id);
 		setSubRegions(subreg)
 		setActiveRegion(reg);
+		console.log("heelo")
+		console.log(activeRegion)
 	};
 
 	const setShowLogin = () => {
@@ -239,7 +235,7 @@ const Homescreen = (props) => {
 							exact path={"/home/"+activeRegion._id}
 							name="region"
 							render={() =>
-								<div className="container-secondary">
+								<div className="container-secondary1">
 									<Region
 										createNewRegion={createNewRegion}
 										activeRegion={activeRegion}
@@ -255,6 +251,7 @@ const Homescreen = (props) => {
 							render={() =>
 								<div className="container-secondary">
 									<RegionViewer
+										activeRegion={activeRegion}
 										handleSetActiveRegion={handleSetActiveRegion}
 									/>
 								</div>

@@ -21,32 +21,32 @@ const RegionViewer = (props) => {
                         <div className='info-rows'>
                             <div>Region Name: </div>
                             <div className='info-spacer'></div>
-                            <div>North America</div>
+                            <div>{props.activeRegion.name}</div>
                         </div>
                         <div className='info-col-spacer'></div>
                         <div className='info-rows'> 
                             <div>Parent Region: </div>
                             <div className='info-spacer'></div>
-                            <div>North America</div>
+                            <div>Put parent name here</div>
                             <i className="material-icons edit-button">edit</i>
                         </div>
                         <div className='info-col-spacer'></div>
                         <div className='info-rows'>
                             <div>Region Capital: </div>
                             <div className='info-spacer'></div>
-                            <div>North America</div>
+                            <div>{props.activeRegion.capital}</div>
                         </div>
                         <div className='info-col-spacer'></div>
                         <div className='info-rows'>
                             <div>Region Leader: </div>
                             <div className='info-spacer'></div>
-                            <div>North America</div>
+                            <div>{props.activeRegion.leader}</div>
                         </div>
                         <div className='info-col-spacer'></div>
                         <div className='info-rows'>
                             <div># of Subregion: </div>
                             <div className='info-spacer'></div>
-                            <div>50</div>
+                            <div>Get num children</div>
                         </div>
                     </div>
 
@@ -56,7 +56,7 @@ const RegionViewer = (props) => {
                     <div className='info-col-spacer'></div>
                     <div className='landmark-box'></div>
                     <div className='add-box'>
-                        <i className="material-icons ">add</i>
+                        <i className="material-icons viewer-add">add</i>
                         <div className='new-landmark-box'>New Landmark Here</div>
                     </div>
                 </div>

@@ -133,6 +133,20 @@ html, body {
     color: #444444;
 }
 
+.edit-button:hover {
+    color: red;
+    cursor: pointer;
+}
+
+.viewer-add {
+    color: green;
+}
+
+.viewer-add:hover {
+    color: red;
+    cursor: pointer;
+}
+
 .map-modal {
     background-color: black;
 }
@@ -146,7 +160,7 @@ html, body {
 }
 
 .table {
-    background-color: #888888;
+    background-color: #838383;
 }
 
 .table-entries {
@@ -235,7 +249,7 @@ html, body {
 
 .info-viewer {
     font-weight: bold;
-    font-size: 20px;
+    font-size: 18px;
     padding-left: 5px;
     margin-top: 35px;
 }
