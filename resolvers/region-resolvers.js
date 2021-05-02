@@ -14,7 +14,7 @@ module.exports = {
 		getAllRegions: async (_, __, { req }) => {
 			const _id = new ObjectId(req.userId);
 			if (!_id) { return ([]) };
-			const regions = await Region.find({ owner: _id });
+			const regions = await Region.find({ owner: _id }).sort({updatedAt: -1});;
 			if (regions) return (regions);
 
 		},

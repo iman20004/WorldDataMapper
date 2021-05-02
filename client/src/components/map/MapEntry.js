@@ -8,6 +8,7 @@ const MapEntry = (props) => {
 
     const handleOpen = async (e) => {
         props.handleSetActiveRegion(props.data)
+        //props.handleSetActiveMap(props.data)
         history.push("/home/"+mapId)
     };
 

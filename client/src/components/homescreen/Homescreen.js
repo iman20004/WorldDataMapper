@@ -24,8 +24,12 @@ const Homescreen = (props) => {
 	const auth = props.user === null ? false : true;
 	let regions = [];
 	let maps = [];
+	let childs = [];
+
+
 	const [activeRegion, setActiveRegion] = useState({});
-	const [subRegions, setSubRegions] = useState({});
+	//const [activeMap, setActiveMap] = useState({});
+	
 	const [showLogin, toggleShowLogin] = useState(false);
 	const [showCreate, toggleShowCreate] = useState(false);
 	const [showDeleteMap, toggleShowDeleteMap] = useState(false);
@@ -47,7 +51,11 @@ const Homescreen = (props) => {
 			regions.push(region)
 		}
 		maps = regions.filter(region => region.root === true);
-		console.log(activeRegion)
+
+		// Assign subregions
+		if (activeRegion._id) {
+			childs = regions.filter(region => region.parentId === activeRegion._id);
+		}
 	}
 
 	// NOTE: might not need to be async
@@ -124,12 +132,13 @@ const Homescreen = (props) => {
 	}
 
 	const handleSetActiveRegion = (reg) => {
-		let subreg = regions.filter(region => region.parentId === reg._id);
-		setSubRegions(subreg)
 		setActiveRegion(reg);
-		console.log("heelo")
-		console.log(activeRegion)
 	};
+
+	/*
+	const handleSetActiveMap = (map) => {
+		setActiveMap(map);
+	};*/
 
 	const setShowLogin = () => {
 		toggleShowDeleteMap(false);
@@ -185,7 +194,11 @@ const Homescreen = (props) => {
 					<WNavbar color="colored">
 						<ul>
 							<WNavItem>
-								<Logo className='logo' handleSetActiveRegion={handleSetActiveRegion} auth={auth} />
+								<Logo className='logo' 
+								handleSetActiveRegion={handleSetActiveRegion} 
+								auth={auth}  
+								//handleSetActiveMap={handleSetActiveMap}
+								/> 
 							</WNavItem>
 						</ul>
 						<ul>
@@ -193,6 +206,7 @@ const Homescreen = (props) => {
 								fetchUser={props.fetchUser} auth={auth}
 								setShowCreate={setShowCreate} setShowLogin={setShowLogin}
 								setActiveRegion={loadMap}
+								//handleSetActiveMap={handleSetActiveMap}
 								username={props.user === null ? '' : props.user.firstName}
 								setShowUpdate={setShowUpdate}
 							/>
@@ -230,6 +244,7 @@ const Homescreen = (props) => {
 										setShowDeleteMap={setShowDeleteMap}
 										setShowMapEdit={setShowMapEdit}
 										handleSetActiveRegion={handleSetActiveRegion}
+										//handleSetActiveMap={handleSetActiveMap}
 									/>
 								</div>
 							}
@@ -242,7 +257,7 @@ const Homescreen = (props) => {
 									<Region
 										createNewRegion={createNewRegion}
 										activeRegion={activeRegion}
-										subRegions={subRegions}
+										subRegions={childs}
 										handleSetActiveRegion={handleSetActiveRegion}
 									/>
 								</div>

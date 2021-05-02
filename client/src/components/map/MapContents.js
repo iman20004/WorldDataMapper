@@ -13,6 +13,7 @@ const MapContents = (props) => {
                         setShowDeleteMap={props.setShowDeleteMap}
                         setShowMapEdit={props.setShowMapEdit}
                         handleSetActiveRegion={props.handleSetActiveRegion}
+                        //handleSetActiveMap={props.handleSetActiveMap}
                     />
                 ))
             }

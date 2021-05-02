@@ -2,13 +2,20 @@ import React from 'react';
 import { WButton, WRow, WCol } from 'wt-frontend';
 import flagImg from '../Images/flag.png';
 import Landmarks from './Landmarks';
+import { useHistory } from "react-router-dom";
 
 const RegionViewer = (props) => {
-    console.log(props.activeRegion.childrenIds)
+    let history = useHistory();
+
     let numChildren = 0
     if (props.activeRegion.childrenIds !== null) {
         numChildren = props.activeRegion.childrenIds.length;
     }
+
+    const navigateBack = async (e) => {
+        props.handleSetActiveRegion(props.activeRegion.parentId);
+        history.push("/home/"+props.activeRegion.parentId);
+    };
 
     return (
         <div className='region-table ' >
@@ -33,7 +40,7 @@ const RegionViewer = (props) => {
                         <div className='info-rows'>
                             <div>Parent Region: </div>
                             <div className='info-spacer'></div>
-                            <div>Put parent name here</div>
+                            <div  className='viewer-parent' onClick={navigateBack}>Put parent name here</div>
                             <i className="material-icons edit-button">edit</i>
                         </div>
                         <div className='info-col-spacer'></div>
