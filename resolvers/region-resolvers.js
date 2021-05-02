@@ -33,12 +33,17 @@ module.exports = {
 			@param 	 {object} args - a todolist id
 			@returns {object} a todolist on success and an empty object on failure
 		**/
-		getAllRootRegions: async (_, args) => {
+		getAllRootRegions: async (_, __, { req }) => {
 			const _id = new ObjectId(req.userId);
 			if (!_id) { return ([]) };
-			const regions = await Region.find({ owner: _id }, { root: true });
+			const regions = await Region.find({
+				$and: [
+				  { owner: _id},
+				  { root: true}
+				]
+			  });
 			if (regions) return (regions);
-		},
+		}
 
 	},
 	Mutation: {
@@ -63,7 +68,6 @@ module.exports = {
 			});
 			const updated = await newRegion.save();
 			if (updated) {
-				console.log(newRegion)
 				return newRegion;
 			}
 		},

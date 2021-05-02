@@ -29,7 +29,7 @@ const Login = (props) => {
 		}
 		if (data) {
 			props.fetchUser();
-			props.reloadMaps();
+			props.reload();
 			toggleLoading(false)
 			props.setShowLogin(false)
 			history.push("/home/maps");

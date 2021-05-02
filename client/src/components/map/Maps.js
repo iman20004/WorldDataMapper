@@ -16,7 +16,7 @@ return (
                     maps={props.maps}
                     setShowDeleteMap={props.setShowDeleteMap}
                     setShowMapEdit={props.setShowMapEdit}
-                    //setDeleteMap={props.setDeleteMap}
+                    handleSetActiveRegion={props.handleSetActiveRegion}
                 />
                 <div className="map-body-new">
                     <img src={globeImg} className="globe-maps"/>

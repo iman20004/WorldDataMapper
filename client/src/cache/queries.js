@@ -26,17 +26,5 @@ export const GET_DB_REGIONS = gql`
 	}
 `;
 
-export const GET_DB_MAPS = gql`
-	query GetDBMaps {
-		getAllRootRegions {
-			_id
-			owner
-			name
-			capital
-			leader
-			landmarks
-			root
-			parentId
-		}
-	}
-`;
+
+

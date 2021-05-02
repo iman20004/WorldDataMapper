@@ -1,15 +1,26 @@
 import React from 'react';
 import { WButton, WRow, WCol } from 'wt-frontend';
+import {useParams, useHistory} from "react-router-dom";
 
 const RegionHeader = (props) => {
-    const clickDisabled = () => { };
-    const buttonStyle = props.disabled ? ' table-header-button-disabled ' : 'table-header-button ';
+    const { id } = useParams();
+    let history = useHistory();
+    
+    const handleAddRegion = async (e) => {
+        props.createNewRegion(props.activeRegion._id)
+    };
+    
+    const handleHome = async (e) => {
+        props.handleSetActiveRegion('');
+        history.push("/home/maps")
+	};
+
 
     return (
         <>
             <WRow className='table-header-intro'>
                 <WCol size="4">
-                    <WButton wType="texted" >
+                    <WButton wType="texted" onClick={handleAddRegion} >
                         <i className="material-icons">add</i>
                     </WButton>
                     <WButton wType="texted" >
@@ -20,7 +31,10 @@ const RegionHeader = (props) => {
                     </WButton>
                 </WCol>
                 <WCol size="4">
-                    <div>Region Name: </div>
+                    <div>Region Name: {props.activeRegion.name}</div>
+                </WCol>
+                <WCol size="4">
+                    <div onClick={handleHome}>Home</div>
                 </WCol>
             </WRow>
             <WRow className="table-header">

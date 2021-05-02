@@ -10,8 +10,7 @@ import Region 										from '../region/Region';
 import Welcome 										from '../Welcome';
 import NavbarOptions 								from '../navbar/NavbarOptions';
 import * as mutations 								from '../../cache/mutations';
-import { GET_DB_REGIONS } 							from '../../cache/queries';
-import { GET_DB_MAPS } 								from '../../cache/queries';
+import { GET_DB_REGIONS} 							from '../../cache/queries';
 import React, { useState } 							from 'react';
 import { useMutation, useQuery } 					from '@apollo/client';
 import { WNavbar, WSidebar, WNavItem } 				from 'wt-frontend';
@@ -23,7 +22,9 @@ const Homescreen = (props) => {
 
 	const auth = props.user === null ? false : true;
 	let regions = [];
-	const [activeMap, setActiveMap] = useState({});
+	let maps = [];
+	const [activeRegion, setActiveRegion] = useState({});
+	const [subRegions, setSubRegions] = useState({});
 	const [showLogin, toggleShowLogin] = useState(false);
 	const [showCreate, toggleShowCreate] = useState(false);
 	const [showDeleteMap, toggleShowDeleteMap] = useState(false);
@@ -44,39 +45,33 @@ const Homescreen = (props) => {
 		for (let region of data.getAllRegions) {
 			regions.push(region)
 		}
-		/*
-		// if a list is selected, shift it to front of maps
-		if (activeMap._id) {
-			let selectedMapIndex = maps.findIndex(entry => entry._id === activeMap._id);
-			let removed = maps.splice(selectedMapIndex, 1);
-			maps.unshift(removed[0]);
-		}*/
+		maps = regions.filter(region => region.root === true);
+		console.log(activeRegion)
 	}
 
 
 
 	// NOTE: might not need to be async
-	const reloadMap = () => {
-		
-		/*if (activeMap._id) {
-			let tempID = activeMap._id;
-			let map = maps.find(map => map._id === tempID);
-			//setActiveMap(map);
-		}*/
+	const reload = async () => {
+		if (activeRegion._id) {
+			let tempID = activeRegion._id;
+			let reg = regions.find(reg => reg._id === tempID);
+			setActiveRegion(reg);
+		}
 	}
 
 	const loadMap = (map) => {
 		props.tps.clearAllTransactions();
 		//setCanUndo(props.tps.hasTransactionToUndo());
 		//setCanRedo(props.tps.hasTransactionToRedo());
-		//setActiveMap(map);
+		setActiveRegion(map);
 
 	}
 
 	const mutationOptions = {
 		refetchQueries: [{ query: GET_DB_REGIONS }],
 		awaitRefetchQueries: true,
-		onCompleted: () => reloadMap()
+		onCompleted: () => reload()
 	}
 
 	const [AddRegion] = useMutation(mutations.ADD_REGION);
@@ -94,11 +89,26 @@ const Homescreen = (props) => {
 			root: true,
 			parentId: ''
 		}
-		console.log(newMap)
 		const { data } = await AddRegion({ variables: { region: newMap }, refetchQueries: [{ query: GET_DB_REGIONS }] });
 		if (data) {
-			console.log(data);
-			loadMap(data.addRegion);
+			reload();
+		}
+	};
+
+	const createNewRegion = async (_id) => {
+		let newMap = {
+			_id: '',
+			owner: props.user._id,
+			name: 'Untitled',
+			capital: 'Capital',
+			leader: 'Leader',
+			landmarks: [],
+			root: false,
+			parentId: _id
+		}
+		const { data } = await AddRegion({ variables: { region: newMap }, refetchQueries: [{ query: GET_DB_REGIONS }]});
+		if (data) {
+			reload();
 		}
 	};
 
@@ -111,10 +121,11 @@ const Homescreen = (props) => {
 		const { data } = await UpdateRegion({ variables: { _id: _id, value: newName } });
 	}
 
-	/*const handleSetActive = (_id) => {
-		const selectedMap = maps.find(m => m._id === _id);
-		loadMap(selectedMap);
-	};*/
+	const handleSetActiveRegion = (reg) => {
+		let subreg = regions.filter(region => region.parentId === reg._id);
+		setSubRegions(subreg)
+		setActiveRegion(reg);
+	};
 
 	const setShowLogin = () => {
 		toggleShowDeleteMap(false);
@@ -177,7 +188,7 @@ const Homescreen = (props) => {
 							<NavbarOptions
 								fetchUser={props.fetchUser} auth={auth}
 								setShowCreate={setShowCreate} setShowLogin={setShowLogin}
-								reloadMaps={refetch} setActiveMap={loadMap}
+								reload={refetch} setActiveRegion={loadMap}
 								username={props.user === null ? '' : props.user.firstName}
 								setShowUpdate={setShowUpdate}
 							/>
@@ -187,10 +198,12 @@ const Homescreen = (props) => {
 
 				<WLMain>
 					{
+						<Route exact path="/home">
 						!auth ?
-							<Redirect exact from="/home" to={{ pathname: "/home/welcome" }} />
+							<Redirect to={{ pathname: "/home/welcome" }} />
 							:
-							<Redirect exact from="/home" to={{ pathname: "/home/maps" }} />
+							<Redirect to={{ pathname: "/home/maps" }} />
+						</Route>		
 					}
 					<Switch>
 						<Route
@@ -208,21 +221,25 @@ const Homescreen = (props) => {
 							render={() =>
 								<div className="container-secondary">
 									<Maps
-										maps={regions}
+										maps={maps}
 										setShowMapName={setShowMapName}
 										setShowDeleteMap={setShowDeleteMap}
 										setShowMapEdit={setShowMapEdit}
+										handleSetActiveRegion={handleSetActiveRegion}
 									/>
 								</div>
 							}
 						/>
 						<Route
-							path="/home/maps/"
+							exact path={"/home/"+activeRegion._id}
 							name="region"
 							render={() =>
 								<div className="container-secondary">
 									<Region
-
+										createNewRegion={createNewRegion}
+										activeRegion={activeRegion}
+										subRegions={subRegions}
+										handleSetActiveRegion={handleSetActiveRegion}
 									/>
 								</div>
 							}
@@ -235,7 +252,7 @@ const Homescreen = (props) => {
 				}
 
 				{
-					showLogin && (<Login fetchUser={props.fetchUser} reloadMaps={refetch} setShowLogin={setShowLogin} />)
+					showLogin && (<Login fetchUser={props.fetchUser} reload={refetch} setShowLogin={setShowLogin} />)
 				}
 
 				{
@@ -261,3 +278,10 @@ const Homescreen = (props) => {
 };
 
 export default Homescreen;
+
+/*
+!activeRegion ?
+								<Redirect exact from="/home" to={{ pathname: "/home/maps" }} />
+								:
+								<Redirect exact from="/home" to={{ pathname: "/home/"+activeRegion._id}} />
+								*/
