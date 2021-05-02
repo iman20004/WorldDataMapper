@@ -10,7 +10,7 @@ const Logo = (props) => {
 
     const handleHome = async (e) => {
         props.handleSetActiveRegion('');
-        history.push("/home");
+        history.push("/home/maps");
     };
 
 

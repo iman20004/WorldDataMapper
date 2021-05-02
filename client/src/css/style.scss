@@ -147,6 +147,20 @@ html, body {
     cursor: pointer;
 }
 
+.close-landmark {
+    color: #202020;
+}
+
+.close-landmark:hover {
+    color: red;
+    cursor: pointer;
+}
+
+.landmark-text {
+    font-weight: bold;
+    font-size: 17px;
+}
+
 .map-modal {
     background-color: black;
 }

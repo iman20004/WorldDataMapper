@@ -134,10 +134,20 @@ html {
 .landmark-box {
     //align-self: center;
     //justify-self: center;
-    padding-top: 30px;
+    padding-top: 10px;
     width: 85%;
     height: 80%;
     background-color: black;
+    overflow-x: scroll;
+}
+
+.landmark-entry {
+    display: flex;
+    flex-direction: row;
+    width: 100%;
+    height: 40px;
+    align-items: center;
+    flex-shrink: 0;
 }
 
 .add-box {
@@ -145,6 +155,7 @@ html {
     flex-direction: row;
     width: 85%;
     background-color: #474747;
+    align-items: center;
 }
 
 .new-landmark-box {

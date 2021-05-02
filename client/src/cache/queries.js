@@ -22,6 +22,7 @@ export const GET_DB_REGIONS = gql`
 			landmarks
 			root
 			parentId
+			childrenIds
 		}
 	}
 `;

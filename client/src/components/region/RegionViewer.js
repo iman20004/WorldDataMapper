@@ -1,8 +1,14 @@
 import React from 'react';
 import { WButton, WRow, WCol } from 'wt-frontend';
 import flagImg from '../Images/flag.png';
+import Landmarks from './Landmarks';
 
 const RegionViewer = (props) => {
+    console.log(props.activeRegion.childrenIds)
+    let numChildren = 0
+    if (props.activeRegion.childrenIds !== null) {
+        numChildren = props.activeRegion.childrenIds.length;
+    }
 
     return (
         <div className='region-table ' >
@@ -24,7 +30,7 @@ const RegionViewer = (props) => {
                             <div>{props.activeRegion.name}</div>
                         </div>
                         <div className='info-col-spacer'></div>
-                        <div className='info-rows'> 
+                        <div className='info-rows'>
                             <div>Parent Region: </div>
                             <div className='info-spacer'></div>
                             <div>Put parent name here</div>
@@ -46,7 +52,7 @@ const RegionViewer = (props) => {
                         <div className='info-rows'>
                             <div># of Subregion: </div>
                             <div className='info-spacer'></div>
-                            <div>Get num children</div>
+                            <div>{numChildren}</div>
                         </div>
                     </div>
 
@@ -54,7 +60,15 @@ const RegionViewer = (props) => {
                 <div className="region-right">
                     <div className='landmarks-label'>Region Landmarks:</div>
                     <div className='info-col-spacer'></div>
-                    <div className='landmark-box'></div>
+                    <div className='landmark-box'>
+                        {
+                            props.activeRegion.landmarks.map((entry) => (
+                                <Landmarks
+                                    landmark={entry}
+                                />
+                            ))
+                        }
+                    </div>
                     <div className='add-box'>
                         <i className="material-icons viewer-add">add</i>
                         <div className='new-landmark-box'>New Landmark Here</div>

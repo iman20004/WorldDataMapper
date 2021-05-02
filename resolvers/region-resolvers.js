@@ -55,7 +55,7 @@ module.exports = {
 		addRegion: async (_, args) => {
 			const { region } = args;
 			const objectId = new ObjectId();
-			const { _id, owner, name, capital, leader, landmarks, root, parentId} = region;
+			const { _id, owner, name, capital, leader, landmarks, root, parentId, childrenIds} = region;
 			const newRegion = new Region({
 				_id: objectId,
 				owner: owner,
@@ -64,8 +64,18 @@ module.exports = {
 				leader: leader,
 				landmarks: landmarks,
 				root: root,
-				parentId: parentId
+				parentId: parentId,
+				childrenIds: childrenIds
 			});
+
+			if(newRegion.root === false) {
+				const pId = new ObjectId(newRegion.parentId);
+				const parent = await Region.findOne({ _id: pId });
+				let children = parent.childrenIds
+				children.push(newRegion._id)
+				const updateParent = await Region.updateOne({ _id: pId }, { childrenIds: children });
+			}
+
 			const updated = await newRegion.save();
 			if (updated) {
 				return newRegion;

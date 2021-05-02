@@ -17,7 +17,7 @@ const RegionContents = (props) => {
             </div>
             : <div className='container-primary' >
                 {
-                    props.activeRegion ? <h2 className="nothing-msg"> Nothing to do!</h2> : <></> 
+                    props.activeRegion ? <h2 className="nothing-msg"> No Further Subregions!</h2> : <></> 
                 }               
                 
             </div>

@@ -1,22 +1,22 @@
-import Logo 										from '../navbar/Logo';
-import Login 										from '../modals/Login';
-import UpdateAccount 								from '../modals/UpdateAccount';
-import CreateAccount 								from '../modals/CreateAccount';
-import DeleteMapModal 								from '../modals/DeleteMapModal';
-import MapName 										from '../modals/MapName';
-import MapEdit 										from '../modals/MapEdit';
-import Maps 										from '../map/Maps';
-import Region 										from '../region/Region';
-import RegionViewer 								from '../region/RegionViewer';
-import Welcome 										from '../Welcome';
-import NavbarOptions 								from '../navbar/NavbarOptions';
-import * as mutations 								from '../../cache/mutations';
-import { GET_DB_REGIONS} 							from '../../cache/queries';
-import React, { useState } 							from 'react';
-import { useMutation, useQuery } 					from '@apollo/client';
-import { WNavbar, WSidebar, WNavItem } 				from 'wt-frontend';
-import { WLayout, WLHeader, WLMain } 				from 'wt-frontend';
-import { BrowserRouter, Switch, Route, Redirect } 	from 'react-router-dom';
+import Logo from '../navbar/Logo';
+import Login from '../modals/Login';
+import UpdateAccount from '../modals/UpdateAccount';
+import CreateAccount from '../modals/CreateAccount';
+import DeleteMapModal from '../modals/DeleteMapModal';
+import MapName from '../modals/MapName';
+import MapEdit from '../modals/MapEdit';
+import Maps from '../map/Maps';
+import Region from '../region/Region';
+import RegionViewer from '../region/RegionViewer';
+import Welcome from '../Welcome';
+import NavbarOptions from '../navbar/NavbarOptions';
+import * as mutations from '../../cache/mutations';
+import { GET_DB_REGIONS } from '../../cache/queries';
+import React, { useState } from 'react';
+import { useMutation, useQuery } from '@apollo/client';
+import { WNavbar, WSidebar, WNavItem } from 'wt-frontend';
+import { WLayout, WLHeader, WLMain } from 'wt-frontend';
+import { BrowserRouter, Switch, Route, Redirect } from 'react-router-dom';
 
 
 const Homescreen = (props) => {
@@ -56,6 +56,7 @@ const Homescreen = (props) => {
 			let tempID = activeRegion._id;
 			let reg = regions.find(reg => reg._id === tempID);
 			setActiveRegion(reg);
+			refetch();
 		}
 	}
 
@@ -86,7 +87,8 @@ const Homescreen = (props) => {
 			leader: '',
 			landmarks: [],
 			root: true,
-			parentId: ''
+			parentId: '',
+			childrenIds: []
 		}
 		const { data } = await AddRegion({ variables: { region: newMap }, refetchQueries: [{ query: GET_DB_REGIONS }] });
 		if (data) {
@@ -95,17 +97,18 @@ const Homescreen = (props) => {
 	};
 
 	const createNewRegion = async (_id) => {
-		let newMap = {
+		let newRegion = {
 			_id: '',
 			owner: props.user._id,
 			name: 'Untitled',
 			capital: 'Capital',
 			leader: 'Leader',
-			landmarks: [],
+			landmarks: ['None'],
 			root: false,
-			parentId: _id
+			parentId: _id,
+			childrenIds: []
 		}
-		const { data } = await AddRegion({ variables: { region: newMap }, refetchQueries: [{ query: GET_DB_REGIONS }]});
+		const { data } = await AddRegion({ variables: { region: newRegion }, refetchQueries: [{ query: GET_DB_REGIONS }] });
 		if (data) {
 			reload();
 		}
@@ -182,7 +185,7 @@ const Homescreen = (props) => {
 					<WNavbar color="colored">
 						<ul>
 							<WNavItem>
-								<Logo className='logo' handleSetActiveRegion={handleSetActiveRegion} auth={auth}/>
+								<Logo className='logo' handleSetActiveRegion={handleSetActiveRegion} auth={auth} />
 							</WNavItem>
 						</ul>
 						<ul>
@@ -199,12 +202,12 @@ const Homescreen = (props) => {
 
 				<WLMain>
 					{
-						<Route exact path="/home">
+
 						!auth ?
-							<Redirect to={{ pathname: "/home/welcome" }} />
+							<Redirect exact from="/home" to={{ pathname: "/home/welcome" }} />
 							:
-							<Redirect to={{ pathname: "/home/maps" }} />
-						</Route>		
+							<Redirect exact from="/home" to={{ pathname: "/home/maps" }} />
+
 					}
 					<Switch>
 						<Route
@@ -232,7 +235,7 @@ const Homescreen = (props) => {
 							}
 						/>
 						<Route
-							exact path={"/home/"+activeRegion._id}
+							exact path={"/home/" + activeRegion._id}
 							name="region"
 							render={() =>
 								<div className="container-secondary1">
@@ -246,7 +249,7 @@ const Homescreen = (props) => {
 							}
 						/>
 						<Route
-							exact path={"/home/regionviewer/"+activeRegion._id}
+							exact path={"/home/regionviewer/" + activeRegion._id}
 							name="regionViewer"
 							render={() =>
 								<div className="container-secondary">
