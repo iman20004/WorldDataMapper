@@ -27,7 +27,7 @@ const Homescreen = (props) => {
 	let maps = [];
 
 	const [activeRegion, setActiveRegion] = useState({});
-	const [route, setRoute] = useState(['']);
+	const [route, setRoute] = useState([]);
 
 	//const [activeMap, setActiveMap] = useState({});
 	const [activeViewer, toggleActiveViewer] = useState(false);
@@ -191,6 +191,9 @@ const Homescreen = (props) => {
 		toggleShowMapEdit(!showMapEdit);
 	};
 
+	console.log("time to sleep")
+	console.log(route.length)
+
 	return (
 		<BrowserRouter>
 			<WLayout wLayout="header">
@@ -216,7 +219,7 @@ const Homescreen = (props) => {
 											<div className='info-spacer'></div>
 											<i className="material-icons large">arrow_forward</i>
 										</div>
-										: (route.length > 1) ?
+										: (route.length > 0) ?
 											<Path className='logo'
 												route={route}
 											/>
