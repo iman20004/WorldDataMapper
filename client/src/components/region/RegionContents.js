@@ -9,17 +9,15 @@ const RegionContents = (props) => {
             {
                 regions.map((entry) => (
                     <RegionEntry
-                        data={entry} key={entry._id}
-                        handleSetActiveRegion={props.handleSetActiveRegion} 
+                        data={entry} key={entry._id} 
+                        setRoute={props.setRoute}
+                        //handleSetActiveRegion={props.handleSetActiveRegion}
                     />
                 ))
             }
             </div>
             : <div className='container-primary' >
-                {
-                    props.activeRegion ? <h2 className="nothing-msg"> No Further Subregions!</h2> : <></> 
-                }               
-                
+                <h2 className="nothing-msg"> No Further Subregions!</h2> : <></>                   
             </div>
     );
 };

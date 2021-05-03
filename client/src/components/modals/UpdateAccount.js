@@ -25,8 +25,6 @@ const UpdateAccount = (props) => {
 		if (loading) { toggleLoading(true) };
 		if (error) { return `Error: ${error.message}` };
 		if (data) {
-			console.log("achi baat hay")
-			console.log(data)
 			toggleLoading(false);
 			if(data.update.email === 'already exists') {
 				alert('User with that email already registered');

@@ -1,8 +1,5 @@
 import React, { useState } from 'react';
 
-
-
-
 const Landmarks = (props) => {
     const { data } = props;
 

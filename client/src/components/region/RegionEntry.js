@@ -7,25 +7,16 @@ const RegionEntry = (props) => {
     const { data } = props;
     const mapId = props.data._id;
     let history = useHistory();
-    /*
-    let routeArray = [];
-    let parentId = props.data.parentId
-    if (parentId) {
-        routeArray.push(parentId)
-        console.log("very nice iman you can do it")
-        console.log(routeArray)
-        //while(parentId)
-    }*/
-
+ 
     const handleOpen = async (e) => {
-        props.handleSetActiveRegion(props.data);
-        history.push("/home/" + mapId);
+        //props.handleSetActiveRegion(props.data);
+        props.setRoute(props.data);
+        history.push("/home/region/" + mapId);
     };
 
     const handleEditLand = async (e) => {
-        props.handleSetActiveRegion(props.data);
+        //props.handleSetActiveRegion(props.data);
         history.push("/home/regionviewer/" + props.data._id);
-        console.log(props.data.name)
     };
 
     return (

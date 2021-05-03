@@ -1,4 +1,5 @@
 import Logo from '../navbar/Logo';
+import Path from '../navbar/Path';
 import Login from '../modals/Login';
 import UpdateAccount from '../modals/UpdateAccount';
 import CreateAccount from '../modals/CreateAccount';
@@ -24,14 +25,15 @@ const Homescreen = (props) => {
 	const auth = props.user === null ? false : true;
 	let regions = [];
 	let maps = [];
-	let childs = [];
 
+	//maybe
+	let childs = [];
 
 	const [activeRegion, setActiveRegion] = useState({});
 	const [route, setRoute] = useState([]);
 
 	//const [activeMap, setActiveMap] = useState({});
-	
+
 	const [showLogin, toggleShowLogin] = useState(false);
 	const [showCreate, toggleShowCreate] = useState(false);
 	const [showDeleteMap, toggleShowDeleteMap] = useState(false);
@@ -66,7 +68,7 @@ const Homescreen = (props) => {
 			let tempID = activeRegion._id;
 			let reg = regions.find(reg => reg._id === tempID);
 			setActiveRegion(reg);
-			refetch();
+			//refetch();
 		}
 	}
 
@@ -74,7 +76,7 @@ const Homescreen = (props) => {
 		//props.tps.clearAllTransactions();
 		//setCanUndo(props.tps.hasTransactionToUndo());
 		//setCanRedo(props.tps.hasTransactionToRedo());
-		setActiveRegion(map);
+		//setActiveRegion(map);
 
 	}
 
@@ -84,10 +86,11 @@ const Homescreen = (props) => {
 		onCompleted: () => reload()
 	}
 
-	const handleSetRoute = (region) => {
-		setRoute.push(region.id);
-		setRoute.push(region.name);
+	const handleSetRoute = (arr) => {
+		setRoute(arr);
+		console.log(route);
 	}
+
 
 	const [AddRegion] = useMutation(mutations.ADD_REGION);
 	const [DeleteRegion] = useMutation(mutations.DELETE_REGION);
@@ -201,21 +204,32 @@ const Homescreen = (props) => {
 					<WNavbar color="colored">
 						<ul>
 							<WNavItem>
-								<Logo className='logo' 
-								handleSetActiveRegion={handleSetActiveRegion} 
-								auth={auth}  
-								//handleSetActiveMap={handleSetActiveMap}
-								/> 
+								<Logo className='logo'
+									auth={auth}
+									setRoute={handleSetRoute}
+									//handleSetActiveMap={handleSetActiveMap}
+									//handleSetActiveRegion={handleSetActiveRegion}
+								/>
+							</WNavItem>
+						</ul>
+						<ul>
+							<WNavItem>
+								{
+									(activeRegion._id) ?
+										<Path className='logo'
+											route={route} />
+										: <div></div>
+								}
 							</WNavItem>
 						</ul>
 						<ul>
 							<NavbarOptions
 								fetchUser={props.fetchUser} auth={auth}
 								setShowCreate={setShowCreate} setShowLogin={setShowLogin}
-								setActiveRegion={loadMap}
-								//handleSetActiveMap={handleSetActiveMap}
 								username={props.user === null ? '' : props.user.firstName}
 								setShowUpdate={setShowUpdate}
+								//setActiveRegion={loadMap}
+								//handleSetActiveMap={handleSetActiveMap}
 							/>
 						</ul>
 					</WNavbar>
@@ -231,57 +245,49 @@ const Homescreen = (props) => {
 
 					}
 					<Switch>
-						<Route
-							exact path="/home/welcome"
-							name="welcome"
-							render={() =>
-								<div className="container-secondary">
-									<Welcome />
-								</div>
-							}
-						/>
-						<Route
-							exact path="/home/maps"
-							name="maps"
-							render={() =>
-								<div className="container-secondary">
-									<Maps
-										maps={maps}
-										setShowMapName={setShowMapName}
-										setShowDeleteMap={setShowDeleteMap}
-										setShowMapEdit={setShowMapEdit}
-										handleSetActiveRegion={handleSetActiveRegion}
-										//handleSetActiveMap={handleSetActiveMap}
-									/>
-								</div>
-							}
-						/>
-						<Route
-							exact path={"/home/" + activeRegion._id}
-							name="region"
-							render={() =>
-								<div className="container-secondary1">
-									<Region
-										createNewRegion={createNewRegion}
-										activeRegion={activeRegion}
-										subRegions={childs}
-										handleSetActiveRegion={handleSetActiveRegion}
-									/>
-								</div>
-							}
-						/>
-						<Route
-							exact path={"/home/regionviewer/" + activeRegion._id}
-							name="regionViewer"
-							render={() =>
-								<div className="container-secondary">
-									<RegionViewer
-										activeRegion={activeRegion}
-										handleSetActiveRegion={handleSetActiveRegion}
-									/>
-								</div>
-							}
-						/>
+						<Route path="/home/welcome">
+							<div className="container-secondary">
+								<Welcome />
+							</div>
+						</Route>
+
+						<Route path="/home/maps" >
+							<div className="container-secondary">
+								<Maps
+									maps={maps}
+									setShowMapName={setShowMapName}
+									setShowDeleteMap={setShowDeleteMap}
+									setShowMapEdit={setShowMapEdit}
+									setRoute={handleSetRoute}
+									//handleSetActiveRegion={handleSetActiveRegion}
+									//handleSetActiveMap={handleSetActiveMap}
+								/>
+							</div>
+						</Route>
+
+						<Route path="/home/region/:id">
+							<div className="container-secondary1">
+								<Region
+									regions={regions}
+									createNewRegion={createNewRegion}
+									reload={refetch}
+									setRoute={handleSetRoute}
+									//activeRegion={activeRegion}
+									//subRegions={childs}
+									//handleSetActiveRegion={handleSetActiveRegion}
+								/>
+							</div>
+						</Route>
+
+						<Route path="/home/regionviewer/:id">
+							<div className="container-secondary">
+								<RegionViewer
+									regions={regions}
+									//activeRegion={activeRegion}
+									//handleSetActiveRegion={handleSetActiveRegion}
+								/>
+							</div>
+						</Route>
 					</Switch>
 				</WLMain>
 

@@ -1,15 +1,18 @@
 import React, { useState } from 'react';
 import { WButton } from 'wt-frontend';
-import { useHistory} from "react-router-dom";
+import { useHistory, useParams} from "react-router-dom";
 
 const MapEntry = (props) => {
     const mapId = props.data._id;
-    let history = useHistory();
+    const history = useHistory();
+    //const { id } = useParams();
 
     const handleOpen = async (e) => {
-        props.handleSetActiveRegion(props.data)
+        //props.handleSetActiveRegion(props.data)
+        //props.setRoute(props.data);
         //props.handleSetActiveMap(props.data)
-        history.push("/home/"+mapId)
+        //history.push("/home/:"+mapId)
+        history.push("/home/region/"+mapId);
     };
 
     return (

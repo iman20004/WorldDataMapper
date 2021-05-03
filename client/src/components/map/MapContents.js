@@ -3,7 +3,6 @@ import MapEntry   from './MapEntry';
 
 const MapContents = (props) => {
 
-    //const entries = props.activeList ? props.activeList.items : null;
     return (
         props.maps ? <div className=' map-body-list'>
             {
@@ -12,8 +11,9 @@ const MapContents = (props) => {
                         data={entry} key={entry._id}
                         setShowDeleteMap={props.setShowDeleteMap}
                         setShowMapEdit={props.setShowMapEdit}
-                        handleSetActiveRegion={props.handleSetActiveRegion}
+                        setRoute={props.setRoute}
                         //handleSetActiveMap={props.handleSetActiveMap}
+                        //handleSetActiveRegion={props.handleSetActiveRegion}
                     />
                 ))
             }
