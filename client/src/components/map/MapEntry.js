@@ -13,7 +13,7 @@ const MapEntry = (props) => {
         //props.handleSetActiveMap(props.data)
         
         let arr = []
-        arr.push(mapId, props.data.name)
+        arr.push(props.data)
         props.setRoute(arr);
         history.push("/home/region/"+mapId);
     };
