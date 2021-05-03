@@ -1,6 +1,6 @@
 import React, { useState } from 'react';
 import { WButton, WInput, WRow, WCol } from 'wt-frontend';
-import { useHistory, useParams } from "react-router-dom";
+import { useHistory } from "react-router-dom";
 import flagImg from '../Images/flag.png';
 
 const RegionEntry = (props) => {
@@ -14,6 +14,7 @@ const RegionEntry = (props) => {
         let arr = props.route
         arr.push(mapId, props.data.name);
         props.setRoute(arr);
+        //props.reload();
         history.push("/home/region/" + mapId);
     };
 

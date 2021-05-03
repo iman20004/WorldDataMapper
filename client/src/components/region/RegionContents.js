@@ -13,6 +13,7 @@ const RegionContents = (props) => {
                         setRoute={props.setRoute}
                         route={props.route}
                         activeViewer={props.activeViewer}
+                        //reload={props.reload}
                         //handleSetActiveRegion={props.handleSetActiveRegion}
                     />
                 ))

@@ -5,8 +5,6 @@ import { useHistory } from "react-router-dom";
 const Logo = (props) => {
     let history = useHistory();
     const clickDisabled = () => { };
-    
-
 
     const handleHome = async (e) => {
         props.activeViewer(false);

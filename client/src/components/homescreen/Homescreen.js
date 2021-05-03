@@ -28,14 +28,9 @@ const Homescreen = (props) => {
 
 	const [activeRegion, setActiveRegion] = useState({});
 	const [route, setRoute] = useState(['']);
-	console.log("iman here start")
-	console.log(route);
 
 	//const [activeMap, setActiveMap] = useState({});
 	const [activeViewer, toggleActiveViewer] = useState(false);
-	console.log("nice good cute");
-	console.log(activeViewer);
-
 	const [showLogin, toggleShowLogin] = useState(false);
 	const [showCreate, toggleShowCreate] = useState(false);
 	const [showDeleteMap, toggleShowDeleteMap] = useState(false);
@@ -207,8 +202,8 @@ const Homescreen = (props) => {
 									auth={auth}
 									setRoute={handleSetRoute}
 									activeViewer={handleSetActiveViewer}
-									//handleSetActiveMap={handleSetActiveMap}
-									//handleSetActiveRegion={handleSetActiveRegion}
+								//handleSetActiveMap={handleSetActiveMap}
+								//handleSetActiveRegion={handleSetActiveRegion}
 								/>
 							</WNavItem>
 						</ul>
@@ -216,16 +211,16 @@ const Homescreen = (props) => {
 							<WNavItem>
 								{
 									(activeViewer) ?
-									<div className="arrows"> 
-										<i className="material-icons large">arrow_back</i>
-										<div className='info-spacer'></div>
-										<i className="material-icons large">arrow_forward</i>
-									</div> 
-									: (route.length > 1)?
-										<Path className='logo'
-											route={route} 
-										/>
-										: <div></div> 
+										<div className="arrows">
+											<i className="material-icons large">arrow_back</i>
+											<div className='info-spacer'></div>
+											<i className="material-icons large">arrow_forward</i>
+										</div>
+										: (route.length > 1) ?
+											<Path className='logo'
+												route={route}
+											/>
+											: <div></div>
 								}
 							</WNavItem>
 						</ul>
@@ -235,8 +230,10 @@ const Homescreen = (props) => {
 								setShowCreate={setShowCreate} setShowLogin={setShowLogin}
 								username={props.user === null ? '' : props.user.firstName}
 								setShowUpdate={setShowUpdate}
-								//setActiveRegion={loadMap}
-								//handleSetActiveMap={handleSetActiveMap}
+								setRoute={handleSetRoute}
+								activeViewer={handleSetActiveViewer}
+							//setActiveRegion={loadMap}
+							//handleSetActiveMap={handleSetActiveMap}
 							/>
 						</ul>
 					</WNavbar>
@@ -244,13 +241,12 @@ const Homescreen = (props) => {
 
 				<WLMain>
 					{
-
 						!auth ?
 							<Redirect exact from="/home" to={{ pathname: "/home/welcome" }} />
 							:
 							<Redirect exact from="/home" to={{ pathname: "/home/maps" }} />
-
 					}
+
 					<Switch>
 						<Route path="/home/welcome">
 							<div className="container-secondary">
@@ -266,8 +262,8 @@ const Homescreen = (props) => {
 									setShowDeleteMap={setShowDeleteMap}
 									setShowMapEdit={setShowMapEdit}
 									setRoute={handleSetRoute}
-									//handleSetActiveRegion={handleSetActiveRegion}
-									//handleSetActiveMap={handleSetActiveMap}
+								//handleSetActiveRegion={handleSetActiveRegion}
+								//handleSetActiveMap={handleSetActiveMap}
 								/>
 							</div>
 						</Route>
@@ -277,13 +273,12 @@ const Homescreen = (props) => {
 								<Region
 									regions={regions}
 									createNewRegion={createNewRegion}
-									reload={refetch}
 									setRoute={handleSetRoute}
 									route={route}
 									activeViewer={handleSetActiveViewer}
-									//activeRegion={activeRegion}
-									//subRegions={childs}
-									//handleSetActiveRegion={handleSetActiveRegion}
+								//activeRegion={activeRegion}
+								//subRegions={childs}
+								//handleSetActiveRegion={handleSetActiveRegion}
 								/>
 							</div>
 						</Route>
@@ -293,12 +288,13 @@ const Homescreen = (props) => {
 								<RegionViewer
 									regions={regions}
 									activeViewer={handleSetActiveViewer}
-									//activeRegion={activeRegion}
-									//handleSetActiveRegion={handleSetActiveRegion}
+								//activeRegion={activeRegion}
+								//handleSetActiveRegion={handleSetActiveRegion}
 								/>
 							</div>
 						</Route>
 					</Switch>
+
 				</WLMain>
 
 				{
@@ -327,15 +323,9 @@ const Homescreen = (props) => {
 
 
 			</WLayout>
+
 		</BrowserRouter>
 	);
 };
 
 export default Homescreen;
-
-/*
-!activeRegion ?
-								<Redirect exact from="/home" to={{ pathname: "/home/maps" }} />
-								:
-								<Redirect exact from="/home" to={{ pathname: "/home/"+activeRegion._id}} />
-								*/
