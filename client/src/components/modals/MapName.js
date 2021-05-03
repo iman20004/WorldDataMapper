@@ -4,7 +4,7 @@ import { WModal, WMHeader, WMMain, WButton, WInput }    from 'wt-frontend';
 const MapName = (props) => {
     const [name, setName] = useState('');
     const [showErr, displayErrorMsg] = useState(false);
-	const errorMsg = "All Maps must have a name.";
+    const errorMsg = "All Maps must have a name.";
 	
 	const updateInput = (e) => {
         setName(e.target.value);
@@ -17,6 +17,7 @@ const MapName = (props) => {
 		}
         props.setShowMapName(false);
         props.createNewMap(name)
+        //history.push("/home/region/");
 	};
 
     return (

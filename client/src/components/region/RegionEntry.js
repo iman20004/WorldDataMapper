@@ -10,7 +10,10 @@ const RegionEntry = (props) => {
  
     const handleOpen = async (e) => {
         //props.handleSetActiveRegion(props.data);
-        props.setRoute(props.data);
+        //props.setRoute(props.data);
+        let arr = props.route
+        arr.push(mapId, props.data.name);
+        props.setRoute(arr);
         history.push("/home/region/" + mapId);
     };
 

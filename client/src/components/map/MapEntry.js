@@ -11,7 +11,10 @@ const MapEntry = (props) => {
         //props.handleSetActiveRegion(props.data)
         //props.setRoute(props.data);
         //props.handleSetActiveMap(props.data)
-        //history.push("/home/:"+mapId)
+        
+        let arr = []
+        arr.push(mapId, props.data.name)
+        props.setRoute(arr);
         history.push("/home/region/"+mapId);
     };
 

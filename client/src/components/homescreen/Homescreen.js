@@ -26,11 +26,10 @@ const Homescreen = (props) => {
 	let regions = [];
 	let maps = [];
 
-	//maybe
-	let childs = [];
-
 	const [activeRegion, setActiveRegion] = useState({});
-	const [route, setRoute] = useState([]);
+	const [route, setRoute] = useState(['']);
+	console.log("iman here start")
+	console.log(route);
 
 	//const [activeMap, setActiveMap] = useState({});
 
@@ -55,11 +54,6 @@ const Homescreen = (props) => {
 			regions.push(region)
 		}
 		maps = regions.filter(region => region.root === true);
-
-		// Assign subregions
-		if (activeRegion._id) {
-			childs = regions.filter(region => region.parentId === activeRegion._id);
-		}
 	}
 
 	// NOTE: might not need to be async
@@ -88,6 +82,7 @@ const Homescreen = (props) => {
 
 	const handleSetRoute = (arr) => {
 		setRoute(arr);
+		console.log("iman here")
 		console.log(route);
 	}
 
@@ -272,6 +267,7 @@ const Homescreen = (props) => {
 									createNewRegion={createNewRegion}
 									reload={refetch}
 									setRoute={handleSetRoute}
+									route={route}
 									//activeRegion={activeRegion}
 									//subRegions={childs}
 									//handleSetActiveRegion={handleSetActiveRegion}

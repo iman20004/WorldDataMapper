@@ -11,6 +11,7 @@ const RegionContents = (props) => {
                     <RegionEntry
                         data={entry} key={entry._id} 
                         setRoute={props.setRoute}
+                        route={props.route}
                         //handleSetActiveRegion={props.handleSetActiveRegion}
                     />
                 ))

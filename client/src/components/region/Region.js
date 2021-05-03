@@ -21,6 +21,7 @@ const Region = (props) => {
                 activeRegion={region}
                 subRegions={subregions}
                 setRoute={props.setRoute}
+                route={props.route}
                 //activeRegion={props.activeRegion}
                 //subRegions={props.subRegions}
                 //handleSetActiveRegion={props.handleSetActiveRegion}
