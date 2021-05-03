@@ -191,8 +191,6 @@ const Homescreen = (props) => {
 		toggleShowMapEdit(!showMapEdit);
 	};
 
-	console.log("time to sleep")
-	console.log(route.length)
 
 	return (
 		<BrowserRouter>
@@ -219,7 +217,7 @@ const Homescreen = (props) => {
 											<div className='info-spacer'></div>
 											<i className="material-icons large">arrow_forward</i>
 										</div>
-										: (route.length > 0) ?
+										: (route.length > 1) ?
 											<Path className='logo'
 												route={route}
 											/>

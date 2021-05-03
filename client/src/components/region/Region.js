@@ -9,6 +9,8 @@ const Region = (props) => {
     let region = props.regions.find(reg => reg._id === id);
     let subregions = props.regions.filter(reg => reg.parentId === id)
 
+    //let ancestors = region.root === true ? [] : 
+
     return (
         <div className='table ' >
             <RegionHeader

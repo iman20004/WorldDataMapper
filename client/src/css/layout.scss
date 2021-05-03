@@ -303,6 +303,11 @@ html {
     align-items: center;
 }
 
+.navbar-links {
+    display: flex;
+    flex-direction: row;
+}
+
 .arrows {
     display: flex;
     flex-direction: row;
