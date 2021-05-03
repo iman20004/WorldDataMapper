@@ -30,8 +30,8 @@ module.exports = {
 			else return ({});
 		},
 		/** 
-			@param 	 {object} args - a todolist id
-			@returns {object} a todolist on success and an empty object on failure
+			@param 	 {object} args - req - the request object containing a user id
+			@returns {object} an array of todolist objects on success, and an empty array on failure
 		**/
 		getAllRootRegions: async (_, __, { req }) => {
 			const _id = new ObjectId(req.userId);
@@ -43,6 +43,24 @@ module.exports = {
 				]
 			  });
 			if (regions) return (regions);
+		},
+		/** 
+			@param 	 {object} args - a todolist id
+			@returns {object} an array of region objects on success, and an empty array on failure
+		**/
+		getAllAncestors: async (_, args) => {
+			const { _id } = args;
+			const objectId = new ObjectId(_id);
+			let region = await Region.findOne({ _id: objectId });
+			
+			let ancestors = [];
+			// return empty array for map
+			while (region.root === false){
+				let pId = new ObjectId(region.parentId);
+				region = await Region.findOne({ _id: pId });
+				ancestors.push(region);
+			}
+			return ancestors.reverse();	
 		}
 
 	},

@@ -11,7 +11,8 @@ const MapContents = (props) => {
                         data={entry} key={entry._id}
                         setShowDeleteMap={props.setShowDeleteMap}
                         setShowMapEdit={props.setShowMapEdit}
-                        setRoute={props.setRoute}
+                        editMap={props.editMap}
+                        //setRoute={props.setRoute}
                         //handleSetActiveMap={props.handleSetActiveMap}
                         //handleSetActiveRegion={props.handleSetActiveRegion}
                     />

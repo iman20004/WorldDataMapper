@@ -10,10 +10,11 @@ const RegionContents = (props) => {
                 regions.map((entry) => (
                     <RegionEntry
                         data={entry} key={entry._id} 
-                        setRoute={props.setRoute}
-                        route={props.route}
+                        //setRoute={props.setRoute}
+                        //route={props.route}
                         activeViewer={props.activeViewer}
-                        //reload={props.reload}
+                        reload={props.reload}
+                        editMap={props.editMap}
                         //handleSetActiveRegion={props.handleSetActiveRegion}
                     />
                 ))

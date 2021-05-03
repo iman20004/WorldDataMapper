@@ -11,11 +11,12 @@ const RegionEntry = (props) => {
     const handleOpen = async (e) => {
         //props.handleSetActiveRegion(props.data);
         //props.setRoute(props.data);
-        let arr = props.route
-        arr.push(props.data);
-        props.setRoute(arr);
-        //props.reload();
+        //let arr = props.route
+        //arr.push(props.data);
+        //props.setRoute(arr);
+        props.editMap(mapId, props.data.name);
         history.push("/home/region/" + mapId);
+        props.reload();
     };
 
     const handleEditLand = async (e) => {

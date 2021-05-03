@@ -27,5 +27,21 @@ export const GET_DB_REGIONS = gql`
 	}
 `;
 
+export const GET_DB_ANCESTORS = gql`
+	query GetDBAncestors($_id: String!) {
+		getAllAncestors(_id: $_id) {
+			_id
+			owner
+			name
+			capital
+			leader
+			landmarks
+			root
+			parentId
+			childrenIds
+		}
+	}
+`;
+
 
 

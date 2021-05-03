@@ -6,20 +6,16 @@ import { useHistory } from "react-router-dom";
 
 const Path = (props) => {
     let history = useHistory();
-
-    let ancestorRegions = props.route.slice(0, props.route.length-1);
+    //const ancestorRegions = props.route.reverse();
+    console.log(props.route)
 
     const handleNavgation = (reg) => {
-        if (reg.root === true) {
-            history.push("/home/maps")
-        } else {
-            history.push("/home/region/"+reg._id);
-        }
+        history.push("/home/region/"+reg._id);
     }
 
     return (
         props.route !== undefined ? <div className='navbar-links'>{
-            ancestorRegions.map(ancestor => (
+            props.route.map(ancestor => (
                 <div>
                 <WNavItem onClick={()=>handleNavgation(ancestor)}>{ancestor.name}</WNavItem>
                 <i className="material-icons small">arrow_forward</i>

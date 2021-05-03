@@ -16,7 +16,8 @@ return (
                     maps={props.maps}
                     setShowDeleteMap={props.setShowDeleteMap}
                     setShowMapEdit={props.setShowMapEdit}
-                    setRoute={props.setRoute}
+                    editMap={props.editMap}
+                    //setRoute={props.setRoute}
                     //handleSetActiveMap={props.handleSetActiveMap}
                     //handleSetActiveRegion={props.handleSetActiveRegion}
                 />

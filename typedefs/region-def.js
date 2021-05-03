@@ -17,6 +17,7 @@ extend type Query {
 	getAllRegions: [Region]
 	getAllRootRegions: [Region]
 	getRegionById(_id: String!): Region
+	getAllAncestors(_id: String!): [Region]
 }
 extend type Mutation {
 	addRegion(region: RegionInput!): Region

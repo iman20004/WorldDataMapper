@@ -56,11 +56,8 @@ const Homescreen = (props) => {
 
 	// NOTE: might not need to be async
 	const reload = async () => {
-		if (activeRegion._id) {
-			let tempID = activeRegion._id;
-			let reg = regions.find(reg => reg._id === tempID);
-			setActiveRegion(reg);
-			//refetch();
+		if (regions){
+			setActiveRegion({})
 		}
 	}
 
@@ -217,7 +214,7 @@ const Homescreen = (props) => {
 											<div className='info-spacer'></div>
 											<i className="material-icons large">arrow_forward</i>
 										</div>
-										: (route.length > 1) ?
+										: (route.length > 0) ?
 											<Path className='logo'
 												route={route}
 											/>
@@ -262,7 +259,8 @@ const Homescreen = (props) => {
 									setShowMapName={setShowMapName}
 									setShowDeleteMap={setShowDeleteMap}
 									setShowMapEdit={setShowMapEdit}
-									setRoute={handleSetRoute}
+									editMap={editMap}
+									//setRoute={handleSetRoute}
 								//handleSetActiveRegion={handleSetActiveRegion}
 								//handleSetActiveMap={handleSetActiveMap}
 								/>
@@ -277,6 +275,8 @@ const Homescreen = (props) => {
 									setRoute={handleSetRoute}
 									route={route}
 									activeViewer={handleSetActiveViewer}
+									reload={reload}
+									editMap={editMap}
 								//activeRegion={activeRegion}
 								//subRegions={childs}
 								//handleSetActiveRegion={handleSetActiveRegion}
