@@ -22,6 +22,7 @@ const Region = (props) => {
                 subRegions={subregions}
                 setRoute={props.setRoute}
                 route={props.route}
+                activeViewer={props.activeViewer}
                 //activeRegion={props.activeRegion}
                 //subRegions={props.subRegions}
                 //handleSetActiveRegion={props.handleSetActiveRegion}

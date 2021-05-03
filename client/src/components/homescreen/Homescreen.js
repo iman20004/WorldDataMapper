@@ -32,6 +32,9 @@ const Homescreen = (props) => {
 	console.log(route);
 
 	//const [activeMap, setActiveMap] = useState({});
+	const [activeViewer, toggleActiveViewer] = useState(false);
+	console.log("nice good cute");
+	console.log(activeViewer);
 
 	const [showLogin, toggleShowLogin] = useState(false);
 	const [showCreate, toggleShowCreate] = useState(false);
@@ -82,10 +85,11 @@ const Homescreen = (props) => {
 
 	const handleSetRoute = (arr) => {
 		setRoute(arr);
-		console.log("iman here")
-		console.log(route);
 	}
 
+	const handleSetActiveViewer = (bool) => {
+		toggleActiveViewer(bool);
+	}
 
 	const [AddRegion] = useMutation(mutations.ADD_REGION);
 	const [DeleteRegion] = useMutation(mutations.DELETE_REGION);
@@ -202,6 +206,7 @@ const Homescreen = (props) => {
 								<Logo className='logo'
 									auth={auth}
 									setRoute={handleSetRoute}
+									activeViewer={handleSetActiveViewer}
 									//handleSetActiveMap={handleSetActiveMap}
 									//handleSetActiveRegion={handleSetActiveRegion}
 								/>
@@ -210,10 +215,17 @@ const Homescreen = (props) => {
 						<ul>
 							<WNavItem>
 								{
-									(activeRegion._id) ?
+									(activeViewer) ?
+									<div className="arrows"> 
+										<i className="material-icons large">arrow_back</i>
+										<div className='info-spacer'></div>
+										<i className="material-icons large">arrow_forward</i>
+									</div> 
+									: (route.length > 1)?
 										<Path className='logo'
-											route={route} />
-										: <div></div>
+											route={route} 
+										/>
+										: <div></div> 
 								}
 							</WNavItem>
 						</ul>
@@ -268,6 +280,7 @@ const Homescreen = (props) => {
 									reload={refetch}
 									setRoute={handleSetRoute}
 									route={route}
+									activeViewer={handleSetActiveViewer}
 									//activeRegion={activeRegion}
 									//subRegions={childs}
 									//handleSetActiveRegion={handleSetActiveRegion}
@@ -279,6 +292,7 @@ const Homescreen = (props) => {
 							<div className="container-secondary">
 								<RegionViewer
 									regions={regions}
+									activeViewer={handleSetActiveViewer}
 									//activeRegion={activeRegion}
 									//handleSetActiveRegion={handleSetActiveRegion}
 								/>

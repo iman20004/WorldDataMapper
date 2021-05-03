@@ -19,6 +19,7 @@ const RegionEntry = (props) => {
 
     const handleEditLand = async (e) => {
         //props.handleSetActiveRegion(props.data);
+        props.activeViewer(true);
         history.push("/home/regionviewer/" + props.data._id);
     };
 

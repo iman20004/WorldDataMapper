@@ -303,6 +303,10 @@ html {
     align-items: center;
 }
 
+.arrows {
+    display: flex;
+    flex-direction: row;
+}
 
 .modal-input {
     width: 100%;

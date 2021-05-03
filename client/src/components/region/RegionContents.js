@@ -12,6 +12,7 @@ const RegionContents = (props) => {
                         data={entry} key={entry._id} 
                         setRoute={props.setRoute}
                         route={props.route}
+                        activeViewer={props.activeViewer}
                         //handleSetActiveRegion={props.handleSetActiveRegion}
                     />
                 ))

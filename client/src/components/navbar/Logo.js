@@ -9,6 +9,7 @@ const Logo = (props) => {
 
 
     const handleHome = async (e) => {
+        props.activeViewer(false);
         props.setRoute([]);
         history.push("/home/maps");
         //props.handleSetActiveRegion({});

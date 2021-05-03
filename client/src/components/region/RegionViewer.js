@@ -18,6 +18,7 @@ const RegionViewer = (props) => {
 
     const navigateBack = async (e) => {
         //props.handleSetActiveRegion(props.activeRegion.parentId);
+        props.activeViewer(false);
         history.push("/home/region/"+region.parentId);
     };
 
