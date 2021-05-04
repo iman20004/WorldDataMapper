@@ -1,17 +1,22 @@
-import React, { useState } 	from 'react';
-import { REGISTER }			from '../../cache/mutations';
-import { useMutation }    	from '@apollo/client';
+import React, { useState } from 'react';
+import { REGISTER } from '../../cache/mutations';
+//import { useMutation } from '@apollo/client';
+import { useMutation, useApolloClient } from '@apollo/client';
 import { useHistory } from "react-router-dom";
+import { LOGOUT }                           from '../../cache/mutations';
+
 
 import { WModal, WMHeader, WMMain, WMFooter, WButton, WInput, WRow, WCol } from 'wt-frontend';
 
 const CreateAccount = (props) => {
+	const client = useApolloClient();
+	const [Logout] = useMutation(LOGOUT);
 	const [input, setInput] = useState({ email: '', password: '', firstName: '', lastName: '' });
 	const [loading, toggleLoading] = useState(false);
 	const [Register] = useMutation(REGISTER);
 	let history = useHistory();
 
-	
+
 	const updateInput = (e) => {
 		const { name, value } = e.target;
 		const updated = { ...input, [name]: value };
@@ -30,12 +35,21 @@ const CreateAccount = (props) => {
 		if (error) { return `Error: ${error.message}` };
 		if (data) {
 			toggleLoading(false);
-			if(data.register.email === 'already exists') {
+			if (data.register.email === 'already exists') {
 				alert('User with that email already registered');
 			}
 			else {
-				props.fetchUser();
-				history.push("/home/maps");
+				
+				Logout();
+				const { data } = await props.fetchUser();
+				if (data) {
+					let reset = await client.resetStore();
+					if (reset) {
+						history.push("/home/welcome");
+					}
+				}
+				//props.fetchUser();
+				//history.push("/home/welcome");
 			}
 			props.setShowCreate(false);
 
@@ -43,39 +57,39 @@ const CreateAccount = (props) => {
 	};
 
 	return (
-		<WModal className="map-modal"  cover="true" visible={props.setShowCreate}>
-			<WMHeader  className="modal-header" onClose={() => props.setShowCreate(false)}>
+		<WModal className="map-modal" cover="true" visible={props.setShowCreate}>
+			<WMHeader className="modal-header" onClose={() => props.setShowCreate(false)}>
 				Create Account
 			</WMHeader>
 
 			{
 				loading ? <div />
 					: <WMMain>
-							<WRow className="modal-col-gap signup-modal">
-								<WCol size="6">
-									<WInput 
-										className="" onBlur={updateInput} name="firstName" labelAnimation="up" 
-										barAnimation="solid" labelText="First Name" wType="outlined" inputType="text" 
-									/>
-								</WCol>
-								<WCol size="6">
-									<WInput 
-										className="" onBlur={updateInput} name="lastName" labelAnimation="up" 
-										barAnimation="solid" labelText="Last Name" wType="outlined" inputType="text" 
-									/>
-								</WCol>
-							</WRow>
+						<WRow className="modal-col-gap signup-modal">
+							<WCol size="6">
+								<WInput
+									className="" onBlur={updateInput} name="firstName" labelAnimation="up"
+									barAnimation="solid" labelText="First Name" wType="outlined" inputType="text"
+								/>
+							</WCol>
+							<WCol size="6">
+								<WInput
+									className="" onBlur={updateInput} name="lastName" labelAnimation="up"
+									barAnimation="solid" labelText="Last Name" wType="outlined" inputType="text"
+								/>
+							</WCol>
+						</WRow>
 
-							<div className="modal-spacer">&nbsp;</div>
-							<WInput 
-								className="modal-input" onBlur={updateInput} name="email" labelAnimation="up" 
-								barAnimation="solid" labelText="Email Address" wType="outlined" inputType="text" 
-							/>
-							<div className="modal-spacer">&nbsp;</div>
-							<WInput 
-								className="modal-input" onBlur={updateInput} name="password" labelAnimation="up" 
-								barAnimation="solid" labelText="Password" wType="outlined" inputType="password" 
-							/>
+						<div className="modal-spacer">&nbsp;</div>
+						<WInput
+							className="modal-input" onBlur={updateInput} name="email" labelAnimation="up"
+							barAnimation="solid" labelText="Email Address" wType="outlined" inputType="text"
+						/>
+						<div className="modal-spacer">&nbsp;</div>
+						<WInput
+							className="modal-input" onBlur={updateInput} name="password" labelAnimation="up"
+							barAnimation="solid" labelText="Password" wType="outlined" inputType="password"
+						/>
 					</WMMain>
 			}
 			<WMFooter>
@@ -83,7 +97,7 @@ const CreateAccount = (props) => {
 					Submit
 				</WButton>
 			</WMFooter>
-			
+
 		</WModal>
 	);
 }
