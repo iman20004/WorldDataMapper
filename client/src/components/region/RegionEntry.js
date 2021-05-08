@@ -7,6 +7,7 @@ const RegionEntry = (props) => {
     const { data } = props;
     const mapId = props.data._id;
     let history = useHistory();
+    
  
     const handleOpen = async (e) => {
         //props.handleSetActiveRegion(props.data);
@@ -14,14 +15,14 @@ const RegionEntry = (props) => {
         //let arr = props.route
         //arr.push(props.data);
         //props.setRoute(arr);
-        props.editMap(mapId, props.data.name);
+        //props.editMap(mapId, props.data.name);
         history.push("/home/region/" + mapId);
         props.reload();
     };
 
     const handleEditLand = async (e) => {
         //props.handleSetActiveRegion(props.data);
-        props.activeViewer(true);
+        props.activeViewer(true, props.data, props.regions );
         history.push("/home/regionviewer/" + props.data._id);
     };
 

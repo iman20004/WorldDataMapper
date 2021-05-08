@@ -2,14 +2,14 @@ import React from 'react';
 import RegionEntry from './RegionEntry';
 
 const RegionContents = (props) => {
-    let regions = props.subRegions;
-
+    
     return (
-        regions !== undefined && regions.length > 0 ? <div className=' table-entries container-primary'>
+        props.subRegions !== undefined && props.subRegions.length > 0 ? <div className=' table-entries container-primary'>
             {
-                regions.map((entry) => (
+                props.subRegions.map((entry, index) => (
                     <RegionEntry
                         data={entry} key={entry._id} 
+                        index={index} regions={props.subRegions}
                         activeViewer={props.activeViewer}
                         reload={props.reload}
                         editMap={props.editMap}

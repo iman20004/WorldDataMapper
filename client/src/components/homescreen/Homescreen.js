@@ -1,5 +1,6 @@
 import Logo from '../navbar/Logo';
 import Path from '../navbar/Path';
+import Arrows from '../navbar/Arrows';
 import Login from '../modals/Login';
 import UpdateAccount from '../modals/UpdateAccount';
 import CreateAccount from '../modals/CreateAccount';
@@ -42,6 +43,10 @@ const Homescreen = (props) => {
 	const [editMapId, setEditMap] = useState('');
 	const [showDeleteRegion, toggleShowDeleteRegion] = useState(false);
 	const [deleteRegionId, setDeleteRegion] = useState('');
+
+	const [sub, setSub] = useState([]);
+	const [regionInViewer, setRegionInViewer] = useState('');
+
 	//const [canUndo, setCanUndo] = useState(props.tps.hasTransactionToUndo());
 	//const [canRedo, setCanRedo] = useState(props.tps.hasTransactionToRedo());
 
@@ -82,7 +87,9 @@ const Homescreen = (props) => {
 		setRoute(arr);
 	}
 
-	const handleSetActiveViewer = (bool) => {
+	const handleSetActiveViewer = (bool, reg, subregions) => {
+		setSub(subregions);
+		setRegionInViewer(reg);
 		toggleActiveViewer(bool);
 	}
 
@@ -135,14 +142,6 @@ const Homescreen = (props) => {
 		const { data } = await UpdateRegion({ variables: { _id: _id, value: newName } });
 	}
 
-	const handleSetActiveRegion = (reg) => {
-		setActiveRegion(reg);
-	};
-
-	/*
-	const handleSetActiveMap = (map) => {
-		setActiveMap(map);
-	};*/
 
 	const setShowLogin = () => {
 		toggleShowDeleteMap(false);
@@ -199,7 +198,6 @@ const Homescreen = (props) => {
 		toggleShowDeleteRegion(!showDeleteRegion);
 	};
 
-
 	return (
 		<BrowserRouter>
 			<WLayout wLayout="header">
@@ -220,11 +218,11 @@ const Homescreen = (props) => {
 							<WNavItem>
 								{
 									(activeViewer) ?
-										<div className="arrows">
-											<i className="material-icons large">arrow_back</i>
-											<div className='info-spacer'></div>
-											<i className="material-icons large">arrow_forward</i>
-										</div>
+										<Arrows
+											reg = {regionInViewer}
+											subregions = {sub}
+											activeViewer={handleSetActiveViewer}
+										/>
 										: (route.length > 0) ?
 											<Path className='logo'
 												route={route}
@@ -284,14 +282,14 @@ const Homescreen = (props) => {
 									regions={regions}
 									createNewRegion={createNewRegion}
 									setRoute={handleSetRoute}
-									route={route}
 									activeViewer={handleSetActiveViewer}
 									reload={reload}
 									editMap={editMap}
 									setShowDeleteRegion={setShowDeleteRegion}
-								//activeRegion={activeRegion}
-								//subRegions={childs}
-								//handleSetActiveRegion={handleSetActiveRegion}
+									//route={route}
+									//activeRegion={activeRegion}
+									//subRegions={childs}
+									//handleSetActiveRegion={handleSetActiveRegion}
 								/>
 							</div>
 						</Route>
@@ -301,8 +299,8 @@ const Homescreen = (props) => {
 								<RegionViewer
 									regions={regions}
 									activeViewer={handleSetActiveViewer}
-								//activeRegion={activeRegion}
-								//handleSetActiveRegion={handleSetActiveRegion}
+									//activeRegion={activeRegion}
+									//handleSetActiveRegion={handleSetActiveRegion}
 								/>
 							</div>
 						</Route>
