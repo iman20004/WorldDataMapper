@@ -2,7 +2,7 @@ import React from 'react';
 import RegionHeader from './RegionHeader';
 import RegionContents from './RegionContents';
 import { useParams} from "react-router-dom";
-import { useMutation, useQuery } from '@apollo/client';
+import { useQuery } from '@apollo/client';
 import { GET_DB_ANCESTORS } 	from '../../cache/queries'
 
 const Region = (props) => {
@@ -34,14 +34,15 @@ const Region = (props) => {
             <RegionContents
                 activeRegion={region}
                 subRegions={subregions}
-                //setRoute={props.setRoute}
-                //route={props.route}
                 activeViewer={props.activeViewer}
                 reload={props.reload}
                 editMap={props.editMap}
+                setShowDeleteRegion={props.setShowDeleteRegion}
                 //activeRegion={props.activeRegion}
                 //subRegions={props.subRegions}
                 //handleSetActiveRegion={props.handleSetActiveRegion}
+                //setRoute={props.setRoute}
+                //route={props.route}
             />
         </div>
     );

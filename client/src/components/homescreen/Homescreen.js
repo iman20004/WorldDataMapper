@@ -4,6 +4,7 @@ import Login from '../modals/Login';
 import UpdateAccount from '../modals/UpdateAccount';
 import CreateAccount from '../modals/CreateAccount';
 import DeleteMapModal from '../modals/DeleteMapModal';
+import DeleteRegionModal from '../modals/DeleteRegionModal';
 import MapName from '../modals/MapName';
 import MapEdit from '../modals/MapEdit';
 import Maps from '../map/Maps';
@@ -39,6 +40,8 @@ const Homescreen = (props) => {
 	const [showMapEdit, toggleShowMapEdit] = useState(false);
 	const [deleteMapId, setDeleteMap] = useState('');
 	const [editMapId, setEditMap] = useState('');
+	const [showDeleteRegion, toggleShowDeleteRegion] = useState(false);
+	const [deleteRegionId, setDeleteRegion] = useState('');
 	//const [canUndo, setCanUndo] = useState(props.tps.hasTransactionToUndo());
 	//const [canRedo, setCanRedo] = useState(props.tps.hasTransactionToRedo());
 
@@ -188,6 +191,14 @@ const Homescreen = (props) => {
 		toggleShowMapEdit(!showMapEdit);
 	};
 
+	const setShowDeleteRegion = (_id) => {
+		toggleShowCreate(false);
+		toggleShowLogin(false);
+		toggleShowUpdate(false);
+		setDeleteRegion(_id);
+		toggleShowDeleteRegion(!showDeleteRegion);
+	};
+
 
 	return (
 		<BrowserRouter>
@@ -277,6 +288,7 @@ const Homescreen = (props) => {
 									activeViewer={handleSetActiveViewer}
 									reload={reload}
 									editMap={editMap}
+									setShowDeleteRegion={setShowDeleteRegion}
 								//activeRegion={activeRegion}
 								//subRegions={childs}
 								//handleSetActiveRegion={handleSetActiveRegion}
@@ -322,6 +334,9 @@ const Homescreen = (props) => {
 					showDeleteMap && (<DeleteMapModal deleteMap={handleDeleteMap} setShowDeleteMap={setShowDeleteMap} deleteMapId={deleteMapId} />)
 				}
 
+				{
+					showDeleteRegion && (<DeleteRegionModal deleteRegion={handleDeleteMap} setShowDeleteRegion={setShowDeleteRegion} deleteRegionId={deleteRegionId}/>)
+				}
 
 			</WLayout>
 

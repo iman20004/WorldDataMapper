@@ -30,7 +30,7 @@ const RegionEntry = (props) => {
             <WCol size="2">
                 {
                     <div className='region-first'>
-                        <i className="material-icons close-landmark">close</i>
+                        <i onClick={() => props.setShowDeleteRegion(mapId)} className="material-icons close-landmark">close</i>
                         <div className="table-text" onClick={handleOpen}>
                             {data.name}
                         </div>
