@@ -38,7 +38,7 @@ const RegionEntry = (props) => {
         const newCapital = e.target.value ? e.target.value : 'No Capital';
         const prevCapital = data.capital;
         if (newCapital !== prevCapital) {
-            //props.editItem(data._id, 'description', newDescr, prevDescr);
+            props.editRegion(data._id, 'capital', newCapital);
         }
     };
 
@@ -47,7 +47,7 @@ const RegionEntry = (props) => {
         const newLeader = e.target.value ? e.target.value : 'No Leader';
         const prevLeader = data.leader;
         if (newLeader !== prevLeader) {
-            //props.editItem(data._id, 'description', newDescr, prevDescr);
+            props.editRegion(data._id, 'leader', newLeader);
         }
     };
 

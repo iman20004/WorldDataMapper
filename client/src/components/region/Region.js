@@ -36,7 +36,7 @@ const Region = (props) => {
                 subRegions={subregions}
                 activeViewer={props.activeViewer}
                 reload={props.reload}
-                editMap={props.editMap}
+                editRegion={props.editRegion}
                 setShowDeleteRegion={props.setShowDeleteRegion}
                 //activeRegion={props.activeRegion}
                 //subRegions={props.subRegions}

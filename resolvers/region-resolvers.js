@@ -115,13 +115,14 @@ module.exports = {
 			else return false;
 		},
 		/** 
-			@param 	 {object} args - a map objectID, and the new name
+			@param 	 {object} args - a map objectID, field and the new value
 			@returns {boolean} new name on successful update, empty string on failure
 		**/
 		updateRegion: async (_, args) => {
-			const { value, _id } = args;
+			const { field, value, _id } = args;
 			const objectId = new ObjectId(_id);
-			const updated = await Region.updateOne({ _id: objectId }, { name: value });
+			const updated = await Region.updateOne({ _id: objectId }, {[field]: value});
+			//const updated = await Region.updateOne({ _id: objectId }, { name: value });
 			if (updated) return value;
 			else return "";
 		}

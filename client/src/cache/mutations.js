@@ -64,7 +64,7 @@ export const DELETE_REGION = gql`
 `;
 
 export const UPDATE_REGION = gql`
-	mutation UpdateRegion($_id: String!, $value: String!) {
-		updateRegion(_id: $_id, value: $value)
+	mutation UpdateRegion($_id: String!, $value: String!, $field: String! ) {
+		updateRegion(_id: $_id, value: $value, field: $field)
 	}
 `;

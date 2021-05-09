@@ -12,7 +12,7 @@ const RegionContents = (props) => {
                         index={index} regions={props.subRegions}
                         activeViewer={props.activeViewer}
                         reload={props.reload}
-                        editMap={props.editMap}
+                        editRegion={props.editRegion}
                         setShowDeleteRegion={props.setShowDeleteRegion}
                         //handleSetActiveRegion={props.handleSetActiveRegion}
                         //setRoute={props.setRoute}

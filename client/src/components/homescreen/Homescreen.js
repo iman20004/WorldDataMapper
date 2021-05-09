@@ -139,7 +139,11 @@ const Homescreen = (props) => {
 	};
 
 	const editMap = async (_id, newName) => {
-		const { data } = await UpdateRegion({ variables: { _id: _id, value: newName } });
+		const { data } = await UpdateRegion({ variables: { _id: _id, value: newName, field: 'name'} });
+	}
+
+	const editRegion = async (_id, field, value) => {
+		const { data } = await UpdateRegion({ variables: { _id: _id, value: value, field: field} });
 	}
 
 
@@ -284,7 +288,7 @@ const Homescreen = (props) => {
 									setRoute={handleSetRoute}
 									activeViewer={handleSetActiveViewer}
 									reload={reload}
-									editMap={editMap}
+									editRegion={editRegion} 
 									setShowDeleteRegion={setShowDeleteRegion}
 									//route={route}
 									//activeRegion={activeRegion}

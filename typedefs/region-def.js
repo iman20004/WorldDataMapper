@@ -22,7 +22,7 @@ extend type Query {
 extend type Mutation {
 	addRegion(region: RegionInput!): Region
 	deleteRegion(_id: String!): Boolean
-	updateRegion(_id: String!, value: String!): String
+	updateRegion(_id: String!, value: String!, field: String!): String
 }
 input FieldInput {
 	_id: String
