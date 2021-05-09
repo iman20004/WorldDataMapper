@@ -7,7 +7,7 @@ const Logo = (props) => {
     const clickDisabled = () => { };
 
     const handleHome = async (e) => {
-        props.activeViewer(false);
+        props.activeViewer(false, {}, []);
         props.setRoute([]);
         history.push("/home/maps");
         //props.handleSetActiveRegion({});

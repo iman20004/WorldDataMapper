@@ -22,7 +22,11 @@ const RegionHeader = (props) => {
                     </WButton>
                 </WCol>
                 <WCol size="4">
-                    <div className='spreadsheet-header'>Region Name: {props.activeRegion.name}</div>
+                    <div className="name-displayer">
+                        <div className='spreadsheet-header'>Region Name:</div>
+                        <div className='table-header-spacer'></div>
+                        <div className='region-name'>{props.activeRegion.name}</div>
+                    </div>
                 </WCol>
                 <WCol size="4">
                     <div></div>

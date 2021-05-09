@@ -17,7 +17,7 @@ const LoggedIn = (props) => {
             if (reset) {
                 //props.setActiveRegion({});
                 //props.handleSetActiveMap({});
-                props.activeViewer(false);
+                props.activeViewer(false, {}, []);
                 props.setRoute([]);
                 history.push("/home/welcome");
             }

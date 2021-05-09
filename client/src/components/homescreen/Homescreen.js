@@ -45,7 +45,7 @@ const Homescreen = (props) => {
 	const [deleteRegionId, setDeleteRegion] = useState('');
 
 	const [sub, setSub] = useState([]);
-	const [regionInViewer, setRegionInViewer] = useState('');
+	const [regionInViewer, setRegionInViewer] = useState({});
 
 	//const [canUndo, setCanUndo] = useState(props.tps.hasTransactionToUndo());
 	//const [canRedo, setCanRedo] = useState(props.tps.hasTransactionToRedo());
@@ -120,8 +120,8 @@ const Homescreen = (props) => {
 			_id: '',
 			owner: props.user._id,
 			name: 'Untitled',
-			capital: 'Capital',
-			leader: 'Leader',
+			capital: 'No Capital',
+			leader: 'No Leader',
 			landmarks: ['None'],
 			root: false,
 			parentId: _id,
