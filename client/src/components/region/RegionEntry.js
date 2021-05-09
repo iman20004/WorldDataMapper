@@ -33,6 +33,15 @@ const RegionEntry = (props) => {
         history.push("/home/regionviewer/" + props.data._id);
     };
 
+    const handleNameEdit = async (e) => {
+        toggleNameEdit(false);
+        const newName = e.target.value ? e.target.value : 'Untitled';
+        const prevName = data.name;
+        if (newName !== prevName) {
+            props.editRegion(data._id, 'name', newName);
+        }
+    };
+
     const handleCapitalEdit = async (e) => {
         toggleCapitalEdit(false);
         const newCapital = e.target.value ? e.target.value : 'No Capital';
@@ -51,15 +60,52 @@ const RegionEntry = (props) => {
         }
     };
 
+    const handlekeyDownName = async (e) => {
+        if (e.keyCode === 13) {
+            handleNameEdit(e)
+        } else if (e.keyCode === 39){
+            toggleCapitalEdit(true);
+        }
+    };
+
+    const handlekeyDownCapital = async (e) => {
+        if (e.keyCode === 13) {
+            handleCapitalEdit(e)
+        } else if (e.keyCode === 37){
+            toggleNameEdit(true);
+        } else if (e.keyCode === 39){
+            toggleLeaderEdit(true);
+        }
+    };
+
+    const handlekeyDownLeader = async (e) => {
+        if (e.keyCode === 13) {
+            handleLeaderEdit(e)
+        } else if (e.keyCode === 37){
+            toggleCapitalEdit(true);
+        }
+    };
+
     return (
         <WRow className='table-entry'>
             <WCol size="2">
                 {
                     <div className='region-first'>
                         <i onClick={() => props.setShowDeleteRegion(mapId)} className="material-icons close-landmark">close</i>
-                        <div className="table-text" onClick={handleOpen}>
+                        {
+                        editingName || data.name === ''
+                        ? <WInput
+                            className='table-input' onBlur={handleNameEdit}
+                            //onKeyDown={(e) => { if (e.keyCode === 13) handleNameEdit(e) }}
+                            onKeyDown={(e) => handlekeyDownName(e)}
+                            autoFocus={true} defaultValue={data.name} type='text'
+                            inputClass="table-input-class"
+                        />
+                        : <div className="table-text"
+                            onClick={() => handleOpen}>
                             {data.name}
                         </div>
+                        }
                     </div>
                 }
 
@@ -70,7 +116,8 @@ const RegionEntry = (props) => {
                     editingCapital || data.capital === ''
                         ? <WInput
                             className='table-input' onBlur={handleCapitalEdit}
-                            onKeyDown={(e) => { if (e.keyCode === 13) handleCapitalEdit(e) }}
+                            //onKeyDown={(e) => { if (e.keyCode === 13) handleCapitalEdit(e) }}
+                            onKeyDown={(e) => handlekeyDownCapital(e)}
                             autoFocus={true} defaultValue={data.capital} type='text'
                             inputClass="table-input-class"
                         />
@@ -87,7 +134,8 @@ const RegionEntry = (props) => {
                     editingLeader || data.leader === ''
                         ? <WInput
                             className='table-input' onBlur={handleLeaderEdit}
-                            onKeyDown={(e) => { if (e.keyCode === 13) handleLeaderEdit(e) }}
+                            //onKeyDown={(e) => { if (e.keyCode === 13) handleLeaderEdit(e) }}
+                            onKeyDown={(e) => handlekeyDownLeader(e)}
                             autoFocus={true} defaultValue={data.leader} type='text'
                             inputClass="table-input-class"
                         />
