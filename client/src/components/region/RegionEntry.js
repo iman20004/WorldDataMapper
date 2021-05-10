@@ -8,10 +8,24 @@ const RegionEntry = (props) => {
     const mapId = props.data._id;
     let history = useHistory();
 
-
     const [editingName, toggleNameEdit] = useState(false);
     const [editingCapital, toggleCapitalEdit] = useState(false);
     const [editingLeader, toggleLeaderEdit] = useState(false);
+
+    
+    if (props.activeIndex === props.index){
+        if (props.activeField === 'name') {
+            toggleNameEdit(true);
+        } else if (props.activeField === 'capital'){
+            toggleCapitalEdit(true);
+        } else if (props.activeField === 'leader'){
+            toggleLeaderEdit(true);
+        }
+
+        props.setActiveField('');
+        props.setActiveIndex(-1);
+
+    }
 
     const disabledButton = () => { }
 
@@ -23,6 +37,7 @@ const RegionEntry = (props) => {
         //arr.push(props.data);
         //props.setRoute(arr);
         //props.editMap(mapId, props.data.name);
+        console.log("kia masla hay")
         history.push("/home/region/" + mapId);
         props.reload();
     };
@@ -65,6 +80,10 @@ const RegionEntry = (props) => {
             handleNameEdit(e)
         } else if (e.keyCode === 39){
             toggleCapitalEdit(true);
+        } else if (e.keyCode === 38){
+            props.setActiveField('name');
+            props.setActiveIndex(props.index -1);
+            //props.refetch();
         }
     };
 
@@ -75,7 +94,7 @@ const RegionEntry = (props) => {
             toggleNameEdit(true);
         } else if (e.keyCode === 39){
             toggleLeaderEdit(true);
-        }
+        } 
     };
 
     const handlekeyDownLeader = async (e) => {
@@ -102,7 +121,7 @@ const RegionEntry = (props) => {
                             inputClass="table-input-class"
                         />
                         : <div className="table-text"
-                            onClick={() => handleOpen}>
+                            onClick={handleOpen}>
                             {data.name}
                         </div>
                         }

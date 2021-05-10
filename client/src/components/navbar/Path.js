@@ -7,7 +7,6 @@ import { useHistory } from "react-router-dom";
 const Path = (props) => {
     let history = useHistory();
     //const ancestorRegions = props.route.reverse();
-    console.log(props.route)
 
     const handleNavgation = (reg) => {
         history.push("/home/region/"+reg._id);

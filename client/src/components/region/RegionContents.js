@@ -14,6 +14,11 @@ const RegionContents = (props) => {
                         reload={props.reload}
                         editRegion={props.editRegion}
                         setShowDeleteRegion={props.setShowDeleteRegion}
+                        setActiveField={props.setActiveField}
+                        setActiveIndex={props.setActiveIndex}
+                        activeField={props.activeField} 
+                        activeIndex={props.activeIndex}
+                        refetch={props.refetch}
                         //handleSetActiveRegion={props.handleSetActiveRegion}
                         //setRoute={props.setRoute}
                         //route={props.route}

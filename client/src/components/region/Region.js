@@ -1,4 +1,4 @@
-import React from 'react';
+import React, { useState } from 'react';
 import RegionHeader from './RegionHeader';
 import RegionContents from './RegionContents';
 import { useParams} from "react-router-dom";
@@ -21,7 +21,8 @@ const Region = (props) => {
         props.setRoute(data.getAllAncestors);
     }
 
-    //let ancestors = region.root === true ? [] : 
+    const [activeIndex, setActiveIndex] = useState(-1);
+    const [activeField, setActiveField] = useState('');
 
     return (
         <div className='table ' >
@@ -38,6 +39,10 @@ const Region = (props) => {
                 reload={props.reload}
                 editRegion={props.editRegion}
                 setShowDeleteRegion={props.setShowDeleteRegion}
+                setActiveField={setActiveField} activeField={activeField}
+                setActiveIndex={setActiveIndex} activeIndex={activeIndex}
+                //refetch={refetch}
+                refetch={props.reload}
                 //activeRegion={props.activeRegion}
                 //subRegions={props.subRegions}
                 //handleSetActiveRegion={props.handleSetActiveRegion}
