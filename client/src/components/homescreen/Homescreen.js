@@ -20,6 +20,10 @@ import { useMutation, useQuery } from '@apollo/client';
 import { WNavbar, WSidebar, WNavItem } from 'wt-frontend';
 import { WLayout, WLHeader, WLMain } from 'wt-frontend';
 import { BrowserRouter, Switch, Route, Redirect } from 'react-router-dom';
+import {UpdateRegion_Transaction} 				from '../../utils/jsTPS';
+
+
+
 
 
 const Homescreen = (props) => {
@@ -47,8 +51,8 @@ const Homescreen = (props) => {
 	const [sub, setSub] = useState([]);
 	const [regionInViewer, setRegionInViewer] = useState({});
 
-	//const [canUndo, setCanUndo] = useState(props.tps.hasTransactionToUndo());
-	//const [canRedo, setCanRedo] = useState(props.tps.hasTransactionToRedo());
+	const [canUndo, setCanUndo] = useState(props.tps.hasTransactionToUndo());
+	const [canRedo, setCanRedo] = useState(props.tps.hasTransactionToRedo());
 
 	const { loading, error, data, refetch } = useQuery(GET_DB_REGIONS);
 
@@ -95,9 +99,32 @@ const Homescreen = (props) => {
 		toggleActiveViewer(bool);
 	}
 
-	const [AddRegion] = useMutation(mutations.ADD_REGION);
+	const [AddRegion] = useMutation(mutations.ADD_REGION, mutationOptions);
 	const [DeleteRegion] = useMutation(mutations.DELETE_REGION);
 	const [UpdateRegion] = useMutation(mutations.UPDATE_REGION, mutationOptions);
+	const [UpdateLandmarks] = useMutation(mutations.UPDATE_LANDMARKS, mutationOptions);
+
+
+	const tpsUndo = async () => {
+		const ret = await props.tps.undoTransaction();
+		if(ret) {
+			setCanUndo(props.tps.hasTransactionToUndo());
+			setCanRedo(props.tps.hasTransactionToRedo());
+		}
+	}
+
+	const tpsRedo = async () => {
+		const ret = await props.tps.doTransaction();
+		if(ret) {
+			setCanUndo(props.tps.hasTransactionToUndo());
+			setCanRedo(props.tps.hasTransactionToRedo());
+		}
+	}
+
+
+
+
+
 
 	const createNewMap = async (mapname) => {
 		let newMap = {
@@ -117,6 +144,7 @@ const Homescreen = (props) => {
 	};
 
 	const createNewRegion = async (_id) => {
+		let opcode = 1;
 		let newRegion = {
 			_id: '',
 			owner: props.user._id,
@@ -127,10 +155,16 @@ const Homescreen = (props) => {
 			root: false,
 			parentId: _id
 		}
+
+		let transaction = new UpdateRegion_Transaction(newRegion, opcode, AddRegion, DeleteRegion);
+		props.tps.addTransaction(transaction);
+		tpsRedo();
+
+		/*
 		const { data } = await AddRegion({ variables: { region: newRegion }, refetchQueries: [{ query: GET_DB_REGIONS }] });
 		if (data) {
 			reload();
-		}
+		}*/
 	};
 
 	const handleDeleteMap = async (_id) => {
@@ -145,6 +179,11 @@ const Homescreen = (props) => {
 	const editRegion = async (_id, field, value) => {
 		const { data } = await UpdateRegion({ variables: { _id: _id, value: value, field: field } });
 	}
+
+	/*
+	const addLandmark = async (_id, lands) => {
+		const { data } = await UpdateLandmarks({ variables: { _id: _id, value: value, field: field } });
+	}*/
 
 
 	const setShowLogin = () => {
@@ -221,7 +260,7 @@ const Homescreen = (props) => {
 						<ul>
 							<WNavItem className='middle-header'>
 								{
-									(route.length > 0) ?
+									(route.length >= 0) ?
 										<div className='region-nav'>
 											<Path className='logo'
 												route={route}

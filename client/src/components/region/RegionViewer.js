@@ -1,5 +1,5 @@
-import React from 'react';
-import { WButton, WRow, WCol } from 'wt-frontend';
+import React, { useState } from 'react';
+import { WButton, WInput } from 'wt-frontend';
 import flagImg from '../Images/flag.png';
 import Landmarks from './Landmarks';
 import { useHistory, useParams } from "react-router-dom";
@@ -14,10 +14,36 @@ const RegionViewer = (props) => {
     let numChildren = 0
     // QUERY FOR ALL CHILDREN HERE!!!!!!!!!!!!!!!!
 
+    const [editingLand, toggleLandEdit] = useState(false);
+    const [newLand, setNewLand] = useState('');
+    
+
     const navigateBack = async (e) => {
         //props.handleSetActiveRegion(props.activeRegion.parentId);
         props.activeViewer(false, {}, []);
-        history.push("/home/region/"+region.parentId);
+        history.push("/home/region/" + region.parentId);
+    };
+
+    const handleKeyEnter = async (e) => {
+        if (e.keyCode === 13) {
+            toggleLandEdit(false);
+            //call props function
+        }
+
+    };
+
+    const handleLandInput = async (e) => {
+        toggleLandEdit(false);
+
+        if (e.target.value) {
+            setNewLand(e.target.value);
+        }
+    };
+
+    const handleAddLand = async () => {
+        //call props function
+        setNewLand('');
+
     };
 
     return (
@@ -43,7 +69,7 @@ const RegionViewer = (props) => {
                         <div className='info-rows'>
                             <div>Parent Region: </div>
                             <div className='info-spacer'></div>
-                            <div  className='viewer-parent' onClick={navigateBack}>{parentReg.name}</div>
+                            <div className='viewer-parent' onClick={navigateBack}>{parentReg.name}</div>
                             <i className="material-icons edit-button">edit</i>
                         </div>
                         <div className='info-col-spacer'></div>
@@ -80,8 +106,21 @@ const RegionViewer = (props) => {
                         }
                     </div>
                     <div className='add-box'>
-                        <i className="material-icons viewer-add">add</i>
-                        <div className='new-landmark-box'>New Landmark Here</div>
+                        <i className="material-icons viewer-add" onClick={handleAddLand}>add</i>
+                        {
+                            editingLand
+                                ? <WInput
+                                    className='table-input new-landmark-box' onBlur={(e) => handleLandInput(e)}
+                                    //onKeyDown={(e) => { if (e.keyCode === 13) handleCapitalEdit(e) }}
+                                    onKeyDown={(e) => handleKeyEnter(e)}
+                                    autoFocus={true} placeholder='New Landmark Here' type='text'
+                                    inputClass="table-input-class"
+                                />
+                                : <div className='new-landmark-box'
+                                    onClick={() => toggleLandEdit(!editingLand)}>
+                                    New Landmark Here
+                                </div>
+                        }
                     </div>
                 </div>
             </div>

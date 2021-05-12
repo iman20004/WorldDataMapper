@@ -26,6 +26,8 @@ const RegionEntry = (props) => {
     const handleOpen = async (e) => {
         //props.handleSetActiveRegion(props.data);
         //props.editMap(mapId, props.data.name);
+        props.setActiveField('');
+        props.setActiveIndex(-1);
         history.push("/home/region/" + mapId);
         props.reload();
     };

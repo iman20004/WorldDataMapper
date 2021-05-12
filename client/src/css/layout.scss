@@ -305,10 +305,13 @@ html {
 .navbar-links {
     display: flex;
     flex-direction: row;
+    width: 340px;
+    overflow-x: scroll;
+    scrollbar-width: thin;
 }
 
 .arrows {
-    padding-left: 120px;
+    padding-left: 10px;
     display: flex;
     flex-direction: row;
 }
@@ -396,6 +399,10 @@ html {
 }
 
 .middle-header {
-    width: 800px;
+    width: 850px;
     //justify-content: center;
+}
+
+.empty-path {
+    width: 340px;
 }

@@ -14,16 +14,16 @@ const Path = (props) => {
     }
 
     return (
-        props.route !== undefined ? <div className='navbar-links'>{
+        props.route !== undefined && props.route.length >0 ? <div className='navbar-links'>{
             props.route.map(ancestor => (
                 <div className='path-header'>
                     <WNavItem className='route-header' onClick={()=>handleNavgation(ancestor)}>{ancestor.name}</WNavItem>
-                    <i className="material-icons large">keyboard_arrow_right</i>
+                    <i className="material-icons small">keyboard_arrow_right</i>
                 </div>
             ))
         }
         </div> 
-        : <div></div>
+        : <div className='empty-path'></div>
     );
 
 };

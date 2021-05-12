@@ -67,3 +67,9 @@ export const UPDATE_REGION = gql`
 		updateRegion(_id: $_id, value: $value, field: $field)
 	}
 `;
+
+export const UPDATE_LANDMARKS = gql`
+	mutation UpdateLandmarks($_id: String!, $value: [String!]) {
+		updateLandmarks(_id: $_id, value: $value)
+	}
+`;
