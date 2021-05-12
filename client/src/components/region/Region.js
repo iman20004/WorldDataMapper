@@ -15,8 +15,8 @@ const Region = (props) => {
         variables: { _id: id },
       });
 
-	if (loading) { console.log(loading, 'loading hehehe'); }
-	if (error) { console.log(error, 'error oh no'); }
+	if (loading) { console.log(loading, 'loading 2'); }
+	if (error) { console.log(error, 'error 2'); }
 	if (data) { 
         props.setRoute(data.getAllAncestors);
     }

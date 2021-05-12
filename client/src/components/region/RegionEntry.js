@@ -1,4 +1,4 @@
-import React, { useState } from 'react';
+import React, { useState, useEffect } from 'react';
 import { WButton, WInput, WRow, WCol } from 'wt-frontend';
 import { useHistory } from "react-router-dom";
 import flagImg from '../Images/flag.png';
@@ -8,36 +8,24 @@ const RegionEntry = (props) => {
     const mapId = props.data._id;
     let history = useHistory();
 
-    const [editingName, toggleNameEdit] = useState(false);
-    const [editingCapital, toggleCapitalEdit] = useState(false);
-    const [editingLeader, toggleLeaderEdit] = useState(false);
-
+    const [editingName, toggleNameEdit] = useState(Boolean(props.activeIndex && props.activeField === 'name'));
+    const [editingCapital, toggleCapitalEdit] = useState(Boolean(props.activeIndex && props.activeField === 'capital'));
+    const [editingLeader, toggleLeaderEdit] = useState(Boolean(props.activeIndex && props.activeField === 'leader'));
     
-    if (props.activeIndex === props.index){
-        if (props.activeField === 'name') {
-            toggleNameEdit(true);
-        } else if (props.activeField === 'capital'){
-            toggleCapitalEdit(true);
-        } else if (props.activeField === 'leader'){
-            toggleLeaderEdit(true);
-        }
+    useEffect(() => {
+        toggleCapitalEdit(Boolean(props.activeIndex && props.activeField === 'capital'))
+        toggleNameEdit(Boolean(props.activeIndex && props.activeField === 'name'))
+        toggleLeaderEdit(Boolean(props.activeIndex && props.activeField === 'leader'))
 
-        props.setActiveField('');
-        props.setActiveIndex(-1);
-
-    }
+    }, [props.activeIndex, props.activeField])
+    
 
     const disabledButton = () => { }
 
 
     const handleOpen = async (e) => {
         //props.handleSetActiveRegion(props.data);
-        //props.setRoute(props.data);
-        //let arr = props.route
-        //arr.push(props.data);
-        //props.setRoute(arr);
         //props.editMap(mapId, props.data.name);
-        console.log("kia masla hay")
         history.push("/home/region/" + mapId);
         props.reload();
     };
@@ -83,7 +71,9 @@ const RegionEntry = (props) => {
         } else if (e.keyCode === 38){
             props.setActiveField('name');
             props.setActiveIndex(props.index -1);
-            //props.refetch();
+        } else if (e.keyCode === 40){
+            props.setActiveField('name');
+            props.setActiveIndex(props.index +1);
         }
     };
 
@@ -94,7 +84,13 @@ const RegionEntry = (props) => {
             toggleNameEdit(true);
         } else if (e.keyCode === 39){
             toggleLeaderEdit(true);
-        } 
+        } else if (e.keyCode === 38){
+            props.setActiveField('capital');
+            props.setActiveIndex(props.index -1);
+        } else if (e.keyCode === 40){
+            props.setActiveField('capital');
+            props.setActiveIndex(props.index +1);
+        }
     };
 
     const handlekeyDownLeader = async (e) => {
@@ -102,6 +98,12 @@ const RegionEntry = (props) => {
             handleLeaderEdit(e)
         } else if (e.keyCode === 37){
             toggleCapitalEdit(true);
+        } else if (e.keyCode === 38){
+            props.setActiveField('leader');
+            props.setActiveIndex(props.index -1);
+        } else if (e.keyCode === 40){
+            props.setActiveField('leader');
+            props.setActiveIndex(props.index +1);
         }
     };
 
@@ -121,7 +123,7 @@ const RegionEntry = (props) => {
                             inputClass="table-input-class"
                         />
                         : <div className="table-text"
-                            onClick={handleOpen}>
+                            onClick={(e) => handleOpen(e)}>
                             {data.name}
                         </div>
                         }
@@ -172,7 +174,7 @@ const RegionEntry = (props) => {
                     </div>
                 }
             </WCol>
-            <WCol size="4" onClick={handleEditLand}>
+            <WCol size="4" onClick={(e) => handleEditLand(e)}>
                 {
                     <div className="table-text" >
                         {data.landmarks}

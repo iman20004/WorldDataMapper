@@ -12,9 +12,7 @@ const RegionViewer = (props) => {
     let parentReg = props.regions.find(reg => reg._id === region.parentId);
 
     let numChildren = 0
-    if (region.childrenIds !== null) {
-        numChildren = region.childrenIds.length;
-    }
+    // QUERY FOR ALL CHILDREN HERE!!!!!!!!!!!!!!!!
 
     const navigateBack = async (e) => {
         //props.handleSetActiveRegion(props.activeRegion.parentId);
@@ -62,7 +60,7 @@ const RegionViewer = (props) => {
                         </div>
                         <div className='info-col-spacer'></div>
                         <div className='info-rows'>
-                            <div># of Subregion: </div>
+                            <div># of Sub Regions: </div>
                             <div className='info-spacer'></div>
                             <div>{numChildren}</div>
                         </div>

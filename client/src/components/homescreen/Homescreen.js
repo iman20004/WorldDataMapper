@@ -42,7 +42,7 @@ const Homescreen = (props) => {
 	const [deleteMapId, setDeleteMap] = useState('');
 	const [editMapId, setEditMap] = useState('');
 	const [showDeleteRegion, toggleShowDeleteRegion] = useState(false);
-	const [deleteRegionId, setDeleteRegion] = useState('');
+	const [deleteRegionId, setDeleteRegion] = useState([]);
 
 	const [sub, setSub] = useState([]);
 	const [regionInViewer, setRegionInViewer] = useState({});
@@ -62,9 +62,11 @@ const Homescreen = (props) => {
 		maps = regions.filter(region => region.root === true);
 	}
 
+
+
 	// NOTE: might not need to be async
 	const reload = async () => {
-		if (regions){
+		if (regions) {
 			setActiveRegion({})
 		}
 	}
@@ -106,8 +108,7 @@ const Homescreen = (props) => {
 			leader: '',
 			landmarks: [],
 			root: true,
-			parentId: '',
-			childrenIds: []
+			parentId: ''
 		}
 		const { data } = await AddRegion({ variables: { region: newMap }, refetchQueries: [{ query: GET_DB_REGIONS }] });
 		if (data) {
@@ -124,8 +125,7 @@ const Homescreen = (props) => {
 			leader: 'No Leader',
 			landmarks: ['None'],
 			root: false,
-			parentId: _id,
-			childrenIds: []
+			parentId: _id
 		}
 		const { data } = await AddRegion({ variables: { region: newRegion }, refetchQueries: [{ query: GET_DB_REGIONS }] });
 		if (data) {
@@ -139,11 +139,11 @@ const Homescreen = (props) => {
 	};
 
 	const editMap = async (_id, newName) => {
-		const { data } = await UpdateRegion({ variables: { _id: _id, value: newName, field: 'name'} });
+		const { data } = await UpdateRegion({ variables: { _id: _id, value: newName, field: 'name' } });
 	}
 
 	const editRegion = async (_id, field, value) => {
-		const { data } = await UpdateRegion({ variables: { _id: _id, value: value, field: field} });
+		const { data } = await UpdateRegion({ variables: { _id: _id, value: value, field: field } });
 	}
 
 
@@ -219,19 +219,25 @@ const Homescreen = (props) => {
 							</WNavItem>
 						</ul>
 						<ul>
-							<WNavItem>
+							<WNavItem className='middle-header'>
 								{
-									(activeViewer) ?
-										<Arrows
-											reg = {regionInViewer}
-											subregions = {sub}
-											activeViewer={handleSetActiveViewer}
-										/>
-										: (route.length > 0) ?
+									(route.length > 0) ?
+										<div className='region-nav'>
 											<Path className='logo'
 												route={route}
+												activeViewer={handleSetActiveViewer}
 											/>
-											: <div></div>
+											{
+												(activeViewer) ?
+													<Arrows
+														reg={regionInViewer}
+														subregions={sub}
+														activeViewer={handleSetActiveViewer}
+													/>
+													: <div></div>
+											}
+										</div>
+										: <div></div>
 								}
 							</WNavItem>
 						</ul>
@@ -273,7 +279,7 @@ const Homescreen = (props) => {
 									setShowDeleteMap={setShowDeleteMap}
 									setShowMapEdit={setShowMapEdit}
 									editMap={editMap}
-									//setRoute={handleSetRoute}
+								//setRoute={handleSetRoute}
 								//handleSetActiveRegion={handleSetActiveRegion}
 								//handleSetActiveMap={handleSetActiveMap}
 								/>
@@ -288,12 +294,12 @@ const Homescreen = (props) => {
 									setRoute={handleSetRoute}
 									activeViewer={handleSetActiveViewer}
 									reload={reload}
-									editRegion={editRegion} 
+									editRegion={editRegion}
 									setShowDeleteRegion={setShowDeleteRegion}
-									//route={route}
-									//activeRegion={activeRegion}
-									//subRegions={childs}
-									//handleSetActiveRegion={handleSetActiveRegion}
+								//route={route}
+								//activeRegion={activeRegion}
+								//subRegions={childs}
+								//handleSetActiveRegion={handleSetActiveRegion}
 								/>
 							</div>
 						</Route>
@@ -303,8 +309,8 @@ const Homescreen = (props) => {
 								<RegionViewer
 									regions={regions}
 									activeViewer={handleSetActiveViewer}
-									//activeRegion={activeRegion}
-									//handleSetActiveRegion={handleSetActiveRegion}
+								//activeRegion={activeRegion}
+								//handleSetActiveRegion={handleSetActiveRegion}
 								/>
 							</div>
 						</Route>
@@ -337,7 +343,7 @@ const Homescreen = (props) => {
 				}
 
 				{
-					showDeleteRegion && (<DeleteRegionModal deleteRegion={handleDeleteMap} setShowDeleteRegion={setShowDeleteRegion} deleteRegionId={deleteRegionId}/>)
+					showDeleteRegion && (<DeleteRegionModal deleteRegion={handleDeleteMap} setShowDeleteRegion={setShowDeleteRegion} deleteRegionId={deleteRegionId} />)
 				}
 
 			</WLayout>
@@ -347,3 +353,5 @@ const Homescreen = (props) => {
 };
 
 export default Homescreen;
+
+

@@ -73,7 +73,7 @@ module.exports = {
 		addRegion: async (_, args) => {
 			const { region } = args;
 			const objectId = new ObjectId();
-			const { _id, owner, name, capital, leader, landmarks, root, parentId, childrenIds} = region;
+			const { _id, owner, name, capital, leader, landmarks, root, parentId} = region;
 			const newRegion = new Region({
 				_id: objectId,
 				owner: owner,
@@ -82,17 +82,8 @@ module.exports = {
 				leader: leader,
 				landmarks: landmarks,
 				root: root,
-				parentId: parentId,
-				childrenIds: childrenIds
+				parentId: parentId
 			});
-
-			if(newRegion.root === false) {
-				const pId = new ObjectId(newRegion.parentId);
-				const parent = await Region.findOne({ _id: pId });
-				let children = parent.childrenIds
-				children.push(newRegion._id)
-				const updateParent = await Region.updateOne({ _id: pId }, { childrenIds: children });
-			}
 
 			const updated = await newRegion.save();
 			if (updated) {
@@ -109,10 +100,10 @@ module.exports = {
 			const objectId = new ObjectId(_id);
 			const deleted = await Region.deleteOne({ _id: objectId });
 
-			const children = await Region.deleteMany({ parentId: objectId });
-
+			//const children = await Region.deleteMany({ parentId: objectId });
 			if (deleted) return true;
 			else return false;
+
 		},
 		/** 
 			@param 	 {object} args - a map objectID, field and the new value

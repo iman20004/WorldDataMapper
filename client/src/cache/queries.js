@@ -22,7 +22,6 @@ export const GET_DB_REGIONS = gql`
 			landmarks
 			root
 			parentId
-			childrenIds
 		}
 	}
 `;
@@ -38,10 +37,22 @@ export const GET_DB_ANCESTORS = gql`
 			landmarks
 			root
 			parentId
-			childrenIds
 		}
 	}
 `;
 
-
+export const GET_DB_MAPS = gql`
+	query GetDBMaps {
+		getAllRootRegions {
+			_id
+			owner
+			name
+			capital
+			leader
+			landmarks
+			root
+			parentId
+		}
+	}
+`;
 

@@ -11,7 +11,6 @@ type Region {
 	landmarks: [String]!
 	root:  Boolean!
 	parentId: String!
-	childrenIds: [String]!
 }
 extend type Query {
 	getAllRegions: [Region]
@@ -38,7 +37,6 @@ input RegionInput {
 	landmarks: [String]
 	root:  Boolean
 	parentId: String
-	childrenIds: [String]
 }
 `;
 

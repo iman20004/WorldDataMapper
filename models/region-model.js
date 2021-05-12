@@ -29,8 +29,7 @@ const regionSchema = new Schema(
 		},
 		parentId: {
 			type: String,
-		},
-		childrenIds: [String]
+		}
 	},
 	{ timestamps: true }
 );

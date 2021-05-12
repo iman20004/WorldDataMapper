@@ -6,7 +6,7 @@ const RegionHeader = (props) => {
     const handleAddRegion = async (e) => {
         props.createNewRegion(props.activeRegion._id)
     };
-    
+
     return (
         <>
             <WRow className='table-header-intro'>
