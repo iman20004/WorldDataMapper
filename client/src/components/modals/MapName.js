@@ -16,9 +16,20 @@ const MapName = (props) => {
 			return;
 		}
         props.setShowMapName(false);
-        props.createNewMap(name)
+        props.createNewMap(name);
         //history.push("/home/region/");
-	};
+    };
+    
+    const handlekeyDown = async (e) => {
+        if (e.keyCode === 13) {
+            if (!e.target.value) {
+                displayErrorMsg(true);
+                return;
+            }
+            props.setShowMapName(false);
+            props.createNewMap(e.target.value);
+        }
+    };
 
     return (
         <WModal className="map-modal" cover="true" visible={props.setShowMapName}>
@@ -29,7 +40,8 @@ const MapName = (props) => {
             <WMMain>
                 <WInput 
 					className="modal-input" onBlur={updateInput} name="lastName" labelAnimation="up" 
-					barAnimation="solid" labelText="Map Name" wType="outlined" inputType="text" 
+                    barAnimation="solid" labelText="Map Name" wType="outlined" inputType="text"
+                    onKeyDown={(e) => handlekeyDown(e)} 
 				/>
                 <div className="modal-spacer">&nbsp;</div>
                 <WButton className="modal-button cancel-button" onClick={() => props.setShowMapName(false)} wType="texted">
