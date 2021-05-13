@@ -20,7 +20,8 @@ import { useMutation, useQuery } from '@apollo/client';
 import { WNavbar, WSidebar, WNavItem } from 'wt-frontend';
 import { WLayout, WLHeader, WLMain } from 'wt-frontend';
 import { BrowserRouter, Switch, Route, Redirect } from 'react-router-dom';
-import { UpdateRegion_Transaction, SortRegions_Transaction } from '../../utils/jsTPS';
+import { UpdateRegion_Transaction, SortRegions_Transaction,
+	EditRegion_Transaction } from '../../utils/jsTPS';
 
 
 
@@ -172,15 +173,17 @@ const Homescreen = (props) => {
 
 	const handleDeleteMap = async (_id) => {
 		DeleteRegion({ variables: { _id: _id }, refetchQueries: [{ query: GET_DB_REGIONS }] });
-		//loadMap({});
 	};
 
 	const editMap = async (_id, newName) => {
 		const { data } = await UpdateRegion({ variables: { _id: _id, value: newName, field: 'name' } });
 	};
 
-	const editRegion = async (_id, field, value) => {
-		const { data } = await UpdateRegion({ variables: { _id: _id, value: value, field: field } });
+	const editRegion = async (_id, field, value, prev) => {
+		let transaction = new EditRegion_Transaction(_id, field, prev, value, UpdateRegion);
+		props.tps.addTransaction(transaction);
+		tpsRedo();
+		//const { data } = await UpdateRegion({ variables: { _id: _id, value: value, field: field } });
 	};
 
 	const sortRegions = async (region, field, children) => {

@@ -36,6 +36,7 @@ const RegionEntry = (props) => {
         //props.handleSetActiveRegion(props.data);
         props.activeViewer(true, props.data, props.regions);
         history.push("/home/regionviewer/" + props.data._id);
+        props.reload();
     };
 
     const handleNameEdit = async (e) => {
@@ -43,7 +44,7 @@ const RegionEntry = (props) => {
         const newName = e.target.value ? e.target.value : 'Untitled';
         const prevName = data.name;
         if (newName !== prevName) {
-            props.editRegion(data._id, 'name', newName);
+            props.editRegion(data._id, 'name', newName, prevName);
         }
     };
 
@@ -52,7 +53,7 @@ const RegionEntry = (props) => {
         const newCapital = e.target.value ? e.target.value : 'No Capital';
         const prevCapital = data.capital;
         if (newCapital !== prevCapital) {
-            props.editRegion(data._id, 'capital', newCapital);
+            props.editRegion(data._id, 'capital', newCapital, prevCapital);
         }
     };
 
@@ -61,7 +62,7 @@ const RegionEntry = (props) => {
         const newLeader = e.target.value ? e.target.value : 'No Leader';
         const prevLeader = data.leader;
         if (newLeader !== prevLeader) {
-            props.editRegion(data._id, 'leader', newLeader);
+            props.editRegion(data._id, 'leader', newLeader, prevLeader);
         }
     };
 
