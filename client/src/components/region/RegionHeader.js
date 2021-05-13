@@ -14,18 +14,31 @@ const RegionHeader = (props) => {
         props.sortRegions(props.activeRegion, field, props.subRegions);
     };
 
+    const redoOptions = {
+        className: !props.canRedo ? ' table-header-button-disabled ' : 'table-header-button ',
+        onClick: !props.canRedo   ? clickDisabled : props.redo, 
+        wType: "texted", 
+        clickAnimation: !props.canRedo ? "" : "ripple-light"
+    }
+
+    const undoOptions = {
+        className: !props.canUndo ? ' table-header-button-disabled ' : 'table-header-button',
+        onClick: !props.canUndo  ? clickDisabled : props.undo,
+        wType: "texted", 
+        clickAnimation: !props.canUndo ? "" : "ripple-light"
+    }
 
     return (
         <>
             <WRow className='table-header-intro'>
                 <WCol size="4">
-                    <WButton className='table-header-button ' id='add-button' wType="texted" onClick={handleAddRegion} >
+                    <WButton className='table-header-button ' id='add-button' wType="texted" clickAnimation="ripple-light" onClick={handleAddRegion} >
                         <i className="material-icons">add_circle</i>
                     </WButton>
-                    <WButton className='table-header-button ' wType="texted" >
+                    <WButton {...undoOptions} >
                         <i className="material-icons ">undo</i>
                     </WButton>
-                    <WButton className='table-header-button ' wType="texted" >
+                    <WButton {...redoOptions} >
                         <i className="material-icons ">redo</i>
                     </WButton>
                 </WCol>

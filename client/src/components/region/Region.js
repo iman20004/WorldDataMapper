@@ -40,6 +40,8 @@ const Region = (props) => {
                 activeRegion={region}
                 sortRegions={props.sortRegions}
                 subRegions={subRegions}
+                undo={props.undo} redo={props.redo}
+                canUndo={props.canUndo} canRedo={props.canRedo}
             //activeRegion={props.activeRegion}
             //handleSetActiveRegion={props.handleSetActiveRegion}
             />
@@ -52,7 +54,8 @@ const Region = (props) => {
                 setShowDeleteRegion={props.setShowDeleteRegion}
                 setActiveField={setActiveField} activeField={activeField}
                 setActiveIndex={setActiveIndex} activeIndex={activeIndex}
-                refetch={props.reload}
+                tps={props.tps}
+            //refetch={props.reload}
             //refetch={refetch}
             //activeRegion={props.activeRegion}
             //subRegions={props.subRegions}

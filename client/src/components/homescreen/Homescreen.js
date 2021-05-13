@@ -73,12 +73,13 @@ const Homescreen = (props) => {
 		if (regions) {
 			setActiveRegion({})
 		}
+
 	}
 
-	const loadMap = (map) => {
-		//props.tps.clearAllTransactions();
-		//setCanUndo(props.tps.hasTransactionToUndo());
-		//setCanRedo(props.tps.hasTransactionToRedo());
+	const loadRegion = () => {
+		props.tps.clearAllTransactions();
+		setCanUndo(props.tps.hasTransactionToUndo());
+		setCanRedo(props.tps.hasTransactionToRedo());
 		//setActiveRegion(map);
 
 	}
@@ -392,10 +393,13 @@ const Homescreen = (props) => {
 									createNewRegion={createNewRegion}
 									setRoute={handleSetRoute}
 									activeViewer={handleSetActiveViewer}
-									reload={reload}
+									reload={loadRegion}
 									editRegion={editRegion}
 									setShowDeleteRegion={setShowDeleteRegion}
 									sortRegions={sortRegions}
+									undo={tpsUndo} redo={tpsRedo}
+									canUndo={canUndo} canRedo={canRedo}
+									tps={props.tps}
 								//route={route}
 								//activeRegion={activeRegion}
 								//subRegions={childs}

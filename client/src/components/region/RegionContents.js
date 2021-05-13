@@ -18,7 +18,8 @@ const RegionContents = (props) => {
                         setActiveIndex={props.setActiveIndex}
                         activeField={props.activeField} 
                         activeIndex={props.activeIndex === index}
-                        refetch={props.refetch}
+                        tps={props.tps}
+                        //refetch={props.refetch}
                         //handleSetActiveRegion={props.handleSetActiveRegion}
                         //setRoute={props.setRoute}
                         //route={props.route}
