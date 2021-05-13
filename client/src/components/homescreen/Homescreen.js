@@ -20,7 +20,7 @@ import { useMutation, useQuery } from '@apollo/client';
 import { WNavbar, WSidebar, WNavItem } from 'wt-frontend';
 import { WLayout, WLHeader, WLMain } from 'wt-frontend';
 import { BrowserRouter, Switch, Route, Redirect } from 'react-router-dom';
-import {UpdateRegion_Transaction} 				from '../../utils/jsTPS';
+import { UpdateRegion_Transaction, SortRegions_Transaction } from '../../utils/jsTPS';
 
 
 
@@ -102,12 +102,14 @@ const Homescreen = (props) => {
 	const [AddRegion] = useMutation(mutations.ADD_REGION, mutationOptions);
 	const [DeleteRegion] = useMutation(mutations.DELETE_REGION);
 	const [UpdateRegion] = useMutation(mutations.UPDATE_REGION, mutationOptions);
+	const [UpdateSort] = useMutation(mutations.UPDATE_SORT, mutationOptions);
+
 	const [UpdateLandmarks] = useMutation(mutations.UPDATE_LANDMARKS, mutationOptions);
 
 
 	const tpsUndo = async () => {
 		const ret = await props.tps.undoTransaction();
-		if(ret) {
+		if (ret) {
 			setCanUndo(props.tps.hasTransactionToUndo());
 			setCanRedo(props.tps.hasTransactionToRedo());
 		}
@@ -115,13 +117,11 @@ const Homescreen = (props) => {
 
 	const tpsRedo = async () => {
 		const ret = await props.tps.doTransaction();
-		if(ret) {
+		if (ret) {
 			setCanUndo(props.tps.hasTransactionToUndo());
 			setCanRedo(props.tps.hasTransactionToRedo());
 		}
 	}
-
-
 
 
 
@@ -135,7 +135,8 @@ const Homescreen = (props) => {
 			leader: '',
 			landmarks: [],
 			root: true,
-			parentId: ''
+			parentId: '',
+			childrenIds: []
 		}
 		const { data } = await AddRegion({ variables: { region: newMap }, refetchQueries: [{ query: GET_DB_REGIONS }] });
 		if (data) {
@@ -153,7 +154,8 @@ const Homescreen = (props) => {
 			leader: 'No Leader',
 			landmarks: ['None'],
 			root: false,
-			parentId: _id
+			parentId: _id,
+			childrenIds: []
 		}
 
 		let transaction = new UpdateRegion_Transaction(newRegion, opcode, AddRegion, DeleteRegion);
@@ -174,11 +176,69 @@ const Homescreen = (props) => {
 
 	const editMap = async (_id, newName) => {
 		const { data } = await UpdateRegion({ variables: { _id: _id, value: newName, field: 'name' } });
-	}
+	};
 
 	const editRegion = async (_id, field, value) => {
 		const { data } = await UpdateRegion({ variables: { _id: _id, value: value, field: field } });
-	}
+	};
+
+	const sortRegions = async (region, field, children) => {
+
+		//check if all same at that field
+		let same = true;
+		let first = children[0][field];
+		for (let i = 1; i < children.length; i++) {
+			if (first !== children[i][field]) {
+				same = false;
+				break;
+			}
+		}
+
+		let increasingOrder = true;
+		for (let i = 0; i < children.length - 1; i++) {
+			if (children[i][field] > children[i + 1][field]) {
+				increasingOrder = false;
+				break;
+			}
+		}
+
+		let sortIncreasing = true;
+		if (increasingOrder) {
+			sortIncreasing = false;
+		};
+
+		children = children.sort(function (item1, item2) {
+			let negate = -1;
+			if (sortIncreasing) {
+				negate = 1;
+			}
+			let value1 = item1[field];
+			let value2 = item2[field];
+			if (value1 < value2) {
+				return -1 * negate;
+			}
+			else if (value1 === value2) {
+				return 0;
+			}
+			else {
+				return 1 * negate;
+			}
+		});
+
+		let newChildren = [];
+		for (let i = 0; i<children.length; i++){
+			newChildren.push(children[i]._id)
+		}
+		console.log(newChildren)
+
+
+		if (!same) {
+			let transaction = new SortRegions_Transaction(region._id, region.childrenIds, newChildren, UpdateSort);
+			props.tps.addTransaction(transaction);
+			tpsRedo();
+		}	
+
+	};
 
 	/*
 	const addLandmark = async (_id, lands) => {
@@ -335,6 +395,7 @@ const Homescreen = (props) => {
 									reload={reload}
 									editRegion={editRegion}
 									setShowDeleteRegion={setShowDeleteRegion}
+									sortRegions={sortRegions}
 								//route={route}
 								//activeRegion={activeRegion}
 								//subRegions={childs}

@@ -2,10 +2,18 @@ import React from 'react';
 import { WButton, WRow, WCol } from 'wt-frontend';
 
 const RegionHeader = (props) => {
+    const buttonStyle = props.subRegions !== undefined && props.subRegions.length > 0 ? ' table-header-section ' : 'table-header-section-disabled ';
+    const clickDisabled = () => { };
+
     
     const handleAddRegion = async (e) => {
         props.createNewRegion(props.activeRegion._id)
     };
+
+    const handleSort = (field) => {
+        props.sortRegions(props.activeRegion, field, props.subRegions);
+    };
+
 
     return (
         <>
@@ -34,7 +42,7 @@ const RegionHeader = (props) => {
             </WRow>
             <WRow className="table-header">
                 <WCol size="2">
-                    <WButton className='table-header-section' wType="texted" >
+                    <WButton className={`${buttonStyle}`} wType="texted" onClick={() => handleSort('name')}>
                         <div className='table-header-name' >Name</div>
                         <div className='table-header-spacer'></div>
                         <i className="material-icons">arrow_downward</i>
@@ -42,7 +50,7 @@ const RegionHeader = (props) => {
                 </WCol>
 
                 <WCol size="2">
-                    <WButton className='table-header-section' wType="texted" >
+                    <WButton className={`${buttonStyle}`} wType="texted" onClick={() => handleSort('capital')}>
                         <div>Capital</div>
                         <div className='table-header-spacer'></div>
                         <i className="material-icons">arrow_downward</i>
@@ -50,7 +58,7 @@ const RegionHeader = (props) => {
                 </WCol>
 
                 <WCol size="2">
-                    <WButton className='table-header-section' wType="texted" >
+                    <WButton className={`${buttonStyle}`} wType="texted" onClick={() => handleSort('leader')}>
                         <div>Leader</div>
                         <div className='table-header-spacer'></div>
                         <i className="material-icons">arrow_downward</i>
@@ -58,7 +66,7 @@ const RegionHeader = (props) => {
                 </WCol>
 
                 <WCol size="2">
-                    <WButton className='table-header-section' wType="texted" >
+                    <WButton className='table-header-section-disabled' wType="texted" >
                         <div>Flag</div>
                         <div className='table-header-spacer'></div>
                         <i className="material-icons">arrow_downward</i>

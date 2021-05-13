@@ -9,7 +9,14 @@ const Region = (props) => {
     const { id } = useParams();
 
     let region = props.regions.find(reg => reg._id === id);
-    let subregions = props.regions.filter(reg => reg.parentId === id)
+    //let subregions = props.regions.filter(reg => reg.parentId === id)
+
+    let subRegions = [];
+    for (let i = 0; i< region.childrenIds.length ; i++){
+        let currentId = region.childrenIds[i];
+        let child =  props.regions.find(reg => reg._id === currentId);
+        subRegions.push(child);
+    }
 
     const { loading, error, data, refetch } = useQuery(GET_DB_ANCESTORS, {
         variables: { _id: id },
@@ -29,20 +36,22 @@ const Region = (props) => {
             <RegionHeader
                 createNewRegion={props.createNewRegion}
                 activeRegion={region}
+                sortRegions={props.sortRegions}
+                subRegions={subRegions}
                 //activeRegion={props.activeRegion}
                 //handleSetActiveRegion={props.handleSetActiveRegion}
             />
             <RegionContents
                 activeRegion={region}
-                subRegions={subregions}
+                subRegions={subRegions}
                 activeViewer={props.activeViewer}
                 reload={props.reload}
                 editRegion={props.editRegion}
                 setShowDeleteRegion={props.setShowDeleteRegion}
                 setActiveField={setActiveField} activeField={activeField}
                 setActiveIndex={setActiveIndex} activeIndex={activeIndex}
-                //refetch={refetch}
                 refetch={props.reload}
+                //refetch={refetch}
                 //activeRegion={props.activeRegion}
                 //subRegions={props.subRegions}
                 //handleSetActiveRegion={props.handleSetActiveRegion}

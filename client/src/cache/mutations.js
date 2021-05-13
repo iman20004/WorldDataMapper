@@ -52,6 +52,7 @@ export const ADD_REGION = gql`
 			landmarks
 			root
 			parentId
+			childrenIds
 		}
 	}
 `;
@@ -65,6 +66,12 @@ export const DELETE_REGION = gql`
 export const UPDATE_REGION = gql`
 	mutation UpdateRegion($_id: String!, $value: String!, $field: String! ) {
 		updateRegion(_id: $_id, value: $value, field: $field)
+	}
+`;
+
+export const UPDATE_SORT = gql`
+	mutation UpdateSort($_id: String!, $children: [String!] ) {
+		updateSortRegions(_id: $_id, children: $children)
 	}
 `;
 
