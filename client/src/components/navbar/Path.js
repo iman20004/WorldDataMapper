@@ -11,6 +11,7 @@ const Path = (props) => {
     const handleNavgation = (reg) => {
         props.activeViewer(false, {}, []);
         history.push("/home/region/"+reg._id);
+        props.reload();
     }
 
     return (

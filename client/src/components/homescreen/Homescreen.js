@@ -313,6 +313,7 @@ const Homescreen = (props) => {
 									auth={auth}
 									setRoute={handleSetRoute}
 									activeViewer={handleSetActiveViewer}
+									reload={loadRegion}
 								//handleSetActiveMap={handleSetActiveMap}
 								//handleSetActiveRegion={handleSetActiveRegion}
 								/>
@@ -326,6 +327,7 @@ const Homescreen = (props) => {
 											<Path className='logo'
 												route={route}
 												activeViewer={handleSetActiveViewer}
+												reload={loadRegion}
 											/>
 											{
 												(activeViewer) ?
@@ -349,6 +351,7 @@ const Homescreen = (props) => {
 								setShowUpdate={setShowUpdate}
 								setRoute={handleSetRoute}
 								activeViewer={handleSetActiveViewer}
+								reload={loadRegion}
 							//setActiveRegion={loadMap}
 							//handleSetActiveMap={handleSetActiveMap}
 							/>

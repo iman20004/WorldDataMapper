@@ -10,6 +10,7 @@ const Logo = (props) => {
         props.activeViewer(false, {}, []);
         props.setRoute([]);
         history.push("/home/maps");
+        props.reload();
         //props.handleSetActiveRegion({});
         //props.handleSetActiveMap({})
     };
