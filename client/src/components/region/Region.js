@@ -1,9 +1,9 @@
 import React, { useState } from 'react';
 import RegionHeader from './RegionHeader';
 import RegionContents from './RegionContents';
-import { useParams} from "react-router-dom";
+import { useParams } from "react-router-dom";
 import { useQuery } from '@apollo/client';
-import { GET_DB_ANCESTORS } 	from '../../cache/queries'
+import { GET_DB_ANCESTORS } from '../../cache/queries'
 
 const Region = (props) => {
     const { id } = useParams();
@@ -12,19 +12,21 @@ const Region = (props) => {
     //let subregions = props.regions.filter(reg => reg.parentId === id)
 
     let subRegions = [];
-    for (let i = 0; i< region.childrenIds.length ; i++){
-        let currentId = region.childrenIds[i];
-        let child =  props.regions.find(reg => reg._id === currentId);
-        subRegions.push(child);
+    if (region !== undefined) {
+        for (let i = 0; i < region.childrenIds.length; i++) {
+            let currentId = region.childrenIds[i];
+            let child = props.regions.find(reg => reg._id === currentId);
+            subRegions.push(child);
+        }
     }
 
     const { loading, error, data, refetch } = useQuery(GET_DB_ANCESTORS, {
         variables: { _id: id },
-      });
+    });
 
-	if (loading) { console.log(loading, 'loading 2'); }
-	if (error) { console.log(error, 'error 2'); }
-	if (data) { 
+    if (loading) { console.log(loading, 'loading 2'); }
+    if (error) { console.log(error, 'error 2'); }
+    if (data) {
         props.setRoute(data.getAllAncestors);
     }
 
@@ -38,8 +40,8 @@ const Region = (props) => {
                 activeRegion={region}
                 sortRegions={props.sortRegions}
                 subRegions={subRegions}
-                //activeRegion={props.activeRegion}
-                //handleSetActiveRegion={props.handleSetActiveRegion}
+            //activeRegion={props.activeRegion}
+            //handleSetActiveRegion={props.handleSetActiveRegion}
             />
             <RegionContents
                 activeRegion={region}
@@ -51,12 +53,12 @@ const Region = (props) => {
                 setActiveField={setActiveField} activeField={activeField}
                 setActiveIndex={setActiveIndex} activeIndex={activeIndex}
                 refetch={props.reload}
-                //refetch={refetch}
-                //activeRegion={props.activeRegion}
-                //subRegions={props.subRegions}
-                //handleSetActiveRegion={props.handleSetActiveRegion}
-                //setRoute={props.setRoute}
-                //route={props.route}
+            //refetch={refetch}
+            //activeRegion={props.activeRegion}
+            //subRegions={props.subRegions}
+            //handleSetActiveRegion={props.handleSetActiveRegion}
+            //setRoute={props.setRoute}
+            //route={props.route}
             />
         </div>
     );

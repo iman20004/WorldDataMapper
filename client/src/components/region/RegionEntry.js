@@ -67,13 +67,15 @@ const RegionEntry = (props) => {
 
     const handlekeyDownName = async (e) => {
         if (e.keyCode === 13) {
-            handleNameEdit(e)
+            handleNameEdit(e);
         } else if (e.keyCode === 39){
             toggleCapitalEdit(true);
         } else if (e.keyCode === 38){
+            handleNameEdit(e);
             props.setActiveField('name');
             props.setActiveIndex(props.index -1);
         } else if (e.keyCode === 40){
+            handleNameEdit(e);
             props.setActiveField('name');
             props.setActiveIndex(props.index +1);
         }
@@ -81,15 +83,17 @@ const RegionEntry = (props) => {
 
     const handlekeyDownCapital = async (e) => {
         if (e.keyCode === 13) {
-            handleCapitalEdit(e)
+            handleCapitalEdit(e);
         } else if (e.keyCode === 37){
             toggleNameEdit(true);
         } else if (e.keyCode === 39){
             toggleLeaderEdit(true);
         } else if (e.keyCode === 38){
+            handleCapitalEdit(e);
             props.setActiveField('capital');
             props.setActiveIndex(props.index -1);
         } else if (e.keyCode === 40){
+            handleCapitalEdit(e);
             props.setActiveField('capital');
             props.setActiveIndex(props.index +1);
         }
@@ -97,13 +101,15 @@ const RegionEntry = (props) => {
 
     const handlekeyDownLeader = async (e) => {
         if (e.keyCode === 13) {
-            handleLeaderEdit(e)
+            handleLeaderEdit(e);
         } else if (e.keyCode === 37){
             toggleCapitalEdit(true);
         } else if (e.keyCode === 38){
+            handleLeaderEdit(e);
             props.setActiveField('leader');
             props.setActiveIndex(props.index -1);
         } else if (e.keyCode === 40){
+            handleLeaderEdit(e);
             props.setActiveField('leader');
             props.setActiveIndex(props.index +1);
         }

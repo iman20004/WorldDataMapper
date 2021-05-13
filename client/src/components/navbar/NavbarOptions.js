@@ -17,9 +17,10 @@ const LoggedIn = (props) => {
             if (reset) {
                 //props.setActiveRegion({});
                 //props.handleSetActiveMap({});
+                history.push("/home/welcome");
                 props.activeViewer(false, {}, []);
                 props.setRoute([]);
-                history.push("/home/welcome");
+                //history.push("/home/welcome");
             }
         }
     };
