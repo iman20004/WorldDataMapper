@@ -69,9 +69,9 @@ export const UPDATE_REGION = gql`
 	}
 `;
 
-export const UPDATE_SORT = gql`
-	mutation UpdateSort($_id: String!, $children: [String!] ) {
-		updateSortRegions(_id: $_id, children: $children)
+export const UPDATE_CHILDREN = gql`
+	mutation UpdateChildren($_id: String!, $children: [String!] ) {
+		updateChildren(_id: $_id, children: $children)
 	}
 `;
 

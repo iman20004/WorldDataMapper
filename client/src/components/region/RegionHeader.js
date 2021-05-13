@@ -7,7 +7,7 @@ const RegionHeader = (props) => {
 
     
     const handleAddRegion = async (e) => {
-        props.createNewRegion(props.activeRegion._id)
+        props.createNewRegion(props.activeRegion)
     };
 
     const handleSort = (field) => {

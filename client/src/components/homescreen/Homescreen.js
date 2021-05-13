@@ -102,9 +102,9 @@ const Homescreen = (props) => {
 	}
 
 	const [AddRegion] = useMutation(mutations.ADD_REGION, mutationOptions);
-	const [DeleteRegion] = useMutation(mutations.DELETE_REGION);
+	const [DeleteRegion] = useMutation(mutations.DELETE_REGION, mutationOptions);
 	const [UpdateRegion] = useMutation(mutations.UPDATE_REGION, mutationOptions);
-	const [UpdateSort] = useMutation(mutations.UPDATE_SORT, mutationOptions);
+	const [UpdateChildren] = useMutation(mutations.UPDATE_CHILDREN, mutationOptions);
 
 	const [UpdateLandmarks] = useMutation(mutations.UPDATE_LANDMARKS, mutationOptions);
 
@@ -126,7 +126,7 @@ const Homescreen = (props) => {
 	}
 
 
-
+	// MAP STUFF
 
 	const createNewMap = async (mapname) => {
 		let newMap = {
@@ -146,7 +146,18 @@ const Homescreen = (props) => {
 		}
 	};
 
-	const createNewRegion = async (_id) => {
+	const handleDeleteMap = async (_id) => {
+		DeleteRegion({ variables: { _id: _id }, refetchQueries: [{ query: GET_DB_REGIONS }] });
+	};
+
+	const editMap = async (_id, newName) => {
+		const { data } = await UpdateRegion({ variables: { _id: _id, value: newName, field: 'name' } });
+	};
+
+
+	// REGION STUFF
+
+	const createNewRegion = async (parent) => {
 		let opcode = 1;
 		let newRegion = {
 			_id: '',
@@ -156,11 +167,14 @@ const Homescreen = (props) => {
 			leader: 'No Leader',
 			landmarks: ['None'],
 			root: false,
-			parentId: _id,
+			parentId: parent._id,
 			childrenIds: []
 		}
 
-		let transaction = new UpdateRegion_Transaction(newRegion, opcode, AddRegion, DeleteRegion);
+		let oldChildren = parent.childrenIds;
+		//let regionId = newRegion._id;
+
+		let transaction = new UpdateRegion_Transaction(parent._id, oldChildren, newRegion, opcode, AddRegion, DeleteRegion);
 		props.tps.addTransaction(transaction);
 		tpsRedo();
 
@@ -171,16 +185,9 @@ const Homescreen = (props) => {
 		}*/
 	};
 
-	const handleDeleteMap = async (_id) => {
-		DeleteRegion({ variables: { _id: _id }, refetchQueries: [{ query: GET_DB_REGIONS }] });
-	};
-
-	const editMap = async (_id, newName) => {
-		const { data } = await UpdateRegion({ variables: { _id: _id, value: newName, field: 'name' } });
-	};
-
 	const editRegion = async (_id, field, value, prev) => {
 		let transaction = new EditRegion_Transaction(_id, field, prev, value, UpdateRegion);
+		console.log(transaction)
 		props.tps.addTransaction(transaction);
 		tpsRedo();
 		//const { data } = await UpdateRegion({ variables: { _id: _id, value: value, field: field } });
@@ -237,7 +244,7 @@ const Homescreen = (props) => {
 
 
 		if (!same) {
-			let transaction = new SortRegions_Transaction(region._id, region.childrenIds, newChildren, UpdateSort);
+			let transaction = new SortRegions_Transaction(region._id, region.childrenIds, newChildren, UpdateChildren);
 			props.tps.addTransaction(transaction);
 			tpsRedo();
 		}	

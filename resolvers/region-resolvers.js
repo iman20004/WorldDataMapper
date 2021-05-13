@@ -72,8 +72,11 @@ module.exports = {
 		**/
 		addRegion: async (_, args) => {
 			const { region } = args;
-			const objectId = new ObjectId();
+			let objectId = new ObjectId();
 			const { _id, owner, name, capital, leader, landmarks, root, parentId, childrenIds} = region;
+
+			if(_id !== '') objectId = new ObjectId(_id);
+
 			const newRegion = new Region({
 				_id: objectId,
 				owner: owner,
@@ -107,10 +110,20 @@ module.exports = {
 		deleteRegion: async (_, args) => {
 			const { _id } = args;
 			const objectId = new ObjectId(_id);
-			const deleted = await Region.deleteOne({ _id: objectId });
+			const deleted = await Region.findOne({ _id: objectId });
+			
+			if(deleted.root === false) {
+				const pId = new ObjectId(deleted.parentId);
+				const parent = await Region.findOne({ _id: pId });
+				let childs = parent.childrenIds
+				let newChildren = childs.filter(childId => childId !== _id)
+				const updateParent = await Region.updateOne({ _id: pId }, { childrenIds: newChildren });
+			}
+
+			const deletion = await Region.deleteOne({ _id: objectId });
 
 			//const children = await Region.deleteMany({ parentId: objectId });
-			if (deleted) return true;
+			if (deletion) return true;
 			else return false;
 
 		},
@@ -132,7 +145,7 @@ module.exports = {
 			@param 	 {object} args - a map objectID, field and the new value
 			@returns {boolean} new name on successful update, empty string on failure
 		**/
-		updateSortRegions: async (_, args) => {
+		updateChildren: async (_, args) => {
 			const { _id, children } = args;
 			const objectId = new ObjectId(_id);
 			const updated = await Region.updateOne({ _id: objectId }, { childrenIds: children});

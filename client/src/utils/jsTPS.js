@@ -8,8 +8,10 @@ export class jsTPS_Transaction {
 /*  Handles create/delete new subregion*/
 export class UpdateRegion_Transaction extends jsTPS_Transaction {
     // opcodes: 0 - delete, 1 - add 
-    constructor(newRegion, opcode, addfunc, delfunc) {
+    constructor(parentId, oldChildren, newRegion, opcode, addfunc, delfunc) {
         super();
+        this.parentId = parentId
+        this.oldChildren = oldChildren;
 		this.newRegion = newRegion;
         this.addFunction = addfunc;
         this.deleteFunction = delfunc;
@@ -17,23 +19,19 @@ export class UpdateRegion_Transaction extends jsTPS_Transaction {
     }
 
     async doTransaction() {
-        /*
-        let data;
-        this.opcode === 0 ? { data } = await this.deleteFunction({
-							variables: {itemId: this.itemID, _id: this.listID}})
-						  : { data } = await this.addFunction({
-							variables: {item: this.item, _id: this.listID, index: this.index}})  
-		if(this.opcode !== 0) {
-            this.item._id = this.itemID = data.addItem;
-		}
-        return data;*/
         const { data } = await this.addFunction({ variables: { region: this.newRegion } });
+        this.newRegion._id = data.addRegion._id;
         return data;
     }
 
     // Since delete/add are opposites, flip matching opcode
     async undoTransaction() {
-		
+        //const { data } = await this.deleteFunction({ variables: { _id: this.parentId, children: this.oldChildren}});
+        const { data } = await this.deleteFunction({ variables: { _id: this.newRegion._id }});
+        if(data) {
+            return data;
+
+        }
     }
 }
 
