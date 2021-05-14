@@ -148,34 +148,13 @@ module.exports = {
 			@param 	 {object} args - a map objectID, field and the new value
 			@returns {boolean} new name on successful update, empty string on failure
 		**/
-		updateChildren: async (_, args) => {
-			const { _id, children } = args;
+		updateRegionArray: async (_, args) => {
+			const { _id, newArray, field } = args;
 			const objectId = new ObjectId(_id);
-			const updated = await Region.updateOne({ _id: objectId }, { childrenIds: children});
+			const updated = await Region.updateOne({ _id: objectId }, { [field]: newArray});
 
 			if (updated) return true;
 			else return false;
-		},
-
-
-
-
-
-
-
-
-
-		/** 
-			@param 	 {object} args - a map objectID, field and the new value
-			@returns {boolean} new name on successful update, empty string on failure
-		**/
-		updateLandmarks: async (_, args) => {
-			const { value, _id } = args;
-			const objectId = new ObjectId(_id);
-			const updated = await Region.updateOne({ _id: objectId }, { landmarks: value });
-
-			if (updated) return value;
-			else return "";
 		}
 
 	}

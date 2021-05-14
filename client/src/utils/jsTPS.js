@@ -44,15 +44,16 @@ export class UpdateRegion_Transaction extends jsTPS_Transaction {
 }
 
 export class SortRegions_Transaction extends jsTPS_Transaction{
-    constructor(regionId, oldChildren, newChildren, callback) {
+    constructor(regionId, oldChildren, newChildren, callback, arr) {
         super();
         this.regionId = regionId;
         this.oldChildren = oldChildren;
         this.newChildren = newChildren;
         this.callback = callback;
+        this.field = arr
     }
     async doTransaction() {
-		const { data } = await this.callback({ variables: { _id: this.regionId, children: this.newChildren}});
+		const { data } = await this.callback({ variables: { _id: this.regionId, newArray: this.newChildren, field: this.field}});
         if(data) {
             console.log(data)
             return data;
@@ -61,7 +62,7 @@ export class SortRegions_Transaction extends jsTPS_Transaction{
     }
 
     async undoTransaction() {
-		const { data } = await this.callback({ variables: { _id: this.regionId, children: this.oldChildren}});
+		const { data } = await this.callback({ variables: { _id: this.regionId, newArray: this.oldChildren, field: this.field}});
         if(data) {
             console.log(data)
             return data;

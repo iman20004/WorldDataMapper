@@ -69,14 +69,8 @@ export const UPDATE_REGION = gql`
 	}
 `;
 
-export const UPDATE_CHILDREN = gql`
-	mutation UpdateChildren($_id: String!, $children: [String!] ) {
-		updateChildren(_id: $_id, children: $children)
-	}
-`;
-
-export const UPDATE_LANDMARKS = gql`
-	mutation UpdateLandmarks($_id: String!, $value: [String!]) {
-		updateLandmarks(_id: $_id, value: $value)
+export const UPDATE_REGION_ARRAY = gql`
+	mutation UpdateRegionArray($_id: String!, $newArray: [String!], $field: String! ) {
+		updateRegionArray(_id: $_id, newArray: $newArray, field: $field)
 	}
 `;

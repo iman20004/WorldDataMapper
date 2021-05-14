@@ -23,8 +23,7 @@ extend type Mutation {
 	addRegion(region: RegionInput!, index: Int!): Region
 	deleteRegion(_id: String!): Boolean
 	updateRegion(_id: String!, value: String!, field: String!): String
-	updateChildren(_id: String!, children: [String!]): String
-	updateLandmarks(_id: String!, value: [String!], ): [String]
+	updateRegionArray(_id: String!, newArray: [String!], field: String!): String
 }
 input FieldInput {
 	_id: String

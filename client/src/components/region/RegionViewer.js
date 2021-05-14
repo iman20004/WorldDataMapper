@@ -12,8 +12,7 @@ const RegionViewer = (props) => {
     let region = props.regions.find(reg => reg._id === id);
     let parentReg = props.regions.find(reg => reg._id === region.parentId);
 
-    let numChildren = 0
-    // QUERY FOR ALL CHILDREN HERE!!!!!!!!!!!!!!!!
+    let numChildren = region.childrenIds.length;
 
     const [editingLand, toggleLandEdit] = useState(false);
     const [newLand, setNewLand] = useState('');
@@ -23,12 +22,13 @@ const RegionViewer = (props) => {
         //props.handleSetActiveRegion(props.activeRegion.parentId);
         props.activeViewer(false, {}, []);
         history.push("/home/region/" + region.parentId);
+        props.reload();
     };
 
     const handleKeyEnter = async (e) => {
         if (e.keyCode === 13) {
             toggleLandEdit(false);
-            //call props function
+            props.addLandmark(region, e.target.value);
         }
 
     };
@@ -42,7 +42,7 @@ const RegionViewer = (props) => {
     };
 
     const handleAddLand = async () => {
-        //call props function
+        props.addLandmark(region, newLand);
         setNewLand('');
 
     };
@@ -66,10 +66,10 @@ const RegionViewer = (props) => {
             <div className="region-left">
                 <div className="viewer-header">
                     <WButton {...undoOptions} >
-                        <i className="material-icons large">undo</i>
+                        <i className="material-icons">undo</i>
                     </WButton>
                     <WButton {...redoOptions} >
-                        <i className="material-icons large">redo</i>
+                        <i className="material-icons">redo</i>
                     </WButton>
                 </div>
                 <img src={flagImg} className="flag-viewer" />

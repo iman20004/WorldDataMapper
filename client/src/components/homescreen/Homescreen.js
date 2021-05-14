@@ -106,9 +106,7 @@ const Homescreen = (props) => {
 	const [AddRegion] = useMutation(mutations.ADD_REGION, mutationOptions);
 	const [DeleteRegion] = useMutation(mutations.DELETE_REGION, mutationOptions);
 	const [UpdateRegion] = useMutation(mutations.UPDATE_REGION, mutationOptions);
-	const [UpdateChildren] = useMutation(mutations.UPDATE_CHILDREN, mutationOptions);
-
-	const [UpdateLandmarks] = useMutation(mutations.UPDATE_LANDMARKS, mutationOptions);
+	const [UpdateRegionArray] = useMutation(mutations.UPDATE_REGION_ARRAY, mutationOptions);
 
 
 	const tpsUndo = async () => {
@@ -142,8 +140,9 @@ const Homescreen = (props) => {
 			parentId: '',
 			childrenIds: []
 		}
-		const { data } = await AddRegion({ variables: { region: newMap }, refetchQueries: [{ query: GET_DB_REGIONS }] });
+		const { data } = await AddRegion({ variables: { region: newMap, index: -1 }, refetchQueries: [{ query: GET_DB_REGIONS }] });
 		if (data) {
+			console.log(data)
 			reload();
 		}
 	};
@@ -263,21 +262,38 @@ const Homescreen = (props) => {
 		for (let i = 0; i<children.length; i++){
 			newChildren.push(children[i]._id)
 		}
-		console.log(newChildren)
+		
+		let arr = 'childrenIds'
 
 
 		if (!same) {
-			let transaction = new SortRegions_Transaction(region._id, region.childrenIds, newChildren, UpdateChildren);
+			let transaction = new SortRegions_Transaction(region._id, region.childrenIds, newChildren, UpdateRegionArray, arr);
 			props.tps.addTransaction(transaction);
 			tpsRedo();
 		}	
 
 	};
 
-	/*
-	const addLandmark = async (_id, lands) => {
-		const { data } = await UpdateLandmarks({ variables: { _id: _id, value: value, field: field } });
-	}*/
+
+
+
+	//REGION VIEWER STUFF
+
+	const addLandmark = async (region, newLand) => {
+		let arr = 'landmarks';
+		let oldLandmarks = region.landmarks;
+		let newLandmarks = oldLandmarks.concat([newLand]);
+
+		let transaction = new SortRegions_Transaction(region._id, oldLandmarks, newLandmarks, UpdateRegionArray, arr);
+		props.tps.addTransaction(transaction);
+		tpsRedo();
+
+		//const { data } = await UpdateLandmarks({ variables: { _id: _id, value: value, field: field } });
+	};
+
+
+
+
 
 
 	const setShowLogin = () => {
@@ -452,6 +468,8 @@ const Homescreen = (props) => {
 									activeViewer={handleSetActiveViewer}
 									undo={tpsUndo} redo={tpsRedo}
 									canUndo={canUndo} canRedo={canRedo}
+									addLandmark={addLandmark}
+									reload={loadRegion}
 								//activeRegion={activeRegion}
 								//handleSetActiveRegion={handleSetActiveRegion}
 								/>
