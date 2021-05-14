@@ -436,7 +436,7 @@ const Homescreen = (props) => {
 									sortRegions={sortRegions}
 									undo={tpsUndo} redo={tpsRedo}
 									canUndo={canUndo} canRedo={canRedo}
-									tps={props.tps}
+									//tps={props.tps}
 								//route={route}
 								//activeRegion={activeRegion}
 								//subRegions={childs}
@@ -450,6 +450,8 @@ const Homescreen = (props) => {
 								<RegionViewer
 									regions={regions}
 									activeViewer={handleSetActiveViewer}
+									undo={tpsUndo} redo={tpsRedo}
+									canUndo={canUndo} canRedo={canRedo}
 								//activeRegion={activeRegion}
 								//handleSetActiveRegion={handleSetActiveRegion}
 								/>

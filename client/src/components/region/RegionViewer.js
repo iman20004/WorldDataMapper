@@ -7,6 +7,7 @@ import { useHistory, useParams } from "react-router-dom";
 const RegionViewer = (props) => {
     let history = useHistory();
     const { id } = useParams();
+    const clickDisabled = () => { };
 
     let region = props.regions.find(reg => reg._id === id);
     let parentReg = props.regions.find(reg => reg._id === region.parentId);
@@ -46,14 +47,28 @@ const RegionViewer = (props) => {
 
     };
 
+    const redoOptions = {
+        className: !props.canRedo ? ' table-header-button-disabled ' : 'table-header-button ',
+        onClick: !props.canRedo   ? clickDisabled : props.redo, 
+        wType: "texted", 
+        clickAnimation: !props.canRedo ? "" : "ripple-light"
+    }
+
+    const undoOptions = {
+        className: !props.canUndo ? ' table-header-button-disabled ' : 'table-header-button',
+        onClick: !props.canUndo  ? clickDisabled : props.undo,
+        wType: "texted", 
+        clickAnimation: !props.canUndo ? "" : "ripple-light"
+    }
+
     return (
         <div className='region-table ' >
             <div className="viewer-header">
-                <WButton wType="texted" >
-                    <i className="material-icons large viewer-buttons">undo</i>
+                <WButton {...undoOptions} >
+                    <i className="material-icons large">undo</i>
                 </WButton>
-                <WButton wType="texted" >
-                    <i className="material-icons large viewer-buttons">redo</i>
+                <WButton {...redoOptions} >
+                    <i className="material-icons large">redo</i>
                 </WButton>
             </div>
             <div className="region-body">
