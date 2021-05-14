@@ -121,7 +121,7 @@ const RegionEntry = (props) => {
             <WCol size="2">
                 {
                     <div className='region-first'>
-                        <i onClick={() => props.setShowDeleteRegion(mapId)} className="material-icons close-landmark">close</i>
+                        <i onClick={() => props.setShowDeleteRegion(props.data, props.index)} className="material-icons close-landmark">close</i>
                         {
                         editingName || data.name === ''
                         ? <WInput

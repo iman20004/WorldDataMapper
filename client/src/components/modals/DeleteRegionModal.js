@@ -5,8 +5,8 @@ const DeleteRegionModal = (props) => {
 
 
     const handleDelete = async (e) => {
-        props.deleteRegion(props.deleteRegionId);
-        props.setShowDeleteRegion('', false);
+        props.deleteRegion(props.regionToDelete, props.deleteIndex);
+        props.setShowDeleteRegion({}, -1, false);
     }
 
     return (

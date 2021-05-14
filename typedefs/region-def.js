@@ -20,7 +20,7 @@ extend type Query {
 	getAllAncestors(_id: String!): [Region]
 }
 extend type Mutation {
-	addRegion(region: RegionInput!): Region
+	addRegion(region: RegionInput!, index: Int!): Region
 	deleteRegion(_id: String!): Boolean
 	updateRegion(_id: String!, value: String!, field: String!): String
 	updateChildren(_id: String!, children: [String!]): String

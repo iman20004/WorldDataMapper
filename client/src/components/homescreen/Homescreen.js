@@ -38,22 +38,24 @@ const Homescreen = (props) => {
 
 	//const [activeMap, setActiveMap] = useState({});
 	const [activeViewer, toggleActiveViewer] = useState(false);
-	const [showLogin, toggleShowLogin] = useState(false);
-	const [showCreate, toggleShowCreate] = useState(false);
-	const [showDeleteMap, toggleShowDeleteMap] = useState(false);
-	const [showUpdate, toggleShowUpdate] = useState(false);
-	const [showMapName, toggleShowMapName] = useState(false);
-	const [showMapEdit, toggleShowMapEdit] = useState(false);
 	const [deleteMapId, setDeleteMap] = useState('');
 	const [editMapId, setEditMap] = useState('');
-	const [showDeleteRegion, toggleShowDeleteRegion] = useState(false);
-	const [deleteRegionId, setDeleteRegion] = useState([]);
+	const [deleteRegion, setDeleteRegion] = useState({});
+	const [deleteIndex, setDeleteIndex] = useState(-1);
 
 	const [sub, setSub] = useState([]);
 	const [regionInViewer, setRegionInViewer] = useState({});
 
 	const [canUndo, setCanUndo] = useState(props.tps.hasTransactionToUndo());
 	const [canRedo, setCanRedo] = useState(props.tps.hasTransactionToRedo());
+
+	const [showLogin, toggleShowLogin] = useState(false);
+	const [showCreate, toggleShowCreate] = useState(false);
+	const [showDeleteMap, toggleShowDeleteMap] = useState(false);
+	const [showUpdate, toggleShowUpdate] = useState(false);
+	const [showMapName, toggleShowMapName] = useState(false);
+	const [showMapEdit, toggleShowMapEdit] = useState(false);
+	const [showDeleteRegion, toggleShowDeleteRegion] = useState(false);
 
 	const { loading, error, data, refetch } = useQuery(GET_DB_REGIONS);
 
@@ -171,10 +173,10 @@ const Homescreen = (props) => {
 			childrenIds: []
 		}
 
-		let oldChildren = parent.childrenIds;
+		//let oldChildren = parent.childrenIds;
 		//let regionId = newRegion._id;
 
-		let transaction = new UpdateRegion_Transaction(parent._id, oldChildren, newRegion, opcode, AddRegion, DeleteRegion);
+		let transaction = new UpdateRegion_Transaction(parent._id, newRegion, opcode, AddRegion, DeleteRegion);
 		props.tps.addTransaction(transaction);
 		tpsRedo();
 
@@ -183,6 +185,27 @@ const Homescreen = (props) => {
 		if (data) {
 			reload();
 		}*/
+	};
+
+	const handleDeleteRegion = async (region, index) => {
+		let opcode = 0;
+		let regionToDelete = {
+			_id: region._id,
+			owner: region.owner,
+			name: region.name,
+			capital: region.capital,
+			leader: region.leader,
+			landmarks: region.landmarks,
+			root: region.root,
+			parentId: region.parentId,
+			childrenIds: region.childrenIds
+		}
+
+		let transaction = new UpdateRegion_Transaction(region.parentId, regionToDelete, opcode, AddRegion, DeleteRegion, index);
+		props.tps.addTransaction(transaction);
+		tpsRedo();
+
+		//DeleteRegion({ variables: { _id: _id }, refetchQueries: [{ query: GET_DB_REGIONS }] });
 	};
 
 	const editRegion = async (_id, field, value, prev) => {
@@ -304,11 +327,12 @@ const Homescreen = (props) => {
 		toggleShowMapEdit(!showMapEdit);
 	};
 
-	const setShowDeleteRegion = (_id) => {
+	const setShowDeleteRegion = (reg, index) => {
 		toggleShowCreate(false);
 		toggleShowLogin(false);
 		toggleShowUpdate(false);
-		setDeleteRegion(_id);
+		setDeleteRegion(reg);
+		setDeleteIndex(index);
 		toggleShowDeleteRegion(!showDeleteRegion);
 	};
 
@@ -460,7 +484,10 @@ const Homescreen = (props) => {
 				}
 
 				{
-					showDeleteRegion && (<DeleteRegionModal deleteRegion={handleDeleteMap} setShowDeleteRegion={setShowDeleteRegion} deleteRegionId={deleteRegionId} />)
+					showDeleteRegion && (<DeleteRegionModal deleteRegion={handleDeleteRegion} 
+						setShowDeleteRegion={setShowDeleteRegion} regionToDelete={deleteRegion} 
+						deleteIndex={deleteIndex}
+						/>)
 				}
 
 			</WLayout>

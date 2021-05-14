@@ -42,8 +42,8 @@ export const UPDATE = gql`
 `;
 
 export const ADD_REGION = gql`
-	mutation AddRegion($region: RegionInput!) {
-		addRegion(region: $region) {
+	mutation AddRegion($region: RegionInput!, $index: Int!) {
+		addRegion(region: $region, index: $index) {
 			_id
 			owner
 			name

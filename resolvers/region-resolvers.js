@@ -71,7 +71,7 @@ module.exports = {
 			@returns {object} the new map on success
 		**/
 		addRegion: async (_, args) => {
-			const { region } = args;
+			const { region, index } = args;
 			let objectId = new ObjectId();
 			const { _id, owner, name, capital, leader, landmarks, root, parentId, childrenIds} = region;
 
@@ -93,7 +93,10 @@ module.exports = {
 				const pId = new ObjectId(newRegion.parentId);
 				const parent = await Region.findOne({ _id: pId });
 				let children = parent.childrenIds
-				children.push(newRegion._id)
+
+				if(index < 0) children.push(newRegion._id);
+				else children.splice(index, 0, newRegion._id);
+
 				const updateParent = await Region.updateOne({ _id: pId }, { childrenIds: children });
 			}
 
@@ -104,7 +107,7 @@ module.exports = {
 		},
 
 		/** 
-			@param 	 {object} args - a map objectID 
+			@param 	 {object} args - a region objectID 
 			@returns {boolean} true on successful delete, false on failure
 		**/
 		deleteRegion: async (_, args) => {
