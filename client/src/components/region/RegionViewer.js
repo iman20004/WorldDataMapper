@@ -44,7 +44,6 @@ const RegionViewer = (props) => {
     const handleAddLand = async () => {
         props.addLandmark(region, newLand);
         setNewLand('');
-
     };
 
     const redoOptions = {
@@ -115,6 +114,8 @@ const RegionViewer = (props) => {
                         region.landmarks.map((entry) => (
                             <Landmarks
                                 landmark={entry}
+                                region={region}
+                                setShowDeleteLandmark={props.setShowDeleteLandmark}
                             />
                         ))
                     }

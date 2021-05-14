@@ -6,6 +6,7 @@ import UpdateAccount from '../modals/UpdateAccount';
 import CreateAccount from '../modals/CreateAccount';
 import DeleteMapModal from '../modals/DeleteMapModal';
 import DeleteRegionModal from '../modals/DeleteRegionModal';
+import DeleteLandmarkModal from '../modals/DeleteLandmarkModal';
 import MapName from '../modals/MapName';
 import MapEdit from '../modals/MapEdit';
 import Maps from '../map/Maps';
@@ -20,8 +21,10 @@ import { useMutation, useQuery } from '@apollo/client';
 import { WNavbar, WSidebar, WNavItem } from 'wt-frontend';
 import { WLayout, WLHeader, WLMain } from 'wt-frontend';
 import { BrowserRouter, Switch, Route, Redirect } from 'react-router-dom';
-import { UpdateRegion_Transaction, SortRegions_Transaction,
-	EditRegion_Transaction } from '../../utils/jsTPS';
+import {
+	UpdateRegion_Transaction, SortRegions_Transaction,
+	EditRegion_Transaction
+} from '../../utils/jsTPS';
 
 
 
@@ -42,6 +45,8 @@ const Homescreen = (props) => {
 	const [editMapId, setEditMap] = useState('');
 	const [deleteRegion, setDeleteRegion] = useState({});
 	const [deleteIndex, setDeleteIndex] = useState(-1);
+	const [deleteLandRegion, setDeleteLandRegion] = useState({});
+	const [deleteLand, setDeleteLand] = useState('');
 
 	const [sub, setSub] = useState([]);
 	const [regionInViewer, setRegionInViewer] = useState({});
@@ -56,6 +61,9 @@ const Homescreen = (props) => {
 	const [showMapName, toggleShowMapName] = useState(false);
 	const [showMapEdit, toggleShowMapEdit] = useState(false);
 	const [showDeleteRegion, toggleShowDeleteRegion] = useState(false);
+	const [showDeleteLandmark, toggleShowDeleteLandmark] = useState(false);
+	const [showEditLandmark, toggleShowEditLandmark] = useState(false);
+
 
 	const { loading, error, data, refetch } = useQuery(GET_DB_REGIONS);
 
@@ -259,10 +267,10 @@ const Homescreen = (props) => {
 		});
 
 		let newChildren = [];
-		for (let i = 0; i<children.length; i++){
+		for (let i = 0; i < children.length; i++) {
 			newChildren.push(children[i]._id)
 		}
-		
+
 		let arr = 'childrenIds'
 
 
@@ -270,7 +278,7 @@ const Homescreen = (props) => {
 			let transaction = new SortRegions_Transaction(region._id, region.childrenIds, newChildren, UpdateRegionArray, arr);
 			props.tps.addTransaction(transaction);
 			tpsRedo();
-		}	
+		}
 
 	};
 
@@ -291,6 +299,16 @@ const Homescreen = (props) => {
 		//const { data } = await UpdateLandmarks({ variables: { _id: _id, value: value, field: field } });
 	};
 
+	const handleDeleteLandmark = async (region, landToDelete) => {
+		let arr = 'landmarks';
+		let oldLandmarks = region.landmarks;
+		let newLandmarks = oldLandmarks.filter(land => land !== landToDelete);
+		console.log(newLandmarks)
+
+		let transaction = new SortRegions_Transaction(region._id, oldLandmarks, newLandmarks, UpdateRegionArray, arr);
+		props.tps.addTransaction(transaction);
+		tpsRedo();
+	};
 
 
 
@@ -352,6 +370,16 @@ const Homescreen = (props) => {
 		toggleShowDeleteRegion(!showDeleteRegion);
 	};
 
+	const setShowDeleteLandmark = (reg, land) => {
+		toggleShowCreate(false);
+		toggleShowLogin(false);
+		toggleShowUpdate(false);
+		toggleShowDeleteRegion(false);
+		setDeleteLandRegion(reg);
+		setDeleteLand(land);
+		toggleShowDeleteLandmark(!showDeleteLandmark);
+	};
+
 	return (
 		<BrowserRouter>
 			<WLayout wLayout="header">
@@ -385,6 +413,7 @@ const Homescreen = (props) => {
 														reg={regionInViewer}
 														subregions={sub}
 														activeViewer={handleSetActiveViewer}
+														reload={loadRegion}
 													/>
 													: <div></div>
 											}
@@ -452,7 +481,7 @@ const Homescreen = (props) => {
 									sortRegions={sortRegions}
 									undo={tpsUndo} redo={tpsRedo}
 									canUndo={canUndo} canRedo={canRedo}
-									//tps={props.tps}
+								//tps={props.tps}
 								//route={route}
 								//activeRegion={activeRegion}
 								//subRegions={childs}
@@ -470,6 +499,7 @@ const Homescreen = (props) => {
 									canUndo={canUndo} canRedo={canRedo}
 									addLandmark={addLandmark}
 									reload={loadRegion}
+									setShowDeleteLandmark={setShowDeleteLandmark}
 								//activeRegion={activeRegion}
 								//handleSetActiveRegion={handleSetActiveRegion}
 								/>
@@ -504,10 +534,15 @@ const Homescreen = (props) => {
 				}
 
 				{
-					showDeleteRegion && (<DeleteRegionModal deleteRegion={handleDeleteRegion} 
-						setShowDeleteRegion={setShowDeleteRegion} regionToDelete={deleteRegion} 
+					showDeleteRegion && (<DeleteRegionModal deleteRegion={handleDeleteRegion}
+						setShowDeleteRegion={setShowDeleteRegion} regionToDelete={deleteRegion}
 						deleteIndex={deleteIndex}
-						/>)
+					/>)
+				}
+
+				{
+					showDeleteLandmark && (<DeleteLandmarkModal deleteLandmark={handleDeleteLandmark} setShowDeleteLandmark={setShowDeleteLandmark} 
+						deleteLandRegion={deleteLandRegion} deleteLand={deleteLand} />)
 				}
 
 			</WLayout>

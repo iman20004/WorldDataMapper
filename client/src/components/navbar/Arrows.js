@@ -18,11 +18,13 @@ const Arrows = (props) => {
     const handleShowPrev = () => {
         props.activeViewer(true, prev, props.subregions );
         history.push("/home/regionviewer/" + prev._id);
+        props.reload();
     }
 
     const handleShowNext = () => {
         props.activeViewer(true, next, props.subregions );
         history.push("/home/regionviewer/" + next._id);
+        props.reload();
     }
 
     return (
