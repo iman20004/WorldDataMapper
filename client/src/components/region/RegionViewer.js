@@ -17,7 +17,7 @@ const RegionViewer = (props) => {
 
     const [editingLand, toggleLandEdit] = useState(false);
     const [newLand, setNewLand] = useState('');
-    
+
 
     const navigateBack = async (e) => {
         //props.handleSetActiveRegion(props.activeRegion.parentId);
@@ -49,94 +49,92 @@ const RegionViewer = (props) => {
 
     const redoOptions = {
         className: !props.canRedo ? ' table-header-button-disabled ' : 'table-header-button ',
-        onClick: !props.canRedo   ? clickDisabled : props.redo, 
-        wType: "texted", 
+        onClick: !props.canRedo ? clickDisabled : props.redo,
+        wType: "texted",
         clickAnimation: !props.canRedo ? "" : "ripple-light"
     }
 
     const undoOptions = {
         className: !props.canUndo ? ' table-header-button-disabled ' : 'table-header-button',
-        onClick: !props.canUndo  ? clickDisabled : props.undo,
-        wType: "texted", 
+        onClick: !props.canUndo ? clickDisabled : props.undo,
+        wType: "texted",
         clickAnimation: !props.canUndo ? "" : "ripple-light"
     }
 
     return (
-        <div className='region-table ' >
-            <div className="viewer-header">
-                <WButton {...undoOptions} >
-                    <i className="material-icons large">undo</i>
-                </WButton>
-                <WButton {...redoOptions} >
-                    <i className="material-icons large">redo</i>
-                </WButton>
-            </div>
-            <div className="region-body">
-                <div className="region-left">
-                    <img src={flagImg} className="flag-viewer" />
-                    <div className='info-viewer'>
-                        <div className='info-rows'>
-                            <div>Region Name: </div>
-                            <div className='info-spacer'></div>
-                            <div>{region.name}</div>
-                        </div>
-                        <div className='info-col-spacer'></div>
-                        <div className='info-rows'>
-                            <div>Parent Region: </div>
-                            <div className='info-spacer'></div>
-                            <div className='viewer-parent' onClick={navigateBack}>{parentReg.name}</div>
-                            <i className="material-icons edit-button">edit</i>
-                        </div>
-                        <div className='info-col-spacer'></div>
-                        <div className='info-rows'>
-                            <div>Region Capital: </div>
-                            <div className='info-spacer'></div>
-                            <div>{region.capital}</div>
-                        </div>
-                        <div className='info-col-spacer'></div>
-                        <div className='info-rows'>
-                            <div>Region Leader: </div>
-                            <div className='info-spacer'></div>
-                            <div>{region.leader}</div>
-                        </div>
-                        <div className='info-col-spacer'></div>
-                        <div className='info-rows'>
-                            <div># of Sub Regions: </div>
-                            <div className='info-spacer'></div>
-                            <div>{numChildren}</div>
-                        </div>
-                    </div>
-
+        <div className="region-body">
+            <div className="region-left">
+                <div className="viewer-header">
+                    <WButton {...undoOptions} >
+                        <i className="material-icons large">undo</i>
+                    </WButton>
+                    <WButton {...redoOptions} >
+                        <i className="material-icons large">redo</i>
+                    </WButton>
                 </div>
-                <div className="region-right">
-                    <div className='landmarks-label'>Region Landmarks:</div>
+                <img src={flagImg} className="flag-viewer" />
+                <div className='info-viewer'>
+                    <div className='info-rows'>
+                        <div>Region Name: </div>
+                        <div className='info-spacer'></div>
+                        <div>{region.name}</div>
+                    </div>
                     <div className='info-col-spacer'></div>
-                    <div className='landmark-box'>
-                        {
-                            region.landmarks.map((entry) => (
-                                <Landmarks
-                                    landmark={entry}
-                                />
-                            ))
-                        }
+                    <div className='info-rows'>
+                        <div>Parent Region: </div>
+                        <div className='info-spacer'></div>
+                        <div className='viewer-parent' onClick={navigateBack}>{parentReg.name}</div>
+                        <i className="material-icons edit-button">edit</i>
                     </div>
-                    <div className='add-box'>
-                        <i className="material-icons viewer-add" onClick={handleAddLand}>add</i>
-                        {
-                            editingLand
-                                ? <WInput
-                                    className='table-input new-landmark-box' onBlur={(e) => handleLandInput(e)}
-                                    //onKeyDown={(e) => { if (e.keyCode === 13) handleCapitalEdit(e) }}
-                                    onKeyDown={(e) => handleKeyEnter(e)}
-                                    autoFocus={true} placeholder='New Landmark Here' type='text'
-                                    inputClass="table-input-class"
-                                />
-                                : <div className='new-landmark-box'
-                                    onClick={() => toggleLandEdit(!editingLand)}>
-                                    New Landmark Here
+                    <div className='info-col-spacer'></div>
+                    <div className='info-rows'>
+                        <div>Region Capital: </div>
+                        <div className='info-spacer'></div>
+                        <div>{region.capital}</div>
+                    </div>
+                    <div className='info-col-spacer'></div>
+                    <div className='info-rows'>
+                        <div>Region Leader: </div>
+                        <div className='info-spacer'></div>
+                        <div>{region.leader}</div>
+                    </div>
+                    <div className='info-col-spacer'></div>
+                    <div className='info-rows'>
+                        <div># of Sub Regions: </div>
+                        <div className='info-spacer'></div>
+                        <div>{numChildren}</div>
+                    </div>
+                </div>
+
+            </div>
+            <div className="region-right">
+                <div className='landmarks-label'>Region Landmarks:</div>
+                <div className='info-col-spacer'></div>
+                <div className='landmark-box'>
+                    {
+                        region.landmarks.map((entry) => (
+                            <Landmarks
+                                landmark={entry}
+                            />
+                        ))
+                    }
+                </div>
+                <div className='add-box'>
+                    <i className="material-icons viewer-add" onClick={handleAddLand}>add</i>
+                    {
+                        editingLand
+                            ? <WInput
+                                className='table-input new-landmark-box' onBlur={(e) => handleLandInput(e)}
+                                //onKeyDown={(e) => { if (e.keyCode === 13) handleCapitalEdit(e) }}
+                                onKeyDown={(e) => handleKeyEnter(e)}
+                                autoFocus={true} placeholder='New Landmark Here' type='text'
+                                inputClass="table-input-class"
+                            />
+                            : <div className='new-landmark-box'
+                                onClick={() => toggleLandEdit(!editingLand)}>
+                                New Landmark Here
                                 </div>
-                        }
-                    </div>
+                    }
                 </div>
             </div>
         </div>

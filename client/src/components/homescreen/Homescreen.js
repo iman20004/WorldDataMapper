@@ -446,7 +446,7 @@ const Homescreen = (props) => {
 						</Route>
 
 						<Route path="/home/regionviewer/:id">
-							<div className="container-secondary">
+							<div className="container-secondary1">
 								<RegionViewer
 									regions={regions}
 									activeViewer={handleSetActiveViewer}
