@@ -7,6 +7,7 @@ import CreateAccount from '../modals/CreateAccount';
 import DeleteMapModal from '../modals/DeleteMapModal';
 import DeleteRegionModal from '../modals/DeleteRegionModal';
 import DeleteLandmarkModal from '../modals/DeleteLandmarkModal';
+import EditLandmarkModal from '../modals/EditLandmarkModal';
 import MapName from '../modals/MapName';
 import MapEdit from '../modals/MapEdit';
 import Maps from '../map/Maps';
@@ -25,7 +26,6 @@ import {
 	UpdateRegion_Transaction, SortRegions_Transaction,
 	EditRegion_Transaction
 } from '../../utils/jsTPS';
-import EditLandmarkModal from '../modals/EditLandmarkModal';
 
 
 
@@ -458,6 +458,7 @@ const Homescreen = (props) => {
 							/>
 						</ul>
 					</WNavbar>
+					<div className='white-line'></div>
 				</WLHeader>
 
 				<WLMain>

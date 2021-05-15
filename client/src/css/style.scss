@@ -247,6 +247,7 @@ html, body {
     display: flex;
     flex-direction: row;
     height: 50px;
+    align-items: flex-start;
 }
 
 #add-button {

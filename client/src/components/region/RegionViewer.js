@@ -65,10 +65,10 @@ const RegionViewer = (props) => {
             <div className="region-left">
                 <div className="viewer-header">
                     <WButton {...undoOptions} >
-                        <i className="material-icons">undo</i>
+                        <i className="material-icons large">undo</i>
                     </WButton>
                     <WButton {...redoOptions} >
-                        <i className="material-icons">redo</i>
+                        <i className="material-icons large">redo</i>
                     </WButton>
                 </div>
                 <img src={flagImg} className="flag-viewer" />
