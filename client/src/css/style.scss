@@ -157,8 +157,14 @@ html, body {
 }
 
 .landmark-text {
-    font-weight: bold;
-    font-size: 17px;
+    font-weight: 900;
+    font-size: 20px;
+}
+
+.landmark-text-disabled {
+    font-weight: 900;
+    font-size: 20px;
+    pointer-events: none;
 }
 
 .viewer-parent {
@@ -191,8 +197,8 @@ html, body {
 }
 
 .landmarks-label {
-    font-weight: bold;
-    font-size: 25px;
+    font-weight: 900;
+    font-size: 30px;
     padding-left: 30px;
 }
 
@@ -367,4 +373,9 @@ html, body {
     display: flex;
     flex-direction: row;
     align-items: center;
+}
+
+.close-landmark-disabled {
+    color: black;
+    pointer-events: none;
 }
