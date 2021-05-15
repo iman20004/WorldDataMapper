@@ -10,10 +10,10 @@ const RegionEntry = (props) => {
 
     //let lands = data.landmarks.join(", ");
     let lands = '';
-    for (let i = 0; i<data.landmarks.length; i++) {
+    for (let i = 0; i < data.landmarks.length; i++) {
         let landmarkToDisplay = data.landmarks[i].split(' - ')[0];
-        if ( i !== 0 ) {
-            landmarkToDisplay = ', ' + landmarkToDisplay  ;
+        if (i !== 0) {
+            landmarkToDisplay = ', ' + landmarkToDisplay;
         }
         lands += landmarkToDisplay;
     }
@@ -30,17 +30,17 @@ const RegionEntry = (props) => {
     }, [props.activeIndex, props.activeField])
 
 
-    /*
+    
     function importAll(r) {
         let images = {};
         r.keys().map((item, index) => { images[item.replace('./', '')] = r(item); });
         return images;
-      }
+    }
       
-      const images = importAll(require.context('./images', false, /\.(png|jpe?g|svg)$/));
+    const images = importAll(require.context('../Images/TheWorld', false, /\.(png|jpe?g|svg)$/));
       
-      <img src={images['doggy.png']} />
-    */
+    //<img src={images['doggy.png']} />
+    
 
 
     const handleOpen = async (e) => {
@@ -206,7 +206,7 @@ const RegionEntry = (props) => {
             <WCol className='landmarks_list' size="4" onClick={(e) => handleEditLand(e)}>
                 {
                     lands.length === 0 ? <div className='table-text'>None</div>
-                    : <div className='table-text'>{lands}</div>
+                        : <div className='table-text'>{lands}</div>
                 }
             </WCol>
         </WRow>
