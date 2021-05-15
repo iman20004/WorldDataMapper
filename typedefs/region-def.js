@@ -24,6 +24,8 @@ extend type Mutation {
 	deleteRegion(_id: String!): Boolean
 	updateRegion(_id: String!, value: String!, field: String!): String
 	updateRegionArray(_id: String!, newArray: [String!], field: String!): String
+	addLandmark(_id: String!, newLandmark: String!, index: Int!) : String
+	deleteLandmark(_id: String!, landmarkToDelete: String!) : String
 }
 input FieldInput {
 	_id: String

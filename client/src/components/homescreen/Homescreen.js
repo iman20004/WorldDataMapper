@@ -24,7 +24,7 @@ import { WLayout, WLHeader, WLMain } from 'wt-frontend';
 import { BrowserRouter, Switch, Route, Redirect } from 'react-router-dom';
 import {
 	UpdateRegion_Transaction, SortRegions_Transaction,
-	EditRegion_Transaction
+	EditRegion_Transaction, UpdateLandmarks_Transaction
 } from '../../utils/jsTPS';
 
 
@@ -116,6 +116,8 @@ const Homescreen = (props) => {
 	const [DeleteRegion] = useMutation(mutations.DELETE_REGION, mutationOptions);
 	const [UpdateRegion] = useMutation(mutations.UPDATE_REGION, mutationOptions);
 	const [UpdateRegionArray] = useMutation(mutations.UPDATE_REGION_ARRAY, mutationOptions);
+	const [AddLandmark] = useMutation(mutations.ADD_LANDMARK, mutationOptions);
+	const [DeleteLandmark] = useMutation(mutations.DELETE_LANDMARK, mutationOptions);
 
 
 	const tpsUndo = async () => {
@@ -175,7 +177,7 @@ const Homescreen = (props) => {
 			name: 'Untitled',
 			capital: 'No Capital',
 			leader: 'No Leader',
-			landmarks: ['None'],
+			landmarks: [],
 			root: false,
 			parentId: parent._id,
 			childrenIds: []
@@ -289,24 +291,17 @@ const Homescreen = (props) => {
 	//REGION VIEWER STUFF
 
 	const addLandmark = async (region, newLand) => {
-		let arr = 'landmarks';
-		let oldLandmarks = region.landmarks;
-		let newLandmarks = oldLandmarks.concat([newLand]);
-
-		let transaction = new SortRegions_Transaction(region._id, oldLandmarks, newLandmarks, UpdateRegionArray, arr);
+		let transaction = new UpdateLandmarks_Transaction(region._id, newLand, AddLandmark, DeleteLandmark);
 		props.tps.addTransaction(transaction);
 		tpsRedo();
-
-		//const { data } = await UpdateLandmarks({ variables: { _id: _id, value: value, field: field } });
 	};
 
 	const handleDeleteLandmark = async (region, landToDelete) => {
-		let arr = 'landmarks';
 		let oldLandmarks = region.landmarks;
 		let newLandmarks = oldLandmarks.filter(land => land !== landToDelete);
 		console.log(newLandmarks)
 
-		let transaction = new SortRegions_Transaction(region._id, oldLandmarks, newLandmarks, UpdateRegionArray, arr);
+		let transaction = new UpdateLandmarks_Transaction(region._id, oldLandmarks, newLandmarks, UpdateRegionArray);
 		props.tps.addTransaction(transaction);
 		tpsRedo();
 	};

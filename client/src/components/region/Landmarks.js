@@ -1,7 +1,6 @@
 import React, { useState } from 'react';
 
 const Landmarks = (props) => {
-    //const { data } = props;
 
     return (
         <div className='landmark-entry'>

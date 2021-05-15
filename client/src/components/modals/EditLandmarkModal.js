@@ -16,6 +16,13 @@ const EditLandmarkModal = (props) => {
 			return;
 		}
         props.setShowEditLandmark({}, '', false);
+        let duplicate = props.editRegion.landmarks.includes(landmarkName)
+        if (duplicate){
+             alert('Landmark with that name already exists! Please try with another name');
+             return;
+        }
+        console.log(landmarkName)
+
         props.editLandmark(props.editRegion, props.oldLand, landmarkName)
 	};
 
@@ -26,6 +33,11 @@ const EditLandmarkModal = (props) => {
                 return;
             }
             props.setShowEditLandmark({}, '', false);
+            let duplicate = props.editRegion.landmarks.includes(e.target.value)
+            if (duplicate){
+                alert('Landmark with that name already exists! Please try with another name');
+                return;
+            }
             props.editLandmark(props.editRegion, props.oldLand, e.target.value);
         }
     };

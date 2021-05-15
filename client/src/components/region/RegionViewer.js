@@ -28,7 +28,14 @@ const RegionViewer = (props) => {
     const handleKeyEnter = async (e) => {
         if (e.keyCode === 13) {
             toggleLandEdit(false);
-            props.addLandmark(region, e.target.value);
+            if (e.target.value){
+                let duplicate = region.landmarks.includes(e.target.value)
+                if (duplicate){
+                    alert('Landmark with that name already exists! Please try with another name');
+                } else {
+                    props.addLandmark(region, e.target.value);
+                }
+            }
         }
 
     };

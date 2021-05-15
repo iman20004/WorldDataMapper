@@ -155,7 +155,63 @@ module.exports = {
 
 			if (updated) return true;
 			else return false;
+		},
+
+		/** 
+			@param 	 {object} args - a map objectID, field and the new value
+			@returns {boolean} new name on successful update, empty string on failure
+		**/
+		addLandmark: async (_, args) => {
+			const { _id, newLandmark, index } = args;
+			const objectId = new ObjectId(_id);
+			let found = await Region.findOne({ _id: objectId });
+			const regionName = found.name;
+			let newLandmarks = found.landmarks;
+
+			if(index < 0){
+				newLandmarks.push(newLandmark);
+			} else {
+				newLandmarks.splice(index, 0, newLandmark);
+			}
+			const updated = await Region.updateOne({ _id: objectId }, { landmarks: newLandmarks});
+
+			while (found.root === false){
+				let pId = new ObjectId(found.parentId);
+				found = await Region.findOne({ _id: pId });
+				let updatedLandmark = newLandmark + " - " + regionName;
+				let updatedLandmarkArray = found.landmarks
+				updatedLandmarkArray.push(updatedLandmark);
+				const updatedParent = await Region.updateOne({ _id: pId }, { landmarks: updatedLandmarkArray});
+			}
+
+
+			if (updated) return newLandmark;
+			else return '';
+		},
+		
+		/** 
+			@param 	 {object} args - a map objectID, field and the new value
+			@returns {boolean} new name on successful update, empty string on failure
+		**/
+		deleteLandmark: async (_, args) => {
+			const { _id, landmarkToDelete } = args;
+			const objectId = new ObjectId(_id);
+			let found = await Region.findOne({ _id: objectId });
+			let newLandmarks = found.landmarks.filter(land => land !== landmarkToDelete);
+			const updated = await Region.updateOne({ _id: objectId }, { landmarks: newLandmarks});
+
+			while (found.root === false){
+				let pId = new ObjectId(found.parentId);
+				found = await Region.findOne({ _id: pId });
+				let updatedLandmark = landmarkToDelete + " - " + found.name;
+				let updatedLandmarkArray = found.landmarks.filter(land => land === updatedLandmark);
+				const updatedParent = await Region.updateOne({ _id: pId }, { landmarks: updatedLandmarkArray});
+			}
+
+			if (updated) return landmarkToDelete;
+			else return '';
 		}
+
 
 	}
 }

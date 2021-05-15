@@ -101,6 +101,34 @@ export class EditRegion_Transaction extends jsTPS_Transaction{
     }
 }
 
+export class UpdateLandmarks_Transaction extends jsTPS_Transaction{
+    constructor(regionId, newLand, addFunction, deleteFunction, index = -1) {
+        super();
+        this.regionId = regionId;
+        this.newLand = newLand;
+        this.index = index;
+        this.addFunction = addFunction;
+        this.deleteFunction = deleteFunction;
+    }
+    async doTransaction() {
+		const { data } = await this.addFunction({ variables: { _id: this.regionId, newLandmark: this.newLand, index: this.index}});
+        if(data) {
+            console.log(data)
+            return data;
+        }
+    }
+
+    async undoTransaction() {
+		const { data } = await this.deleteFunction({ variables: { _id: this.regionId, landmarkToDelete: this.newLand}});
+        if(data) {
+            console.log(data)
+            return data;
+
+        }
+
+    }
+}
+
 
 export class jsTPS {
     constructor() {

@@ -74,3 +74,15 @@ export const UPDATE_REGION_ARRAY = gql`
 		updateRegionArray(_id: $_id, newArray: $newArray, field: $field)
 	}
 `;
+
+export const ADD_LANDMARK = gql`
+	mutation AddLandmark($_id: String!, $newLandmark: String!, $index: Int! ) {
+		addLandmark(_id: $_id, newLandmark: $newLandmark, index: $index)
+	}
+`;
+
+export const DELETE_LANDMARK = gql`
+	mutation DeleteLandmark($_id: String!, $landmarkToDelete: String!) {
+		deleteLandmark(_id: $_id, landmarkToDelete: $landmarkToDelete)
+	}
+`;

@@ -8,17 +8,27 @@ const RegionEntry = (props) => {
     const mapId = props.data._id;
     let history = useHistory();
 
+    //let lands = data.landmarks.join(", ");
+    let lands = '';
+    for (let i = 0; i<data.landmarks.length; i++) {
+        let landmarkToDisplay = data.landmarks[i].split(' - ')[0];
+        if ( i !== 0 ) {
+            landmarkToDisplay = ', ' + landmarkToDisplay  ;
+        }
+        lands += landmarkToDisplay;
+    }
+
     const [editingName, toggleNameEdit] = useState(Boolean(props.activeIndex && props.activeField === 'name'));
     const [editingCapital, toggleCapitalEdit] = useState(Boolean(props.activeIndex && props.activeField === 'capital'));
     const [editingLeader, toggleLeaderEdit] = useState(Boolean(props.activeIndex && props.activeField === 'leader'));
-    
+
     useEffect(() => {
         toggleCapitalEdit(Boolean(props.activeIndex && props.activeField === 'capital'))
         toggleNameEdit(Boolean(props.activeIndex && props.activeField === 'name'))
         toggleLeaderEdit(Boolean(props.activeIndex && props.activeField === 'leader'))
 
     }, [props.activeIndex, props.activeField])
-    
+
 
     const disabledButton = () => { }
 
@@ -69,50 +79,50 @@ const RegionEntry = (props) => {
     const handlekeyDownName = async (e) => {
         if (e.keyCode === 13) {
             handleNameEdit(e);
-        } else if (e.keyCode === 39){
+        } else if (e.keyCode === 39) {
             toggleCapitalEdit(true);
-        } else if (e.keyCode === 38){
+        } else if (e.keyCode === 38) {
             handleNameEdit(e);
             props.setActiveField('name');
-            props.setActiveIndex(props.index -1);
-        } else if (e.keyCode === 40){
+            props.setActiveIndex(props.index - 1);
+        } else if (e.keyCode === 40) {
             handleNameEdit(e);
             props.setActiveField('name');
-            props.setActiveIndex(props.index +1);
+            props.setActiveIndex(props.index + 1);
         }
     };
 
     const handlekeyDownCapital = async (e) => {
         if (e.keyCode === 13) {
             handleCapitalEdit(e);
-        } else if (e.keyCode === 37){
+        } else if (e.keyCode === 37) {
             toggleNameEdit(true);
-        } else if (e.keyCode === 39){
+        } else if (e.keyCode === 39) {
             toggleLeaderEdit(true);
-        } else if (e.keyCode === 38){
+        } else if (e.keyCode === 38) {
             handleCapitalEdit(e);
             props.setActiveField('capital');
-            props.setActiveIndex(props.index -1);
-        } else if (e.keyCode === 40){
+            props.setActiveIndex(props.index - 1);
+        } else if (e.keyCode === 40) {
             handleCapitalEdit(e);
             props.setActiveField('capital');
-            props.setActiveIndex(props.index +1);
+            props.setActiveIndex(props.index + 1);
         }
     };
 
     const handlekeyDownLeader = async (e) => {
         if (e.keyCode === 13) {
             handleLeaderEdit(e);
-        } else if (e.keyCode === 37){
+        } else if (e.keyCode === 37) {
             toggleCapitalEdit(true);
-        } else if (e.keyCode === 38){
+        } else if (e.keyCode === 38) {
             handleLeaderEdit(e);
             props.setActiveField('leader');
-            props.setActiveIndex(props.index -1);
-        } else if (e.keyCode === 40){
+            props.setActiveIndex(props.index - 1);
+        } else if (e.keyCode === 40) {
             handleLeaderEdit(e);
             props.setActiveField('leader');
-            props.setActiveIndex(props.index +1);
+            props.setActiveIndex(props.index + 1);
         }
     };
 
@@ -123,18 +133,18 @@ const RegionEntry = (props) => {
                     <div className='region-first'>
                         <i onClick={() => props.setShowDeleteRegion(props.data, props.index)} className="material-icons close-landmark">close</i>
                         {
-                        editingName || data.name === ''
-                        ? <WInput
-                            className='table-input' onBlur={handleNameEdit}
-                            //onKeyDown={(e) => { if (e.keyCode === 13) handleNameEdit(e) }}
-                            onKeyDown={(e) => handlekeyDownName(e)}
-                            autoFocus={true} defaultValue={data.name} type='text'
-                            inputClass="table-input-class"
-                        />
-                        : <div className="table-text"
-                            onClick={(e) => handleOpen(e)}>
-                            {data.name}
-                        </div>
+                            editingName || data.name === ''
+                                ? <WInput
+                                    className='table-input' onBlur={handleNameEdit}
+                                    //onKeyDown={(e) => { if (e.keyCode === 13) handleNameEdit(e) }}
+                                    onKeyDown={(e) => handlekeyDownName(e)}
+                                    autoFocus={true} defaultValue={data.name} type='text'
+                                    inputClass="table-input-class"
+                                />
+                                : <div className="table-text"
+                                    onClick={(e) => handleOpen(e)}>
+                                    {data.name}
+                                </div>
                         }
                     </div>
                 }
@@ -183,13 +193,11 @@ const RegionEntry = (props) => {
                     </div>
                 }
             </WCol>
-            <WCol size="4" onClick={(e) => handleEditLand(e)}>
+            <WCol className='landmarks_list' size="4" onClick={(e) => handleEditLand(e)}>
                 {
-                    <div className="table-text" >
-                        {data.landmarks}
-                    </div>
+                    lands.length === 0 ? <div className='table-text'>None</div>
+                    : <div className='table-text'>{lands}</div>
                 }
-
             </WCol>
         </WRow>
     );
