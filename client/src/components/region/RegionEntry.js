@@ -30,7 +30,17 @@ const RegionEntry = (props) => {
     }, [props.activeIndex, props.activeField])
 
 
-    const disabledButton = () => { }
+    /*
+    function importAll(r) {
+        let images = {};
+        r.keys().map((item, index) => { images[item.replace('./', '')] = r(item); });
+        return images;
+      }
+      
+      const images = importAll(require.context('./images', false, /\.(png|jpe?g|svg)$/));
+      
+      <img src={images['doggy.png']} />
+    */
 
 
     const handleOpen = async (e) => {
