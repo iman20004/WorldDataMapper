@@ -3,7 +3,7 @@ import React, { useState } from 'react';
 const Landmarks = (props) => {
     const disabledButton = () => { }
 
-    let childLandmark = props.landmark.includes("-");
+    let childLandmark = props.landmark.includes(" - ");
 
 
     return (

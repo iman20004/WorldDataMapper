@@ -1,7 +1,7 @@
 export class jsTPS_Transaction {
-    constructor() {};
-    doTransaction() {};
-    undoTransaction () {};
+    constructor() { };
+    doTransaction() { };
+    undoTransaction() { };
 }
 
 
@@ -11,7 +11,7 @@ export class UpdateRegion_Transaction extends jsTPS_Transaction {
     constructor(parentId, newRegion, opcode, addfunc, delfunc, index = -1) {
         super();
         this.parentId = parentId;
-		this.regionUpdate = newRegion;
+        this.regionUpdate = newRegion;
         this.addFunction = addfunc;
         this.deleteFunction = delfunc;
         this.opcode = opcode;
@@ -19,31 +19,31 @@ export class UpdateRegion_Transaction extends jsTPS_Transaction {
     }
 
     async doTransaction() {
-		let data;
-        this.opcode === 0 ? { data } = await this.deleteFunction({ variables: { _id: this.regionUpdate._id }})
-						  : { data } = await this.addFunction({ variables: { region: this.regionUpdate, index: this.index }})  
-		if(this.opcode !== 0) {
+        let data;
+        this.opcode === 0 ? { data } = await this.deleteFunction({ variables: { _id: this.regionUpdate._id } })
+            : { data } = await this.addFunction({ variables: { region: this.regionUpdate, index: this.index } })
+        if (this.opcode !== 0) {
             this.regionUpdate._id = data.addRegion._id;
-		}
-		return data;
+        }
+        return data;
     }
 
     // Since delete/add are opposites, flip matching opcode
     async undoTransaction() {
-		let data;
-        this.opcode === 1 ? { data } = await this.deleteFunction({ variables: { _id: this.regionUpdate._id }})
-                          : { data } = await await this.addFunction({ variables: { region: this.regionUpdate, index: this.index }})
-		if(this.opcode !== 1) {
+        let data;
+        this.opcode === 1 ? { data } = await this.deleteFunction({ variables: { _id: this.regionUpdate._id } })
+            : { data } = await await this.addFunction({ variables: { region: this.regionUpdate, index: this.index } })
+        if (this.opcode !== 1) {
             this.regionUpdate._id = data.addRegion._id;
         }
-		return data;
+        return data;
     }
 
 
 
 }
 
-export class SortRegions_Transaction extends jsTPS_Transaction{
+export class SortRegions_Transaction extends jsTPS_Transaction {
     constructor(regionId, oldChildren, newChildren, callback, arr) {
         super();
         this.regionId = regionId;
@@ -53,8 +53,8 @@ export class SortRegions_Transaction extends jsTPS_Transaction{
         this.field = arr
     }
     async doTransaction() {
-		const { data } = await this.callback({ variables: { _id: this.regionId, newArray: this.newChildren, field: this.field}});
-        if(data) {
+        const { data } = await this.callback({ variables: { _id: this.regionId, newArray: this.newChildren, field: this.field } });
+        if (data) {
             console.log(data)
             return data;
 
@@ -62,8 +62,8 @@ export class SortRegions_Transaction extends jsTPS_Transaction{
     }
 
     async undoTransaction() {
-		const { data } = await this.callback({ variables: { _id: this.regionId, newArray: this.oldChildren, field: this.field}});
-        if(data) {
+        const { data } = await this.callback({ variables: { _id: this.regionId, newArray: this.oldChildren, field: this.field } });
+        if (data) {
             console.log(data)
             return data;
 
@@ -72,7 +72,7 @@ export class SortRegions_Transaction extends jsTPS_Transaction{
     }
 }
 
-export class EditRegion_Transaction extends jsTPS_Transaction{
+export class EditRegion_Transaction extends jsTPS_Transaction {
     constructor(regionId, field, prev, value, callback) {
         super();
         this.regionId = regionId;
@@ -82,8 +82,8 @@ export class EditRegion_Transaction extends jsTPS_Transaction{
         this.callback = callback;
     }
     async doTransaction() {
-		const { data } = await this.callback({ variables: { _id: this.regionId, value: this.value, field: this.field}});
-        if(data) {
+        const { data } = await this.callback({ variables: { _id: this.regionId, value: this.value, field: this.field } });
+        if (data) {
             console.log(data)
             return data;
 
@@ -91,8 +91,8 @@ export class EditRegion_Transaction extends jsTPS_Transaction{
     }
 
     async undoTransaction() {
-		const { data } = await this.callback({ variables: { _id: this.regionId, value: this.prev, field: this.field}});
-        if(data) {
+        const { data } = await this.callback({ variables: { _id: this.regionId, value: this.prev, field: this.field } });
+        if (data) {
             console.log(data)
             return data;
 
@@ -101,29 +101,34 @@ export class EditRegion_Transaction extends jsTPS_Transaction{
     }
 }
 
-export class UpdateLandmarks_Transaction extends jsTPS_Transaction{
-    constructor(regionId, newLand, addFunction, deleteFunction, index = -1) {
+export class UpdateLandmarks_Transaction extends jsTPS_Transaction {
+    // opcodes: 0 - delete, 1 - add 
+    constructor(regionId, newLand, opcode, addFunction, deleteFunction, index = -1) {
         super();
         this.regionId = regionId;
         this.newLand = newLand;
         this.index = index;
         this.addFunction = addFunction;
         this.deleteFunction = deleteFunction;
+        this.opcode = opcode;
     }
     async doTransaction() {
-		const { data } = await this.addFunction({ variables: { _id: this.regionId, newLandmark: this.newLand, index: this.index}});
-        if(data) {
+        let data;
+        this.opcode === 0 ? { data } = await this.deleteFunction({ variables: { _id: this.regionId, landmarkToDelete: this.newLand } })
+                          : { data } = await this.addFunction({ variables: { _id: this.regionId, newLandmark: this.newLand, index: this.index } });
+        if (data) {
             console.log(data)
             return data;
         }
     }
 
     async undoTransaction() {
-		const { data } = await this.deleteFunction({ variables: { _id: this.regionId, landmarkToDelete: this.newLand}});
-        if(data) {
+        let data;
+        this.opcode === 1 ? { data } = await this.deleteFunction({ variables: { _id: this.regionId, landmarkToDelete: this.newLand } })
+                          : { data } = await this.addFunction({ variables: { _id: this.regionId, newLandmark: this.newLand, index: this.index } });
+        if (data) {
             console.log(data)
             return data;
-
         }
 
     }
@@ -142,7 +147,7 @@ export class jsTPS {
         this.performingDo = false;
         this.performingUndo = false;
     }
-    
+
     /**
      * Tests to see if the do (i.e. redo) operation is currently being
      * performed. If it is, true is returned, if not, false.
@@ -153,7 +158,7 @@ export class jsTPS {
     isPerformingDo() {
         return this.performingDo;
     }
-    
+
     /**
      * Tests to see if the undo operation is currently being
      * performed. If it is, true is returned, if not, false.
@@ -164,7 +169,7 @@ export class jsTPS {
     isPerformingUndo() {
         return this.performingUndo;
     }
-    
+
     /**
      * This function adds the transaction argument to the top of
      * the transaction processing system stack and then executes it. Note that it does
@@ -178,8 +183,8 @@ export class jsTPS {
     addTransaction(transaction) {
         // ARE THERE OLD UNDONE TRANSACTIONS ON THE STACK THAT FIRST
         // NEED TO BE CLEARED OUT, i.e. ARE WE BRANCHING?
-        if ((this.mostRecentTransaction < 0)|| (this.mostRecentTransaction < (this.transactions.length-1))) {
-            for (let i = this.transactions.length-1; i > this.mostRecentTransaction; i--) {
+        if ((this.mostRecentTransaction < 0) || (this.mostRecentTransaction < (this.transactions.length - 1))) {
+            for (let i = this.transactions.length - 1; i > this.mostRecentTransaction; i--) {
                 this.transactions.splice(i, 1);
             }
         }
@@ -195,23 +200,23 @@ export class jsTPS {
      * then moving the TPS counter. Note that this may be the transaction
      * at the top of the TPS stack or somewhere in the middle (i.e. a redo).
      */
-     async doTransaction() {
-		let retVal;
-        if (this.hasTransactionToRedo()) {   
+    async doTransaction() {
+        let retVal;
+        if (this.hasTransactionToRedo()) {
             this.performingDo = true;
-            let transaction = this.transactions[this.mostRecentTransaction+1];
-			retVal = await transaction.doTransaction();
-			this.mostRecentTransaction++;
-			this.performingDo = false;
-            
+            let transaction = this.transactions[this.mostRecentTransaction + 1];
+            retVal = await transaction.doTransaction();
+            this.mostRecentTransaction++;
+            this.performingDo = false;
+
         }
         console.log('transactions: ' + this.getSize());
         console.log('redo transactions:' + this.getRedoSize());
         console.log('undo transactions:' + this.getUndoSize());
-		console.log(' ')
-		return retVal;
+        console.log(' ')
+        return retVal;
     }
-    
+
     /**
      * This function checks to see if there is a transaction to undo. If there
      * is it will return it, if not, it will return null.
@@ -226,17 +231,17 @@ export class jsTPS {
         else
             return null;
     }
-    
+
     /**
      * This function checks to see if there is a transaction to redo. If there
      * is it will return it, if not, it will return null.
      * 
      * return The transaction that would be executed if redo is performed, if
      * there is no transaction to undo, null is returned.
-     */    
+     */
     peekDo() {
         if (this.hasTransactionToRedo()) {
-            return this.transactions[this.mostRecentTransaction+1];
+            return this.transactions[this.mostRecentTransaction + 1];
         }
         else
             return null;
@@ -246,20 +251,20 @@ export class jsTPS {
      * This function gets the most recently executed transaction on the 
      * TPS stack and undoes it, moving the TPS counter accordingly.
      */
-     async undoTransaction() {
-		let retVal;
+    async undoTransaction() {
+        let retVal;
         if (this.hasTransactionToUndo()) {
             this.performingUndo = true;
             let transaction = this.transactions[this.mostRecentTransaction];
-			retVal = await transaction.undoTransaction();
+            retVal = await transaction.undoTransaction();
             this.mostRecentTransaction--;
-			this.performingUndo = false;
+            this.performingUndo = false;
         }
         console.log('transactions: ' + this.getSize());
         console.log('redo transactions:' + this.getRedoSize());
         console.log('undo transactions:' + this.getUndoSize());
         console.log(' ')
-		return(retVal);
+        return (retVal);
     }
 
     /**
@@ -270,12 +275,12 @@ export class jsTPS {
     clearAllTransactions() {
         // REMOVE ALL THE TRANSACTIONS
         this.transactions = [];
-        
+
         // MAKE SURE TO RESET THE LOCATION OF THE
         // TOP OF THE TPS STACK TOO
-        this.mostRecentTransaction = -1;        
+        this.mostRecentTransaction = -1;
     }
-    
+
     /**
      * Accessor method that returns the number of transactions currently
      * on the transaction stack. This includes those that may have been
@@ -286,7 +291,7 @@ export class jsTPS {
     getSize() {
         return this.transactions.length;
     }
-    
+
     /**
      * This method returns the number of transactions currently in the
      * transaction stack that can be redone, meaning they have been added
@@ -308,7 +313,7 @@ export class jsTPS {
     getUndoSize() {
         return this.mostRecentTransaction + 1;
     }
-    
+
     /**
      * This method tests to see if there is a transaction on the stack that
      * can be undone at the time this function is called.
@@ -318,7 +323,7 @@ export class jsTPS {
     hasTransactionToUndo() {
         return this.mostRecentTransaction >= 0;
     }
-    
+
     /**
      * This method tests to see if there is a transaction on the stack that
      * can be redone at the time this function is called.
@@ -326,9 +331,9 @@ export class jsTPS {
      * return true if a redo operation is possible, false otherwise.
      */
     hasTransactionToRedo() {
-        return this.mostRecentTransaction < (this.transactions.length-1);
+        return this.mostRecentTransaction < (this.transactions.length - 1);
     }
-        
+
     /**
      * This method builds and returns a textual summary of the current
      * Transaction Processing System, this includes the toString of

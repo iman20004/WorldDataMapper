@@ -290,18 +290,18 @@ const Homescreen = (props) => {
 
 	//REGION VIEWER STUFF
 
-	const addLandmark = async (region, newLand) => {
-		let transaction = new UpdateLandmarks_Transaction(region._id, newLand, AddLandmark, DeleteLandmark);
+	const handleAddLandmark = async (region, newLand) => {
+		let opcode = 1;
+		let transaction = new UpdateLandmarks_Transaction(region._id, newLand, opcode, AddLandmark, DeleteLandmark);
 		props.tps.addTransaction(transaction);
 		tpsRedo();
 	};
 
 	const handleDeleteLandmark = async (region, landToDelete) => {
-		let oldLandmarks = region.landmarks;
-		let newLandmarks = oldLandmarks.filter(land => land !== landToDelete);
-		console.log(newLandmarks)
+		let opcode = 0;
+		let index = region.landmarks.indexOf(landToDelete);
 
-		let transaction = new UpdateLandmarks_Transaction(region._id, oldLandmarks, newLandmarks, UpdateRegionArray);
+		let transaction = new UpdateLandmarks_Transaction(region._id, landToDelete, opcode, AddLandmark, DeleteLandmark, index);
 		props.tps.addTransaction(transaction);
 		tpsRedo();
 	};
@@ -515,7 +515,7 @@ const Homescreen = (props) => {
 									activeViewer={handleSetActiveViewer}
 									undo={tpsUndo} redo={tpsRedo}
 									canUndo={canUndo} canRedo={canRedo}
-									addLandmark={addLandmark}
+									addLandmark={handleAddLandmark}
 									reload={loadRegion}
 									setShowDeleteLandmark={setShowDeleteLandmark}
 									setShowEditLandmark={setShowEditLandmark}

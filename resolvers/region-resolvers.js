@@ -198,13 +198,14 @@ module.exports = {
 			const objectId = new ObjectId(_id);
 			let found = await Region.findOne({ _id: objectId });
 			let newLandmarks = found.landmarks.filter(land => land !== landmarkToDelete);
+			const regionName = found.name;
 			const updated = await Region.updateOne({ _id: objectId }, { landmarks: newLandmarks});
 
 			while (found.root === false){
 				let pId = new ObjectId(found.parentId);
 				found = await Region.findOne({ _id: pId });
-				let updatedLandmark = landmarkToDelete + " - " + found.name;
-				let updatedLandmarkArray = found.landmarks.filter(land => land === updatedLandmark);
+				let updatedLandmark = landmarkToDelete + " - " + regionName;
+				let updatedLandmarkArray = found.landmarks.filter(land => land !== updatedLandmark);
 				const updatedParent = await Region.updateOne({ _id: pId }, { landmarks: updatedLandmarkArray});
 			}
 
