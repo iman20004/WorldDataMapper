@@ -116,6 +116,7 @@ const RegionViewer = (props) => {
                                 landmark={entry}
                                 region={region}
                                 setShowDeleteLandmark={props.setShowDeleteLandmark}
+                                setShowEditLandmark={props.setShowEditLandmark}
                             />
                         ))
                     }

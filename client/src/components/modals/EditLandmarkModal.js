@@ -1,39 +1,39 @@
 import React, { useState } 				                from 'react';
 import { WModal, WMHeader, WMMain, WButton, WInput }    from 'wt-frontend';
 
-const MapEdit = (props) => {
-    const [name, setName] = useState('');
+const EditLandmarkModal = (props) => {
+    const [landmarkName, setLandmarkName] = useState('');
     const [showErr, displayErrorMsg] = useState(false);
 	const errorMsg = "All Maps must have a name.";
 	
 	const updateInput = (e) => {
-        setName(e.target.value);
+        setLandmarkName(e.target.value);
 	};
 
     const handleEditMap = async (e) => {
-        if (!name) {
+        if (!landmarkName) {
 			displayErrorMsg(true);
 			return;
 		}
-        props.setShowMapEdit(false);
-        props.editMap(props.editMapId, name)  
-    };
-    
+        props.setShowEditLandmark({}, '', false);
+        props.editLandmark(props.editRegion, props.oldLand, landmarkName)
+	};
+
     const handlekeyDown = async (e) => {
         if (e.keyCode === 13) {
             if (!e.target.value) {
                 displayErrorMsg(true);
                 return;
             }
-            props.setShowMapEdit(false);
-            props.editMap(props.editMapId, e.target.value);
+            props.setShowEditLandmark({}, '', false);
+            props.editLandmark(props.editRegion, props.oldLand, e.target.value);
         }
     };
 
     return (
-        <WModal className="map-modal" cover="true" visible={props.setShowMapEdit}>
-            <WMHeader  className="modal-header" onClose={() => props.setShowMapEdit(false)}>
-                Rename Map?
+        <WModal className="map-modal" cover="true" visible={props.setShowEditLandmark}>
+            <WMHeader  className="modal-header" onClose={() => props.setShowEditLandmark({}, '', false)}>
+                Edit Landmark Name
 			</WMHeader >
 
             <WMMain>
@@ -42,7 +42,7 @@ const MapEdit = (props) => {
                     barAnimation="solid" wType="outlined" inputType="text" onKeyDown={(e) => handlekeyDown(e)} 
 				/>
                 <div className="modal-spacer">&nbsp;</div>
-                <WButton className="modal-button cancel-button" onClick={() => props.setShowMapEdit(false)} wType="texted">
+                <WButton className="modal-button cancel-button" onClick={() => props.setShowEditLandmark({}, '', false)} wType="texted">
                     Cancel
 				</WButton>
                 <label className="col-spacer">&nbsp;</label>
@@ -62,4 +62,4 @@ const MapEdit = (props) => {
     );
 }
 
-export default MapEdit;
+export default EditLandmarkModal;

@@ -25,6 +25,7 @@ import {
 	UpdateRegion_Transaction, SortRegions_Transaction,
 	EditRegion_Transaction
 } from '../../utils/jsTPS';
+import EditLandmarkModal from '../modals/EditLandmarkModal';
 
 
 
@@ -310,6 +311,16 @@ const Homescreen = (props) => {
 		tpsRedo();
 	};
 
+	const editLandmark = async (reg, oldLand, newLand) => {
+		console.log(reg)
+		console.log(oldLand)
+		console.log(newLand)
+		/*
+		let transaction = new EditRegion_Transaction(_id, field, prev, value, UpdateRegion);
+		props.tps.addTransaction(transaction);
+		tpsRedo();
+		//const { data } = await UpdateRegion({ variables: { _id: _id, value: value, field: field } });*/
+	};
 
 
 
@@ -378,6 +389,17 @@ const Homescreen = (props) => {
 		setDeleteLandRegion(reg);
 		setDeleteLand(land);
 		toggleShowDeleteLandmark(!showDeleteLandmark);
+	};
+
+	const setShowEditLandmark = (reg, land) => {
+		toggleShowCreate(false);
+		toggleShowLogin(false);
+		toggleShowUpdate(false);
+		toggleShowDeleteRegion(false);
+		toggleShowDeleteLandmark(false);
+		setDeleteLandRegion(reg);
+		setDeleteLand(land);
+		toggleShowEditLandmark(!showEditLandmark)
 	};
 
 	return (
@@ -500,6 +522,7 @@ const Homescreen = (props) => {
 									addLandmark={addLandmark}
 									reload={loadRegion}
 									setShowDeleteLandmark={setShowDeleteLandmark}
+									setShowEditLandmark={setShowEditLandmark}
 								//activeRegion={activeRegion}
 								//handleSetActiveRegion={handleSetActiveRegion}
 								/>
@@ -541,9 +564,15 @@ const Homescreen = (props) => {
 				}
 
 				{
-					showDeleteLandmark && (<DeleteLandmarkModal deleteLandmark={handleDeleteLandmark} setShowDeleteLandmark={setShowDeleteLandmark} 
+					showDeleteLandmark && (<DeleteLandmarkModal deleteLandmark={handleDeleteLandmark} setShowDeleteLandmark={setShowDeleteLandmark}
 						deleteLandRegion={deleteLandRegion} deleteLand={deleteLand} />)
 				}
+
+				{
+					showEditLandmark && (<EditLandmarkModal editLandmark={editLandmark} setShowEditLandmark={setShowEditLandmark} 
+						editRegion={deleteLandRegion} oldLand={deleteLand}/>)
+				}
+
 
 			</WLayout>
 

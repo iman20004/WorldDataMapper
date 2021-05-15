@@ -8,7 +8,7 @@ const Landmarks = (props) => {
             <div className='info-spacer'></div>
             <i className="material-icons close-landmark" onClick={() => props.setShowDeleteLandmark(props.region, props.landmark)}>close</i>
             <div className='info-spacer'></div>
-            <div className='landmark-text'>{props.landmark}</div>
+            <div className='landmark-text' onClick={() => props.setShowEditLandmark(props.region, props.landmark)}>{props.landmark}</div>
         </div>
     );
 };
