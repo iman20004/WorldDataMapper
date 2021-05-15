@@ -14,7 +14,7 @@ module.exports = {
 		getAllRegions: async (_, __, { req }) => {
 			const _id = new ObjectId(req.userId);
 			if (!_id) { return ([]) };
-			const regions = await Region.find({ owner: _id }).sort({updatedAt: -1});;
+			const regions = await Region.find({ owner: _id }).sort({ updatedAt: -1 });;
 			if (regions) return (regions);
 
 		},
@@ -38,10 +38,10 @@ module.exports = {
 			if (!_id) { return ([]) };
 			const regions = await Region.find({
 				$and: [
-				  { owner: _id},
-				  { root: true}
+					{ owner: _id },
+					{ root: true }
 				]
-			  });
+			});
 			if (regions) return (regions);
 		},
 		/** 
@@ -52,15 +52,15 @@ module.exports = {
 			const { _id } = args;
 			const objectId = new ObjectId(_id);
 			let region = await Region.findOne({ _id: objectId });
-			
+
 			let ancestors = [];
 			// return empty array for map
-			while (region.root === false){
+			while (region.root === false) {
 				let pId = new ObjectId(region.parentId);
 				region = await Region.findOne({ _id: pId });
 				ancestors.push(region);
 			}
-			return ancestors.reverse();	
+			return ancestors.reverse();
 		}
 
 	},
@@ -73,9 +73,9 @@ module.exports = {
 		addRegion: async (_, args) => {
 			const { region, index } = args;
 			let objectId = new ObjectId();
-			const { _id, owner, name, capital, leader, landmarks, root, parentId, childrenIds} = region;
+			const { _id, owner, name, capital, leader, landmarks, root, parentId, childrenIds } = region;
 
-			if(_id !== '') objectId = new ObjectId(_id);
+			if (_id !== '') objectId = new ObjectId(_id);
 
 			const newRegion = new Region({
 				_id: objectId,
@@ -89,12 +89,12 @@ module.exports = {
 				childrenIds: childrenIds
 			});
 
-			if(newRegion.root === false) {
+			if (newRegion.root === false) {
 				const pId = new ObjectId(newRegion.parentId);
 				const parent = await Region.findOne({ _id: pId });
 				let children = parent.childrenIds
 
-				if(index < 0) children.push(newRegion._id);
+				if (index < 0) children.push(newRegion._id);
 				else children.splice(index, 0, newRegion._id);
 
 				const updateParent = await Region.updateOne({ _id: pId }, { childrenIds: children });
@@ -114,8 +114,8 @@ module.exports = {
 			const { _id } = args;
 			const objectId = new ObjectId(_id);
 			const deleted = await Region.findOne({ _id: objectId });
-			
-			if(deleted.root === false) {
+
+			if (deleted.root === false) {
 				const pId = new ObjectId(deleted.parentId);
 				const parent = await Region.findOne({ _id: pId });
 				let childs = parent.childrenIds
@@ -137,30 +137,23 @@ module.exports = {
 		updateRegion: async (_, args) => {
 			const { field, value, _id } = args;
 			const objectId = new ObjectId(_id);
-			const updated = await Region.updateOne({ _id: objectId }, {[field]: value});
+			const updated = await Region.updateOne({ _id: objectId }, { [field]: value });
 
 			if (updated) return value;
 			else return "";
 		},
-		
 
-		/** 
-			@param 	 {object} args - a map objectID, field and the new value
-			@returns {boolean} new name on successful update, empty string on failure
-		**/
+
 		updateRegionArray: async (_, args) => {
 			const { _id, newArray, field } = args;
 			const objectId = new ObjectId(_id);
-			const updated = await Region.updateOne({ _id: objectId }, { [field]: newArray});
+			const updated = await Region.updateOne({ _id: objectId }, { [field]: newArray });
 
 			if (updated) return true;
 			else return false;
 		},
 
-		/** 
-			@param 	 {object} args - a map objectID, field and the new value
-			@returns {boolean} new name on successful update, empty string on failure
-		**/
+
 		addLandmark: async (_, args) => {
 			const { _id, newLandmark, index } = args;
 			const objectId = new ObjectId(_id);
@@ -168,49 +161,83 @@ module.exports = {
 			const regionName = found.name;
 			let newLandmarks = found.landmarks;
 
-			if(index < 0){
+			if (index < 0) {
 				newLandmarks.push(newLandmark);
 			} else {
 				newLandmarks.splice(index, 0, newLandmark);
 			}
-			const updated = await Region.updateOne({ _id: objectId }, { landmarks: newLandmarks});
+			const updated = await Region.updateOne({ _id: objectId }, { landmarks: newLandmarks });
 
-			while (found.root === false){
+			while (found.root === false) {
 				let pId = new ObjectId(found.parentId);
 				found = await Region.findOne({ _id: pId });
 				let updatedLandmark = newLandmark + " - " + regionName;
 				let updatedLandmarkArray = found.landmarks
 				updatedLandmarkArray.push(updatedLandmark);
-				const updatedParent = await Region.updateOne({ _id: pId }, { landmarks: updatedLandmarkArray});
+				const updatedParent = await Region.updateOne({ _id: pId }, { landmarks: updatedLandmarkArray });
 			}
 
 
 			if (updated) return newLandmark;
 			else return '';
 		},
-		
-		/** 
-			@param 	 {object} args - a map objectID, field and the new value
-			@returns {boolean} new name on successful update, empty string on failure
-		**/
+
+
 		deleteLandmark: async (_, args) => {
 			const { _id, landmarkToDelete } = args;
 			const objectId = new ObjectId(_id);
 			let found = await Region.findOne({ _id: objectId });
 			let newLandmarks = found.landmarks.filter(land => land !== landmarkToDelete);
 			const regionName = found.name;
-			const updated = await Region.updateOne({ _id: objectId }, { landmarks: newLandmarks});
+			const updated = await Region.updateOne({ _id: objectId }, { landmarks: newLandmarks });
 
-			while (found.root === false){
+			while (found.root === false) {
 				let pId = new ObjectId(found.parentId);
 				found = await Region.findOne({ _id: pId });
 				let updatedLandmark = landmarkToDelete + " - " + regionName;
 				let updatedLandmarkArray = found.landmarks.filter(land => land !== updatedLandmark);
-				const updatedParent = await Region.updateOne({ _id: pId }, { landmarks: updatedLandmarkArray});
+				const updatedParent = await Region.updateOne({ _id: pId }, { landmarks: updatedLandmarkArray });
 			}
 
 			if (updated) return landmarkToDelete;
 			else return '';
+		},
+
+		editLandmark: async (_, args) => {
+			const { _id, oldLandmark, newLandmark } = args;
+			const objectId = new ObjectId(_id);
+			let found = await Region.findOne({ _id: objectId });
+			let regionName = found.name;
+			let newLandmarks = found.landmarks;
+
+			for (let i = 0; i < newLandmarks.length; i++) {
+				if (newLandmarks[i] === oldLandmark) {
+					newLandmarks[i] = newLandmark;
+				}
+			}
+
+			const updated = await Region.updateOne({ _id: objectId }, { landmarks: newLandmarks });
+
+
+			while (found.root === false) {
+				let pId = new ObjectId(found.parentId);
+				found = await Region.findOne({ _id: pId });
+				let updatedOld = oldLandmark + " - " + regionName;
+				let updatedNew = newLandmark + " - " + regionName;
+
+				let parentLandmarks = found.landmarks;
+
+				for (let i = 0; i < parentLandmarks.length; i++) {
+					if (parentLandmarks[i] === updatedOld) {
+						parentLandmarks[i] = updatedNew;
+					}
+				}
+
+				const updatedParent = await Region.updateOne({ _id: pId }, { landmarks: parentLandmarks });
+			}
+
+			if (updated) return newLandmark;
+			else return oldLandmark;
 		}
 
 

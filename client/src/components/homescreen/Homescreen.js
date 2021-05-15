@@ -24,7 +24,7 @@ import { WLayout, WLHeader, WLMain } from 'wt-frontend';
 import { BrowserRouter, Switch, Route, Redirect } from 'react-router-dom';
 import {
 	UpdateRegion_Transaction, SortRegions_Transaction,
-	EditRegion_Transaction, UpdateLandmarks_Transaction
+	EditRegion_Transaction, UpdateLandmarks_Transaction, EditLandmark_Transaction
 } from '../../utils/jsTPS';
 
 
@@ -118,6 +118,7 @@ const Homescreen = (props) => {
 	const [UpdateRegionArray] = useMutation(mutations.UPDATE_REGION_ARRAY, mutationOptions);
 	const [AddLandmark] = useMutation(mutations.ADD_LANDMARK, mutationOptions);
 	const [DeleteLandmark] = useMutation(mutations.DELETE_LANDMARK, mutationOptions);
+	const [EditLandmark] = useMutation(mutations.EDIT_LANDMARK, mutationOptions);
 
 
 	const tpsUndo = async () => {
@@ -310,11 +311,11 @@ const Homescreen = (props) => {
 		console.log(reg)
 		console.log(oldLand)
 		console.log(newLand)
-		/*
-		let transaction = new EditRegion_Transaction(_id, field, prev, value, UpdateRegion);
+		
+		let transaction = new EditLandmark_Transaction(reg._id, oldLand, newLand, EditLandmark);
 		props.tps.addTransaction(transaction);
 		tpsRedo();
-		//const { data } = await UpdateRegion({ variables: { _id: _id, value: value, field: field } });*/
+		
 	};
 
 

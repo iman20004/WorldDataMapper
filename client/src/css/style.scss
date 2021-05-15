@@ -161,6 +161,10 @@ html, body {
     font-size: 20px;
 }
 
+.landmark-text:hover {
+    color: var(--yellow-orange);
+}
+
 .landmark-text-disabled {
     font-weight: 900;
     font-size: 20px;

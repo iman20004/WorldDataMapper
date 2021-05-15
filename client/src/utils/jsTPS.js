@@ -134,6 +134,34 @@ export class UpdateLandmarks_Transaction extends jsTPS_Transaction {
     }
 }
 
+export class EditLandmark_Transaction extends jsTPS_Transaction {
+    constructor(regionId, oldLand, newLand, callback) {
+        super();
+        this.regionId = regionId;
+        this.oldLand = oldLand;
+        this.newLand = newLand;
+        this.callback = callback;
+    }
+    async doTransaction() {
+        const { data } = await this.callback({ variables: { _id: this.regionId, oldLandmark: this.oldLand, newLandmark: this.newLand } });
+        if (data) {
+            console.log(data)
+            return data;
+
+        }
+    }
+
+    async undoTransaction() {
+        const { data } = await this.callback({ variables: { _id: this.regionId, oldLandmark: this.newLand, newLandmark: this.oldLand } });
+        if (data) {
+            console.log(data)
+            return data;
+
+        }
+
+    }
+}
+
 
 export class jsTPS {
     constructor() {
