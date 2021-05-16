@@ -94,11 +94,30 @@ module.exports = {
 				const parent = await Region.findOne({ _id: pId });
 				let children = parent.childrenIds
 
-				if (index < 0) children.push(newRegion._id);
-				else children.splice(index, 0, newRegion._id);
+				if (index < 0) {
+					children.push(newRegion._id);
+				} else {
+					children.splice(index, 0, newRegion._id);
+				}
 
 				const updateParent = await Region.updateOne({ _id: pId }, { childrenIds: children });
 			}
+
+			for (let i = 0; i < newRegion.landmarks.length; i++) {
+				let currentLand = landmarks[i];
+				let found = newRegion;
+				while (found.root === false) {
+					let pId = new ObjectId(found.parentId);
+					found = await Region.findOne({ _id: pId });
+					let updatedLandmark = currentLand + " - " + newRegion.name;
+					let updatedLandmarkArray = found.landmarks
+					updatedLandmarkArray.push(updatedLandmark);
+					const updatedParent2 = await Region.updateOne({ _id: pId }, { landmarks: updatedLandmarkArray });
+				}
+			}
+
+
+
 
 			const updated = await newRegion.save();
 			if (updated) {
@@ -127,11 +146,11 @@ module.exports = {
 			while (deleted.root === false) {
 				let pId = new ObjectId(deleted.parentId);
 				deleted = await Region.findOne({ _id: pId });
-				
+
 				let parentLands = deleted.landmarks;
 				let updatedParentLands = parentLands.filter(function (str) { return !str.includes(childLand); });
 
-				const updatedParent2 = await Region.updateOne({ _id: pId }, { landmarks: updatedParentLands});
+				const updatedParent2 = await Region.updateOne({ _id: pId }, { landmarks: updatedParentLands });
 			}
 
 
@@ -253,11 +272,25 @@ module.exports = {
 		},
 
 
+		/*
 		changeParent: async (_, args) => {
 			const { _id, newParentId } = args;
 			const objectId = new ObjectId(_id);
 			let found = await Region.findOne({ _id: objectId });
-		}
+
+
+			if (deleted.root === false) {
+				const pId = new ObjectId(deleted.parentId);
+				const parent = await Region.findOne({ _id: pId });
+				let childs = parent.childrenIds;
+				let newChildren = childs.filter(childId => childId !== _id);
+				const updateParent = await Region.updateOne({ _id: pId }, { childrenIds: newChildren });
+			}
+
+
+
+
+		}*/
 
 
 	}
