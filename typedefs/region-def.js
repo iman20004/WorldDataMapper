@@ -27,6 +27,7 @@ extend type Mutation {
 	addLandmark(_id: String!, newLandmark: String!, index: Int!) : String
 	deleteLandmark(_id: String!, landmarkToDelete: String!) : String
 	editLandmark(_id: String!, oldLandmark: String!, newLandmark: String!) : String
+	changeParent(_id: String!, index: Int!, newParentId: String!) : Boolean
 }
 input FieldInput {
 	_id: String

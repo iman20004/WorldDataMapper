@@ -104,19 +104,18 @@ module.exports = {
 			}
 
 			for (let i = 0; i < newRegion.landmarks.length; i++) {
-				let currentLand = landmarks[i];
+				let currentLand = newRegion.landmarks[i];
 				let found = newRegion;
 				while (found.root === false) {
 					let pId = new ObjectId(found.parentId);
 					found = await Region.findOne({ _id: pId });
-					let updatedLandmark = currentLand + " - " + newRegion.name;
+					//let updatedLandmark = currentLand + " - " + newRegion.name;
+					let updatedLandmark = currentLand.includes(" - ") ? currentLand : currentLand+ " - " + newRegion.name;
 					let updatedLandmarkArray = found.landmarks
 					updatedLandmarkArray.push(updatedLandmark);
 					const updatedParent2 = await Region.updateOne({ _id: pId }, { landmarks: updatedLandmarkArray });
 				}
 			}
-
-
 
 
 			const updated = await newRegion.save();
@@ -142,13 +141,23 @@ module.exports = {
 				const updateParent = await Region.updateOne({ _id: pId }, { childrenIds: newChildren });
 			}
 
-			var childLand = " - " + deleted.name;
+			//var childLand = " - " + deleted.name;
+			const deletedLands = deleted.landmarks;
+			for (let i = 0; i<deletedLands.length; i++){
+				if (!deletedLands[i].includes(" - ")){
+					deletedLands[i] = deletedLands[i] + " - " + deleted.name;
+				}
+			}
 			while (deleted.root === false) {
 				let pId = new ObjectId(deleted.parentId);
 				deleted = await Region.findOne({ _id: pId });
 
 				let parentLands = deleted.landmarks;
-				let updatedParentLands = parentLands.filter(function (str) { return !str.includes(childLand); });
+				//let updatedParentLands = parentLands.filter(function (str) { return !str.includes(childLand); });
+
+				let updatedParentLands = parentLands.filter(function(str) {
+					return !deletedLands.includes(str); 
+				});
 
 				const updatedParent2 = await Region.updateOne({ _id: pId }, { landmarks: updatedParentLands });
 			}
@@ -272,26 +281,76 @@ module.exports = {
 		},
 
 
-		/*
+
 		changeParent: async (_, args) => {
-			const { _id, newParentId } = args;
+			const { _id, index, newParentId } = args;
 			const objectId = new ObjectId(_id);
-			let found = await Region.findOne({ _id: objectId });
+			const current = await Region.findOne({ _id: objectId });
 
+			//Updated Old Parent childrenIds
+			const oldPId = new ObjectId(current.parentId);
+			const oldParent = await Region.findOne({ _id: oldPId });
+			let childs = oldParent.childrenIds;
+			let newChildren = childs.filter(childId => childId !== _id);
+			const updateOldParent1 = await Region.updateOne({ _id: oldPId }, { childrenIds: newChildren });
 
-			if (deleted.root === false) {
-				const pId = new ObjectId(deleted.parentId);
-				const parent = await Region.findOne({ _id: pId });
-				let childs = parent.childrenIds;
-				let newChildren = childs.filter(childId => childId !== _id);
-				const updateParent = await Region.updateOne({ _id: pId }, { childrenIds: newChildren });
+			
+			// Updated all old ancestors landmarks
+			var childLand = " - " + current.name;
+			let found = current;
+			const currentLands = current.landmarks;
+			for (let i = 0; i<currentLands.length; i++){
+				if (!currentLands[i].includes(" - ")){
+					currentLands[i] = currentLands[i] + " - " + current.name;
+				}
 			}
 
+			while (found.root === false) {
+				let oldParentId = new ObjectId(found.parentId);
+				found = await Region.findOne({ _id: oldParentId });
 
+				let parentLands = found.landmarks;
+				let updatedParentLands = parentLands.filter(function(land) {
+					return !currentLands.includes(land); 
+				});
 
+				const updatedOldParent2 = await Region.updateOne({ _id: oldParentId }, { landmarks: updatedParentLands });
+			}
+			
 
-		}*/
+			// Updated current region
+			const updateRegion = await Region.updateOne({ _id: _id}, { parentId: newParentId });
 
+			// Updating new parent childrenIds
+			const newPId = new ObjectId(newParentId);
+			const newParent = await Region.findOne({ _id: newPId });
+			let children = newParent.childrenIds;
+			if (index < 0) {
+				children.push(_id);
+			} else {
+				children.splice(index, 0, _id);
+			}
+			const updateNewParent1 = await Region.updateOne({ _id: newPId }, { childrenIds: children });
+
+			
+			// Updated all new ancestors landmarks
+			for (let i = 0; i < current.landmarks.length; i++) {
+				let currentLand = current.landmarks[i];
+				let reg = await Region.findOne({ _id: objectId });
+				while (reg.root === false) {
+					let newID = new ObjectId(reg.parentId);
+					reg = await Region.findOne({ _id: newID });
+					let updatedLandmark = currentLand.includes(" - ") ? currentLand : currentLand+ " - " + current.name;
+					let updatedLandmarkArray = reg.landmarks;
+					updatedLandmarkArray.push(updatedLandmark);
+					const newParentLandmarks = await Region.updateOne({ _id: newID }, { landmarks: updatedLandmarkArray });
+				}
+			}
+
+			if (updateRegion) return true;
+			else return false;
+
+		}
 
 	}
 }

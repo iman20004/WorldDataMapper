@@ -92,3 +92,9 @@ export const EDIT_LANDMARK = gql`
 		editLandmark(_id: $_id, oldLandmark: $oldLandmark, newLandmark: $newLandmark)
 	}
 `;
+
+export const CHANGE_PARENT = gql`
+	mutation ChangeParent($_id: String!, $index: Int!, $newParentId: String!) {
+		changeParent(_id: $_id, index: $index, newParentId: $newParentId)
+	}
+`;
