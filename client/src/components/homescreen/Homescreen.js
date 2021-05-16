@@ -8,6 +8,7 @@ import DeleteMapModal from '../modals/DeleteMapModal';
 import DeleteRegionModal from '../modals/DeleteRegionModal';
 import DeleteLandmarkModal from '../modals/DeleteLandmarkModal';
 import EditLandmarkModal from '../modals/EditLandmarkModal';
+import ChangeParentModal from '../modals/ChangeParentModal';
 import MapName from '../modals/MapName';
 import MapEdit from '../modals/MapEdit';
 import Maps from '../map/Maps';
@@ -64,6 +65,7 @@ const Homescreen = (props) => {
 	const [showDeleteRegion, toggleShowDeleteRegion] = useState(false);
 	const [showDeleteLandmark, toggleShowDeleteLandmark] = useState(false);
 	const [showEditLandmark, toggleShowEditLandmark] = useState(false);
+	const [showChangeParent, toggleShowChangeParent] = useState(false);
 
 
 	const { loading, error, data, refetch } = useQuery(GET_DB_REGIONS);
@@ -311,11 +313,11 @@ const Homescreen = (props) => {
 		console.log(reg)
 		console.log(oldLand)
 		console.log(newLand)
-		
+
 		let transaction = new EditLandmark_Transaction(reg._id, oldLand, newLand, EditLandmark);
 		props.tps.addTransaction(transaction);
 		tpsRedo();
-		
+
 	};
 
 
@@ -396,6 +398,17 @@ const Homescreen = (props) => {
 		setDeleteLandRegion(reg);
 		setDeleteLand(land);
 		toggleShowEditLandmark(!showEditLandmark)
+	};
+
+	const setShowChangeParent = (regionToMove) => {
+		toggleShowCreate(false);
+		toggleShowLogin(false);
+		toggleShowUpdate(false);
+		toggleShowDeleteRegion(false);
+		toggleShowDeleteLandmark(false);
+		toggleShowEditLandmark(false);
+		setDeleteRegion(regionToMove);
+		toggleShowChangeParent(!showChangeParent);
 	};
 
 	return (
@@ -520,6 +533,7 @@ const Homescreen = (props) => {
 									reload={loadRegion}
 									setShowDeleteLandmark={setShowDeleteLandmark}
 									setShowEditLandmark={setShowEditLandmark}
+									setShowChangeParent={setShowChangeParent}
 								//activeRegion={activeRegion}
 								//handleSetActiveRegion={handleSetActiveRegion}
 								/>
@@ -566,10 +580,14 @@ const Homescreen = (props) => {
 				}
 
 				{
-					showEditLandmark && (<EditLandmarkModal editLandmark={editLandmark} setShowEditLandmark={setShowEditLandmark} 
-						editRegion={deleteLandRegion} oldLand={deleteLand}/>)
+					showEditLandmark && (<EditLandmarkModal editLandmark={editLandmark} setShowEditLandmark={setShowEditLandmark}
+						editRegion={deleteLandRegion} oldLand={deleteLand} />)
 				}
 
+				{
+					showChangeParent && (<ChangeParentModal editMap={editMap} setShowChangeParent={setShowChangeParent} 
+						regionToMove={deleteRegion} regions={regions} />)
+				}
 
 			</WLayout>
 

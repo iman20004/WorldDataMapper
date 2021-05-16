@@ -113,15 +113,27 @@ module.exports = {
 		deleteRegion: async (_, args) => {
 			const { _id } = args;
 			const objectId = new ObjectId(_id);
-			const deleted = await Region.findOne({ _id: objectId });
+			let deleted = await Region.findOne({ _id: objectId });
 
 			if (deleted.root === false) {
 				const pId = new ObjectId(deleted.parentId);
 				const parent = await Region.findOne({ _id: pId });
-				let childs = parent.childrenIds
-				let newChildren = childs.filter(childId => childId !== _id)
+				let childs = parent.childrenIds;
+				let newChildren = childs.filter(childId => childId !== _id);
 				const updateParent = await Region.updateOne({ _id: pId }, { childrenIds: newChildren });
 			}
+
+			var childLand = " - " + deleted.name;
+			while (deleted.root === false) {
+				let pId = new ObjectId(deleted.parentId);
+				deleted = await Region.findOne({ _id: pId });
+				
+				let parentLands = deleted.landmarks;
+				let updatedParentLands = parentLands.filter(function (str) { return !str.includes(childLand); });
+
+				const updatedParent2 = await Region.updateOne({ _id: pId }, { landmarks: updatedParentLands});
+			}
+
 
 			const deletion = await Region.deleteOne({ _id: objectId });
 
@@ -238,6 +250,13 @@ module.exports = {
 
 			if (updated) return newLandmark;
 			else return oldLandmark;
+		},
+
+
+		changeParent: async (_, args) => {
+			const { _id, newParentId } = args;
+			const objectId = new ObjectId(_id);
+			let found = await Region.findOne({ _id: objectId });
 		}
 
 

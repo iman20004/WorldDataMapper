@@ -3,6 +3,7 @@ import { WButton, WInput } from 'wt-frontend';
 import flagImg from '../Images/flag.png';
 import Landmarks from './Landmarks';
 import { useHistory, useParams } from "react-router-dom";
+import { FragmentsOnCompositeTypesRule } from 'graphql';
 
 const RegionViewer = (props) => {
     let history = useHistory();
@@ -90,7 +91,7 @@ const RegionViewer = (props) => {
                         <div>Parent Region: </div>
                         <div className='info-spacer'></div>
                         <div className='viewer-parent' onClick={navigateBack}>{parentReg.name}</div>
-                        <i className="material-icons edit-button">edit</i>
+                        <i className="material-icons edit-button" onClick={() => props.setShowChangeParent(region)}>edit</i>
                     </div>
                     <div className='info-col-spacer'></div>
                     <div className='info-rows'>
