@@ -24,7 +24,7 @@ import { WNavbar, WSidebar, WNavItem } from 'wt-frontend';
 import { WLayout, WLHeader, WLMain } from 'wt-frontend';
 import { BrowserRouter, Switch, Route, Redirect } from 'react-router-dom';
 import {
-	UpdateRegion_Transaction, SortRegions_Transaction,
+	UpdateRegion_Transaction, SortRegions_Transaction, changeParent_Transaction,
 	EditRegion_Transaction, UpdateLandmarks_Transaction, EditLandmark_Transaction
 } from '../../utils/jsTPS';
 
@@ -121,6 +121,7 @@ const Homescreen = (props) => {
 	const [AddLandmark] = useMutation(mutations.ADD_LANDMARK, mutationOptions);
 	const [DeleteLandmark] = useMutation(mutations.DELETE_LANDMARK, mutationOptions);
 	const [EditLandmark] = useMutation(mutations.EDIT_LANDMARK, mutationOptions);
+	const [changeParent] = useMutation(mutations.CHANGE_PARENT, mutationOptions);
 
 
 	const tpsUndo = async () => {
@@ -310,16 +311,22 @@ const Homescreen = (props) => {
 	};
 
 	const editLandmark = async (reg, oldLand, newLand) => {
-		console.log(reg)
-		console.log(oldLand)
-		console.log(newLand)
-
+		
 		let transaction = new EditLandmark_Transaction(reg._id, oldLand, newLand, EditLandmark);
 		props.tps.addTransaction(transaction);
 		tpsRedo();
 
 	};
 
+	const handleChangeParent = async (reg, newParent) => {
+		let oldParent = reg.parentId;
+		let old = regions.find(reg => reg._id === oldParent);
+		let index = old.childrenIds.indexOf(reg._id);
+
+		let transaction = new changeParent_Transaction(reg._id, newParent, oldParent, changeParent, index);
+		props.tps.addTransaction(transaction);
+		tpsRedo();
+	};
 
 
 
@@ -585,7 +592,7 @@ const Homescreen = (props) => {
 				}
 
 				{
-					showChangeParent && (<ChangeParentModal editMap={editMap} setShowChangeParent={setShowChangeParent} 
+					showChangeParent && (<ChangeParentModal handleChangeParent={handleChangeParent} setShowChangeParent={setShowChangeParent} 
 						regionToMove={deleteRegion} regions={regions} />)
 				}
 
