@@ -2,6 +2,7 @@ import React, { useState, useEffect } from 'react';
 import { WButton, WInput, WRow, WCol } from 'wt-frontend';
 import { useHistory } from "react-router-dom";
 import flagImg from '../Images/flag.png';
+import FlagImg2 from '../Images/The World/Middle East/Iran Flag.png'
 
 const RegionEntry = (props) => {
     const { data } = props;
@@ -37,10 +38,9 @@ const RegionEntry = (props) => {
         return images;
     }
       
-    const images = importAll(require.context('../Images/TheWorld', false, /\.(png|jpe?g|svg)$/));
-      
+    const images = importAll(require.context('../Images/The World', true, /\.png$/));
     //<img src={images['doggy.png']} />
-    
+      
 
 
     const handleOpen = async (e) => {
@@ -199,7 +199,7 @@ const RegionEntry = (props) => {
             <WCol size="2">
                 {
                     <div className="table-text">
-                        <img src={flagImg} className="flag-spreadsheet" />
+                        <img className="flag-spreadsheet" src={images['Armenia Flag.png']}/>
                     </div>
                 }
             </WCol>
