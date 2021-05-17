@@ -54,6 +54,7 @@ const Region = (props) => {
                 setShowDeleteRegion={props.setShowDeleteRegion}
                 setActiveField={setActiveField} activeField={activeField}
                 setActiveIndex={setActiveIndex} activeIndex={activeIndex}
+                //images={images}
                 //tps={props.tps}
             //refetch={props.reload}
             //refetch={refetch}

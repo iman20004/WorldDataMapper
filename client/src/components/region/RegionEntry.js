@@ -1,7 +1,8 @@
 import React, { useState, useEffect } from 'react';
 import { WButton, WInput, WRow, WCol } from 'wt-frontend';
 import { useHistory } from "react-router-dom";
-import flagImg from '../Images/flag.png';
+import flagImg from '../Images/Dummy_flag.png';
+import flag from '../Images/World/Australia Flag.png'
 
 const RegionEntry = (props) => {
     const { data } = props;
@@ -28,19 +29,7 @@ const RegionEntry = (props) => {
         toggleLeaderEdit(Boolean(props.activeIndex && props.activeField === 'leader'))
 
     }, [props.activeIndex, props.activeField])
-
-
-    
-    function importAll(r) {
-        let images = {};
-        r.keys().map((item, index) => { images[item.replace('./', '')] = r(item); });
-        return images;
-    }
       
-    //const images = importAll(require.context('../Images/The World', true, /\.png$/));
-    //<img src={images['doggy.png']} />
-      
-
 
     const handleOpen = async (e) => {
         //props.handleSetActiveRegion(props.data);
@@ -135,6 +124,14 @@ const RegionEntry = (props) => {
         }
     };
 
+    function importAll(r) {
+        let images = {};
+        r.keys().map((item, index) => { images[item.replace('./', '')] = r(item); });
+        return images;
+    };
+      
+    const images = importAll(require.context('../Images/World', false, /\.(png)$/));
+
     return (
         <WRow className='table-entry'>
             <WCol size="2">
@@ -197,8 +194,11 @@ const RegionEntry = (props) => {
 
             <WCol size="2">
                 {
-                    <div className="table-text">
-                        <img className="flag-spreadsheet" src={flagImg}/>
+                    <div className="table-text">{
+                        images[`${data.name} Flag.png`] === undefined ?
+                        <img className="flag-spreadsheet" src={flagImg} alt="N/A" />
+                        : <img className="flag-spreadsheet" src={images[`${data.name} Flag.png`].default} alt="N/A" />
+                    }
                     </div>
                 }
             </WCol>
@@ -213,3 +213,6 @@ const RegionEntry = (props) => {
 };
 
 export default RegionEntry;
+
+//src={ props.images[`${data.name} Flag.png`] }
+//src={flagImg}

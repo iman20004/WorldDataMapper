@@ -1,6 +1,6 @@
 import React, { useState } from 'react';
 import { WButton, WInput } from 'wt-frontend';
-import flagImg from '../Images/flag.png';
+import flagImg from '../Images/Dummy_flag.png';
 import Landmarks from './Landmarks';
 import { useHistory, useParams } from "react-router-dom";
 import { FragmentsOnCompositeTypesRule } from 'graphql';
@@ -68,6 +68,14 @@ const RegionViewer = (props) => {
         clickAnimation: !props.canUndo ? "" : "ripple-light"
     }
 
+    function importAll(r) {
+        let images = {};
+        r.keys().map((item, index) => { images[item.replace('./', '')] = r(item); });
+        return images;
+    };
+      
+    const images = importAll(require.context('../Images/World', false, /\.(png)$/));
+
     return (
         <div className="region-body">
             <div className="region-left">
@@ -79,7 +87,11 @@ const RegionViewer = (props) => {
                         <i className="material-icons large">redo</i>
                     </WButton>
                 </div>
-                <img src={flagImg} className="flag-viewer" />
+                {
+                        images[`${region.name} Flag.png`] === undefined ?
+                        <img className="flag-spreadsheet" src={flagImg} alt="N/A" />
+                        : <img className="flag-viewer" src={images[`${region.name} Flag.png`].default} alt="N/A" />
+                    }
                 <div className='info-viewer'>
                     <div className='info-rows'>
                         <div>Region Name: </div>
