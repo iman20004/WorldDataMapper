@@ -27,6 +27,38 @@ export const GET_DB_REGIONS = gql`
 	}
 `;
 
+export const GET_REGION_BY_ID = gql`
+	query GetRegionById($_id: String!) {
+		getRegionById(_id: $_id) {
+			_id
+			owner
+			name
+			capital
+			leader
+			landmarks
+			root
+			parentId
+			childrenIds
+		}
+	}
+`;
+
+export const GET_CHILDREN = gql`
+	query GetChildren($_id: String!) {
+		getChildren(_id: $_id) {
+			_id
+			owner
+			name
+			capital
+			leader
+			landmarks
+			root
+			parentId
+			childrenIds
+		}
+	}
+`;
+
 export const GET_DB_ANCESTORS = gql`
 	query GetDBAncestors($_id: String!) {
 		getAllAncestors(_id: $_id) {

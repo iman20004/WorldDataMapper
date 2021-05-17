@@ -535,6 +535,7 @@ const Homescreen = (props) => {
 									sortRegions={sortRegions}
 									undo={tpsUndo} redo={tpsRedo}
 									canUndo={canUndo} canRedo={canRedo}
+									//load={reload}
 								//tps={props.tps}
 								//route={route}
 								//activeRegion={activeRegion}

@@ -1,7 +1,9 @@
 import React from 'react';
 import { WButton, WRow, WCol } from 'wt-frontend';
+import { useHistory } from 'react-router'
 
 const RegionHeader = (props) => {
+    const history = useHistory()
     const buttonStyle = props.subRegions !== undefined && props.subRegions.length > 0 ? ' table-header-section ' : 'table-header-section-disabled ';
     const clickDisabled = () => { };
 

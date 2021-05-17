@@ -61,6 +61,20 @@ module.exports = {
 				ancestors.push(region);
 			}
 			return ancestors.reverse();
+		},
+		getChildren: async (_, args) => {
+			const { _id } = args;
+			const objectId = new ObjectId(_id);
+			let region = await Region.findOne({ _id: objectId });
+
+			let children = [];
+			for (let i = 0 ; i < region.childrenIds.length; i++){
+				let childId = new ObjectId(region.childrenIds[i]);
+				let child = await Region.findOne({ _id: childId });
+				children.push(child);
+			}
+
+			return children;
 		}
 
 	},

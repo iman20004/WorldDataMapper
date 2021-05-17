@@ -3,17 +3,14 @@ import RegionHeader from './RegionHeader';
 import RegionContents from './RegionContents';
 import { useParams } from "react-router-dom";
 import { useQuery } from '@apollo/client';
-import { GET_DB_ANCESTORS } from '../../cache/queries'
+import { GET_DB_ANCESTORS, GET_REGION_BY_ID, GET_CHILDREN } from '../../cache/queries'
 
 const Region = (props) => {
     const { id } = useParams();
 
+    
     let region = props.regions.find(reg => reg._id === id);
     
-    
-    //console.log(props.region)
-    //let subregions = props.regions.filter(reg => reg.parentId === id)
-
     let subRegions = [];
     if (region !== undefined) {
         for (let i = 0; i < region.childrenIds.length; i++) {
@@ -22,6 +19,33 @@ const Region = (props) => {
             subRegions.push(child);
         }
     }
+
+    /*
+    let region = {};
+    const { loading: loadings, error: errors, data: dataReg, refetch: refetchRegion } = useQuery(GET_REGION_BY_ID, {
+        variables: { _id: id }, fetchPolicy:'no-cache'
+    });
+
+    if (loadings) { console.log(loadings, 'loading REG'); }
+    if (errors) { console.log(errors, 'error REG'); }
+    if (dataReg) {
+        region = dataReg.getRegionById
+    }
+    
+    
+    let subRegions = [];
+    const { loading: loadingss, error: errorss, data: dataChildren, refetch: refetchChildren } = useQuery(GET_CHILDREN, {
+        variables: { _id: id }, fetchPolicy:'no-cache'
+    });
+
+    if (loadingss) { console.log(loadings, 'loading children'); }
+    if (errorss) { console.log(errors, 'error children'); }
+    if (dataChildren) {
+        for (let child of dataChildren.getChildren) {
+			subRegions.push(child)
+		}
+    }
+    */
 
     const { loading, error, data, refetch } = useQuery(GET_DB_ANCESTORS, {
         variables: { _id: id }, fetchPolicy:'no-cache'
@@ -36,6 +60,7 @@ const Region = (props) => {
     const [activeIndex, setActiveIndex] = useState(-1);
     const [activeField, setActiveField] = useState('');
 
+
     return (
         <div className='table ' >
             <RegionHeader
@@ -45,6 +70,9 @@ const Region = (props) => {
                 subRegions={subRegions}
                 undo={props.undo} redo={props.redo}
                 canUndo={props.canUndo} canRedo={props.canRedo}
+                //refetchReg={refetchRegion}
+                //refetchChildren={refetchChildren}
+                //load={reload}
             //activeRegion={props.activeRegion}
             //handleSetActiveRegion={props.handleSetActiveRegion}
             />
