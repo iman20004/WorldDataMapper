@@ -61,6 +61,24 @@ html {
     font-weight: 500;
 }
 
+.image-box {
+    white-space: nowrap;
+    overflow: hidden;
+    text-overflow: ellipsis;
+    font-size: 1.125rem;
+    padding-top: 12px;
+    padding-bottom: 12px;
+    //padding-top: 12px;
+    //padding-left: 12px;
+    //margin-top: 12px;
+    //margin-bottom: 12px;
+    cursor: pointer;
+    text-align: center;
+    width: 100%;
+    font-size: 20px;
+    font-weight: 500;
+}
+
 .table {
     display: flex;
     width: 85%;

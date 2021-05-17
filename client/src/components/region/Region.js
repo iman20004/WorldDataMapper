@@ -9,6 +9,9 @@ const Region = (props) => {
     const { id } = useParams();
 
     let region = props.regions.find(reg => reg._id === id);
+    
+    
+    //console.log(props.region)
     //let subregions = props.regions.filter(reg => reg.parentId === id)
 
     let subRegions = [];
@@ -21,7 +24,7 @@ const Region = (props) => {
     }
 
     const { loading, error, data, refetch } = useQuery(GET_DB_ANCESTORS, {
-        variables: { _id: id },
+        variables: { _id: id }, fetchPolicy:'no-cache'
     });
 
     if (loading) { console.log(loading, 'loading 2'); }

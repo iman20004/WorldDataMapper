@@ -194,7 +194,7 @@ const RegionEntry = (props) => {
 
             <WCol size="2">
                 {
-                    <div className="table-text">{
+                    <div className="image-box">{
                         images[`${data.name} Flag.png`] === undefined ?
                         <img className="flag-spreadsheet" src={flagImg} alt="N/A" />
                         : <img className="flag-spreadsheet" src={images[`${data.name} Flag.png`].default} alt="N/A" />

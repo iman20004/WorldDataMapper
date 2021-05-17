@@ -34,6 +34,20 @@ import {
 
 const Homescreen = (props) => {
 
+	const keyCombination = (e, callback) => {
+		if(e.key === 'z' && e.ctrlKey) {
+			if(props.tps.hasTransactionToUndo()) {
+				tpsUndo();
+			}
+		}
+		else if (e.key === 'y' && e.ctrlKey) { 
+			if(props.tps.hasTransactionToRedo()) {
+				tpsRedo();
+			}
+		}
+	}
+	document.onkeydown = keyCombination;
+
 	const auth = props.user === null ? false : true;
 	let regions = [];
 	let maps = [];
@@ -326,6 +340,7 @@ const Homescreen = (props) => {
 		let transaction = new changeParent_Transaction(reg._id, newParent, oldParent, changeParent, index);
 		props.tps.addTransaction(transaction);
 		tpsRedo();
+		reload();
 	};
 
 
@@ -538,6 +553,7 @@ const Homescreen = (props) => {
 									canUndo={canUndo} canRedo={canRedo}
 									addLandmark={handleAddLandmark}
 									reload={loadRegion}
+									setRoute={handleSetRoute}
 									setShowDeleteLandmark={setShowDeleteLandmark}
 									setShowEditLandmark={setShowEditLandmark}
 									setShowChangeParent={setShowChangeParent}

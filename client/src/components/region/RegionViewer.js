@@ -3,7 +3,8 @@ import { WButton, WInput } from 'wt-frontend';
 import flagImg from '../Images/Dummy_flag.png';
 import Landmarks from './Landmarks';
 import { useHistory, useParams } from "react-router-dom";
-import { FragmentsOnCompositeTypesRule } from 'graphql';
+import { useQuery } from '@apollo/client';
+import { GET_DB_ANCESTORS } from '../../cache/queries'
 
 const RegionViewer = (props) => {
     let history = useHistory();
@@ -14,6 +15,16 @@ const RegionViewer = (props) => {
     let parentReg = props.regions.find(reg => reg._id === region.parentId);
 
     let numChildren = region.childrenIds.length;
+
+    const { loading, error, data, refetch } = useQuery(GET_DB_ANCESTORS, {
+        variables: { _id: id }, fetchPolicy:'no-cache'
+    });
+
+    if (loading) { console.log(loading, 'loading 2'); }
+    if (error) { console.log(error, 'error 2'); }
+    if (data) {
+        props.setRoute(data.getAllAncestors);
+    }
 
     const [editingLand, toggleLandEdit] = useState(false);
     const [newLand, setNewLand] = useState('');
@@ -59,14 +70,18 @@ const RegionViewer = (props) => {
         onClick: !props.canRedo ? clickDisabled : props.redo,
         wType: "texted",
         clickAnimation: !props.canRedo ? "" : "ripple-light"
-    }
+    };
 
     const undoOptions = {
         className: !props.canUndo ? ' table-header-button-disabled ' : 'table-header-button',
         onClick: !props.canUndo ? clickDisabled : props.undo,
         wType: "texted",
         clickAnimation: !props.canUndo ? "" : "ripple-light"
-    }
+    };
+
+    const handleParent = async () => {
+        props.setShowChangeParent(region);
+    };
 
     function importAll(r) {
         let images = {};
@@ -89,7 +104,7 @@ const RegionViewer = (props) => {
                 </div>
                 {
                         images[`${region.name} Flag.png`] === undefined ?
-                        <img className="flag-spreadsheet" src={flagImg} alt="N/A" />
+                        <img className="flag-viewer" src={flagImg} alt="N/A" />
                         : <img className="flag-viewer" src={images[`${region.name} Flag.png`].default} alt="N/A" />
                     }
                 <div className='info-viewer'>
@@ -103,7 +118,7 @@ const RegionViewer = (props) => {
                         <div>Parent Region: </div>
                         <div className='info-spacer'></div>
                         <div className='viewer-parent' onClick={navigateBack}>{parentReg.name}</div>
-                        <i className="material-icons edit-button" onClick={() => props.setShowChangeParent(region)}>edit</i>
+                        <i className="material-icons edit-button" onClick={() => handleParent()}>edit</i>
                     </div>
                     <div className='info-col-spacer'></div>
                     <div className='info-rows'>
