@@ -2,7 +2,7 @@ import React, { useState } from 'react';
 import { WModal, WMHeader, WMMain, WButton, WInput } from 'wt-frontend';
 
 const ChangeParentModal = (props) => {
-    const [name, setName] = useState('');
+    const [parentID, setParentID] = useState('');
     const [showErr, displayErrorMsg] = useState(false);
     const errorMsg = "Please select one option";
 
@@ -13,19 +13,24 @@ const ChangeParentModal = (props) => {
     console.log(possibleParents)
 
 
-    const updateInput = (parentID) => {
-        console.log(parentID)
-        setName(parentID);
+    const updateInput = (parentid, index) => {
+        for (var i = 0; i < possibleParents.length; i++) {
+            if (i === index){
+                document.getElementById("myCheck" + i).checked = true;
+            } else {
+                document.getElementById("myCheck" + i).checked = false;
+            }
+        }
+        setParentID(parentid);
     };
 
     const handleEditMap = async (e) => {
-        if (!name) {
+        if (!parentID) {
             displayErrorMsg(true);
             return;
         }
         props.setShowChangeParent({}, false);
-        console.log(name)
-        //props.editMap(props.editMapId, name)  
+        props.handleChangeParent(props.regionToMove, parentID)  
     };
 
     return (
@@ -38,16 +43,16 @@ const ChangeParentModal = (props) => {
             <WMMain>
                 <div className='parents-box'>
                     {
-                        possibleParents.length > 0 ? 
+                        possibleParents.length > 0 ?
 
-                        possibleParents.map((entry) => (
-                            <div className='per-parent'>
-                                <input type="checkbox" id="myCheck" onClick={() => updateInput(entry._id)}></input>
-                                <div className='parent-names'>{entry.name}</div>
-                            </div>
-                        ))
-                         :
-                        <div className='no-option'> No options available</div>
+                            possibleParents.map((entry, index) => (
+                                <div className='per-parent'>
+                                    <input type="checkbox" id={"myCheck" + index} onClick={() => updateInput(entry._id, index)}></input>
+                                    <div className='parent-names'>{entry.name}</div>
+                                </div>
+                            ))
+                            :
+                            <div className='no-option'> No options available</div>
                     }
                 </div>
                 <div className="modal-spacer">&nbsp;</div>
