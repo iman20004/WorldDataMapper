@@ -425,3 +425,29 @@ html {
 .empty-path {
     width: 340px;
 }
+
+.parents-box {
+    //padding-top: 10px;
+    padding-bottom: 10px;
+    width: 95%;
+    height: 250px;
+    background-color: #181818;
+    overflow: hidden;
+    overflow-y: scroll;
+}
+
+.parent-names {
+    padding-left: 20px;
+    //padding-top: 10px;
+}
+
+.per-parent {
+    display: flex;
+    flex-direction: row;
+    align-items: center;
+    padding: 10px;
+}
+
+#myCheck {
+    transform: scale(1.5);
+}

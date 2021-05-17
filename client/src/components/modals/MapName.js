@@ -1,10 +1,12 @@
-import React, { useState } 				                from 'react';
+import React, { useState} 				                from 'react';
 import { WModal, WMHeader, WMMain, WButton, WInput }    from 'wt-frontend';
+import { useHistory } from "react-router-dom";
 
 const MapName = (props) => {
     const [name, setName] = useState('');
     const [showErr, displayErrorMsg] = useState(false);
     const errorMsg = "All Maps must have a name.";
+    let history = useHistory();
 	
 	const updateInput = (e) => {
         setName(e.target.value);
@@ -17,7 +19,8 @@ const MapName = (props) => {
 		}
         props.setShowMapName(false);
         props.createNewMap(name);
-        //history.push("/home/region/");
+        //console.log(newAdded);
+        //history.push("/home/region/" + newAdded.addRegion._id);
     };
     
     const handlekeyDown = async (e) => {
