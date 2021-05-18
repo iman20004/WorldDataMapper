@@ -147,6 +147,7 @@ module.exports = {
 			const objectId = new ObjectId(_id);
 			let deleted = await Region.findOne({ _id: objectId });
 
+			// changing parent regions childrenIds Array
 			if (deleted.root === false) {
 				const pId = new ObjectId(deleted.parentId);
 				const parent = await Region.findOne({ _id: pId });
@@ -155,13 +156,15 @@ module.exports = {
 				const updateParent = await Region.updateOne({ _id: pId }, { childrenIds: newChildren });
 			}
 
-			//var childLand = " - " + deleted.name;
+			// reformatting landsmarks array
 			const deletedLands = deleted.landmarks;
 			for (let i = 0; i<deletedLands.length; i++){
 				if (!deletedLands[i].includes(" - ")){
 					deletedLands[i] = deletedLands[i] + " - " + deleted.name;
 				}
 			}
+
+			//updating all ancestors landmarks array
 			while (deleted.root === false) {
 				let pId = new ObjectId(deleted.parentId);
 				deleted = await Region.findOne({ _id: pId });
@@ -176,7 +179,7 @@ module.exports = {
 				const updatedParent2 = await Region.updateOne({ _id: pId }, { landmarks: updatedParentLands });
 			}
 
-
+			// delete the region from db
 			const deletion = await Region.deleteOne({ _id: objectId });
 
 			//const children = await Region.deleteMany({ parentId: objectId });

@@ -102,7 +102,7 @@ const RegionViewer = (props) => {
                         <i className="material-icons large">redo</i>
                     </WButton>
                 </div>
-                {
+                    {
                         images[`${region.name} Flag.png`] === undefined ?
                         <img className="flag-viewer" src={flagImg} alt="N/A" />
                         : <img className="flag-viewer" src={images[`${region.name} Flag.png`].default} alt="N/A" />
