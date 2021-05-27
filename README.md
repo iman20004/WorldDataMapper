@@ -1,4 +1,7 @@
 # CSE316-Spring21-FINALPROJECT
 ##### Authors: Iman Ali
 
-An application for managing regional data that is organi􏰑ed hierarchicall􏰅. Users can organi􏰑e and edit information about each region􏰒s name, capital, leader and landmarks as 􏰆ell add further subregions
+The WorldDataMapper is a web application for managing regional data that is organiz􏰑ed hierarchically􏰅. Users can organiz􏰑e and edit information about each region􏰒s' name, capital, leader and landmarks as w􏰆ell add further subregions
+
+
+
