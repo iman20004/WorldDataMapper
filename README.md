@@ -8,16 +8,11 @@ This application, developed as a full-stack MERN Web application is for entering
 
 #### Use Cases
 
-- [x] Create Account 
-- [x] Cancel Account Creation
-- [x] Login to Account
-- [x] Cancel Login
-- [x] Update Account
-- [x] Cancel Update
+- [x] Create Account, Cancel Account Creation
+- [x] Login to Account, Cancel Login
+- [x] Update Account, Cancel Update
 - [x] Logout of Account
-- [x] Create Map Data File
-- [x] Delete Map Data File
-- [x] Select Map Data File
+- [x] Create Map Data File, Delete Map Data File, Select Map Data File
 - [x] Go Home
 - [x] Navigate to AncestorRegion
 - [x] Add new Subregion
@@ -25,8 +20,7 @@ This application, developed as a full-stack MERN Web application is for entering
 - [x] Navigate to Subregion
 - [x] Delete Subregion
 - [x] Sort Table
-- [x] Undo
-- [x] Redo
+- [x] Undo, Redo
 - [x] Navigate to Region Viewer
 - [x] Change Region Parent
 - [x] Add Region Landmark
