@@ -1,6 +1,4 @@
-# WorldDataMapper
-##### CSE316 Final Project
-###### Authors: Iman Ali
+# WorldDataMapper ##### CSE316 Final Project ###### Authors: Iman Ali
 
 The WorldDataMapper is a CRUD Web Application for managing regional data that is organiz􏰑ed hierarchically􏰅. Users can organiz􏰑e, edit and store information about each region􏰒s' name, capital, leader and landmarks as w􏰆ell add further subregions
 
