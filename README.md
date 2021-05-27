@@ -19,3 +19,9 @@ The WorldDataMapper is a web application for managing regional data that is orga
 
 ### Region Viewer Screen
 <img width="800" alt="Screen Shot 2021-05-27 at 2 17 53 PM" src="https://user-images.githubusercontent.com/60799230/119877101-a2f30580-bef6-11eb-9ea6-2d56255c6738.png">
+
+
+### Frontend && Backend
+This application was developed as a full-stack MERN Web Application using Mongo Atlas, E􏰓press, React, Node as 􏰆well as Apollo and GraphQL
+
+Please refer to the WorldDataMapperSpec and the WorldDataMapperDesign documents for futher details about the specification and design of the application. 
