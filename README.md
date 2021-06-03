@@ -50,7 +50,7 @@ This application, developed as a full-stack MERN Web application is for entering
 
 
 ### Frontend & Backend
-This application was developed as a full-stack MERN Web Application using Mongo Atlas, E􏰓press, React, Node, react-router-dom as 􏰆well as Apollo and GraphQL.
+This application was developed as a full-stack MERN Web Application using Mongo Atlas, E􏰓xpress, React, Node, react-router-dom as 􏰆well as Apollo and GraphQL.
 
 
 Please refer to the WorldDataMapperSpec and the WorldDataMapperDesign documents for futher details about the specification and design of the application. As well as a complete list of all the uses case diagrams.
